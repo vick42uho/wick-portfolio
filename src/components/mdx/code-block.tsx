@@ -71,24 +71,25 @@ export function CodeBlock({ children, ...props }: CodeBlockProps) {
 
   return (
     <div className={[
-      "group relative overflow-hidden rounded-2xl border bg-gray-950",
-      "border-white/10 shadow-2xl",
-      "inset-ring inset-ring-white/5",
+      "group relative overflow-hidden rounded-2xl border",
+      "bg-neutral-50 dark:bg-gray-950",
+      "border-neutral-200 dark:border-white/10 shadow-md dark:shadow-2xl",
+      "inset-ring inset-ring-neutral-200/50 dark:inset-ring-white/5",
     ].join(" ")}>
       <pre
         ref={preRef}
         {...props}
         className={cn("p-0! m-0! overflow-x-auto", props.className)}
       >
-        {/* Window Chrome / Tab Header (ตามกฎข้อที่ 8 ใน Skill) */}
-        <div className="flex items-center justify-between px-4 py-3 bg-gray-950/80 border-b border-white/5 backdrop-blur-sm">
+        {/* Window Chrome / Tab Header (ปรับแต่งให้รองรับ Light/Dark mode) */}
+        <div className="flex items-center justify-between px-4 py-3 bg-neutral-100/80 dark:bg-gray-950/80 border-b border-neutral-200 dark:border-white/5 backdrop-blur-sm">
           <div className="flex items-center gap-2">
             {/* macOS-style dots */}
-            <span className="size-2.5 rounded-full bg-white/10 dark:bg-white/15"></span>
-            <span className="size-2.5 rounded-full bg-white/10 dark:bg-white/15"></span>
-            <span className="size-2.5 rounded-full bg-white/10 dark:bg-white/15"></span>
+            <span className="size-2.5 rounded-full bg-neutral-300 dark:bg-white/15"></span>
+            <span className="size-2.5 rounded-full bg-neutral-300 dark:bg-white/15"></span>
+            <span className="size-2.5 rounded-full bg-neutral-300 dark:bg-white/15"></span>
             {/* File/Language name */}
-            <span className="ml-4 font-mono text-xs text-gray-400 font-semibold tracking-wide uppercase">
+            <span className="ml-4 font-mono text-xs text-neutral-500 dark:text-gray-400 font-semibold tracking-wide uppercase">
               {currentTitle}
             </span>
           </div>
@@ -98,8 +99,8 @@ export function CodeBlock({ children, ...props }: CodeBlockProps) {
             variant="outline"
             size="icon"
             className={cn(
-              "size-7 text-gray-400 hover:text-white cursor-pointer transition-opacity rounded-lg",
-              "border-white/10 bg-white/5 hover:bg-white/10 hover:border-blue-500/30",
+              "size-7 text-neutral-500 dark:text-gray-400 hover:text-neutral-900 dark:hover:text-white cursor-pointer transition-opacity rounded-lg",
+              "border-neutral-200 dark:border-white/10 bg-neutral-50 dark:bg-white/5 hover:bg-neutral-100 dark:hover:bg-white/10 hover:border-blue-500/30 dark:hover:border-blue-500/30",
               "shadow-none focus:outline-none focus-visible:ring-1 focus-visible:ring-blue-500"
             )}
             aria-label="Copy code"
@@ -118,7 +119,7 @@ export function CodeBlock({ children, ...props }: CodeBlockProps) {
         )}
 
         {!html && (
-          <div className="p-5 overflow-x-auto text-[13px]/6 font-mono text-gray-300">
+          <div className="p-5 overflow-x-auto text-[13px]/6 font-mono text-neutral-700 dark:text-gray-300">
             {children}
           </div>
         )}
