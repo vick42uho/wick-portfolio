@@ -7,7 +7,6 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import Markdown from "react-markdown";
-import { GlowCard } from "@/components/ui/spotlight-card";
 
 function ProjectImage({ src, alt }: { src: string; alt: string }) {
   const [imageError, setImageError] = useState(false);
@@ -57,17 +56,27 @@ export function ProjectCard({
   className,
 }: Props) {
   return (
-    <GlowCard
-      glowColor="blue"
-      customSize={true} // ให้คุมขนาดแบบ grid ในหน้าแรก
+    <div
       className={cn(
-        "group relative flex flex-col h-full overflow-hidden rounded-2xl",
+        // Pure CSS Glow Card (100% hardware-accelerated, zero JS event listeners for smooth mobile experience)
+        "group relative flex flex-col h-full overflow-hidden rounded-2xl border",
         "transition-all duration-300 cursor-pointer shadow-lg",
-        "bg-white/3 dark:bg-blue-950/5",
+        "border-neutral-200 bg-neutral-50/50 hover:border-blue-500/40",
+        "dark:border-white/8 dark:bg-blue-950/10 dark:hover:border-blue-500/30",
         "hover:-translate-y-0.5",
+        "hover:shadow-[0_0_24px_oklch(0.55_0.22_255/0.08)] dark:hover:shadow-[0_0_30px_oklch(0.55_0.22_255/0.12)]",
         className
       )}
     >
+      {/* Dynamic Hover Glow backing (Pure CSS) */}
+      <div
+        className="absolute -inset-px -z-10 rounded-2xl
+          bg-gradient-to-br from-blue-500 to-indigo-600
+          opacity-0 blur-lg transition-all duration-300
+          group-hover:opacity-5 dark:group-hover:opacity-10"
+        aria-hidden
+      />
+
       {/* Media */}
       <div className="relative shrink-0 overflow-hidden">
         <Link href={href || "#"} target="_blank" rel="noopener noreferrer" className="block" aria-label={title}>
@@ -110,7 +119,7 @@ export function ProjectCard({
       <div className="p-5 flex flex-col gap-3 flex-1 z-10">
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-col gap-0.5">
-            <h3 className="font-semibold text-foreground group-hover:text-blue-300 transition-colors duration-200">
+            <h3 className="font-semibold text-foreground group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-200">
               {title}
             </h3>
             <time className="text-xs text-muted-foreground/70">{dates}</time>
@@ -119,7 +128,7 @@ export function ProjectCard({
             href={href || "#"}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-blue-400 transition-colors
+            className="text-muted-foreground hover:text-blue-500 dark:hover:text-blue-400 transition-colors
               focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-sm flex-none"
             aria-label={`Open ${title}`}
           >
@@ -139,7 +148,7 @@ export function ProjectCard({
               <span
                 key={tag}
                 className="inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-medium
-                  border border-blue-500/15 bg-blue-500/8 text-blue-400/80
+                  border border-blue-500/15 bg-blue-500/8 text-blue-600/80
                   dark:border-blue-400/15 dark:bg-blue-400/5 dark:text-blue-300/70"
               >
                 {tag}
@@ -148,6 +157,6 @@ export function ProjectCard({
           </div>
         )}
       </div>
-    </GlowCard>
+    </div>
   );
 }
