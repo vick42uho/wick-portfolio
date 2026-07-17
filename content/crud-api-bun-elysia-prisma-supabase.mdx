@@ -1,0 +1,693 @@
+---
+title: "สร้าง CRUD API ด้วย Bun + Elysia + Prisma 7 + Supabase"
+publishedAt: "2026-01-14"
+updatedAt: "2026-01-14"
+author: "Wick Thaweep"
+summary: "สร้าง RESTful CRUD API ด้วย Bun Runtime, Elysia Framework, Prisma 7 ORM และ Supabase PostgreSQL พร้อม PrismaBox Validation และ Deploy ขึ้น Vercel"
+image: "https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=800&h=192&fit=crop"
+---
+
+# สร้าง CRUD API ด้วย Bun + Elysia + Prisma 7 + Supabase
+
+สร้าง API ด้วย Bun, Elysia, Prisma ORM และ Supabase — พร้อมนำขึ้น Vercel
+
+---
+
+## 1. วัตถุประสงค์
+
+บทความนี้จะพาคุณ:
+
+- สร้าง **RESTful API** ด้วย Bun Runtime และ Elysia Framework
+- ใช้ **Prisma 7** เป็น ORM เชื่อมต่อฐานข้อมูล
+- เชื่อมต่อ **Supabase PostgreSQL** เป็นฐานข้อมูล
+- สร้าง **CRUD API** สำหรับจัดการข้อมูล Product
+- ใช้ **PrismaBox** สร้าง TypeBox Schema อัตโนมัติสำหรับ Validation
+- **Deploy ขึ้น Vercel** ด้วย Bun Runtime
+
+---
+
+## 2. เกริ่นนำ: Bun, Elysia และ Prisma 7 คืออะไร?
+
+### 2.1 Bun คืออะไร?
+
+Bun คือ JavaScript Runtime ตัวใหม่ที่เขียนด้วย Zig:
+
+- 🚀 **เร็วกว่า Node.js ถึง 3–4 เท่า**
+- 📦 มี Built-in Package Manager, Test Runner, Bundler
+- 🔥 รองรับ TypeScript โดยไม่ต้อง Compile ล่วงหน้า
+- 🎯 ใช้ API เดียวกับ Node.js ส่วนใหญ่ (Drop-in Replacement)
+
+### 2.2 Elysia คืออะไร?
+
+Elysia คือ Web Framework สำหรับ Bun:
+
+- ⚡ รวดเร็วและมี Performance สูง
+- 📘 **Type-safe** ด้วย TypeScript
+- 🎨 Syntax สวยงาม อ่านง่าย
+- 🔧 มี Validation ในตัวด้วย TypeBox
+
+### 2.3 Prisma 7 มีอะไรใหม่?
+
+Prisma 7 เปลี่ยนรูปแบบการเชื่อมต่อฐานข้อมูล:
+
+- 🔌 ใช้ **Driver Adapter** แทน URL ใน Schema
+- 🛠️ ต้องติดตั้ง Adapter แยก เช่น `@prisma/adapter-pg` สำหรับ PostgreSQL
+- 📝 ใช้ `prisma.config.ts` แทนการตั้งค่าใน Schema
+
+---
+
+## 3. สร้าง Supabase Project
+
+สมัครผ่านลิงก์: [https://supabase.com](https://supabase.com) เพื่อรับฐานข้อมูล **PostgreSQL ฟรี**
+
+เมื่อสร้างเสร็จ จะได้ **Project URL** และ **Connection String**
+
+---
+
+## 4. ติดตั้งเครื่องมือที่จำเป็น
+
+### 4.1 ติดตั้ง Bun
+
+**Windows:**
+
+```powershell
+powershell -c "irm bun.sh/install.ps1|iex"
+```
+
+**macOS / Linux:**
+
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
+
+**Homebrew (macOS / Linux):**
+
+```bash
+brew install oven-sh/bun/bun
+```
+
+> อ้างอิง: [Bun Installation Guide](https://bun.sh/docs/installation)
+
+### 4.2 ตรวจสอบการติดตั้ง
+
+```bash
+bun --version
+```
+
+เมื่อติดตั้งสำเร็จ จะแสดงเวอร์ชันเช่น `1.x.x`
+
+### 4.3 เครื่องมืออื่นที่แนะนำ
+
+- **Git** — สำหรับจัดการเวอร์ชันโค้ด: [git-scm.com](https://git-scm.com)
+- **VS Code** — โค้ดเอดิเตอร์ที่แนะนำ: [code.visualstudio.com](https://code.visualstudio.com)
+- **Supabase Account** — สมัครฟรี: [supabase.com](https://supabase.com)
+
+---
+
+## 5. สร้างโปรเจกต์ด้วย Bun
+
+### 5.1 สร้างโปรเจกต์ใหม่
+
+```bash
+mkdir bun-elysia-crud
+cd bun-elysia-crud
+bun init -y
+```
+
+### 5.2 ติดตั้ง Dependencies
+
+```bash
+# Dependencies หลัก
+bun add elysia @prisma/client @prisma/adapter-pg pg
+
+# Dev Dependencies
+bun add -d prisma
+```
+
+---
+
+## 6. ตั้งค่า Prisma 7
+
+### 6.1 สร้าง Prisma Schema
+
+```bash
+bunx prisma init
+```
+
+แก้ไขไฟล์ `prisma/schema.prisma`:
+
+```prisma
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Product {
+  id     String   @id @default(cuid())
+  name   String   @unique
+  detail String
+  price  Decimal?
+}
+```
+
+### 6.2 สร้าง Prisma Config
+
+สร้างไฟล์ `prisma.config.ts` ที่ root ของโปรเจกต์:
+
+```typescript
+import "dotenv/config";
+import { defineConfig } from "prisma/config";
+
+export default defineConfig({
+  schema: "prisma/schema.prisma",
+  migrations: {
+    path: "prisma/migrations",
+    seed: "bun ./prisma/seed.ts",
+  },
+  datasource: {
+    url: process.env["DATABASE_URL"],
+  },
+});
+```
+
+### 6.3 ตั้งค่า Environment Variables
+
+สร้างไฟล์ `.env`:
+
+> ⚠️ **อย่า commit ไฟล์นี้ขึ้น Git!** ใส่ใน `.gitignore` เสมอ
+
+```env
+# Connection String สำหรับ Supabase (ผ่าน PgBouncer)
+DATABASE_URL="postgresql://postgres.xxx:[PASSWORD]@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
+```
+
+> **หมายเหตุ:**
+> - `DATABASE_URL` ใช้สำหรับ Application (ผ่าน PgBouncer port `6543`)
+> - ตอน `db push` ให้เปลี่ยน port เป็น `5432` (Direct URL) ชั่วคราว แล้วเปลี่ยนกลับ
+
+```env
+# ตอน db push — ใช้ Direct URL (port 5432)
+DATABASE_URL="postgresql://postgres.xxx:[PASSWORD]@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres"
+
+# เสร็จแล้วเปลี่ยนกลับเป็น PgBouncer URL (port 6543)
+DATABASE_URL="postgresql://postgres.xxx:[PASSWORD]@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
+```
+
+### 6.4 Generate Prisma Client
+
+```bash
+bunx prisma generate
+```
+
+### 6.5 Push Schema ไปยัง Supabase
+
+```bash
+bunx prisma db push
+```
+
+> ตรวจสอบบน **Supabase Table Editor** จะเห็นตาราง `Product` ถูกสร้างขึ้น
+
+---
+
+## 7. ติดตั้ง PrismaBox (TypeBox Generator)
+
+### 7.1 ติดตั้ง PrismaBox
+
+```bash
+bun add -d prismabox
+```
+
+### 7.2 ตั้งค่า PrismaBox
+
+แก้ไขไฟล์ `prisma/schema.prisma` เพิ่ม generator:
+
+```prisma
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+generator prismabox {
+  provider                    = "prismabox"
+  typeboxImportDependencyName = "elysia"
+  typeboxImportVariableName   = "t"
+  inputModel                  = true
+  output                      = "../generated/prismabox"
+}
+
+model Product {
+  id     String   @id @default(cuid())
+  name   String   @unique
+  detail String
+  price  Decimal?
+}
+```
+
+### 7.3 Generate PrismaBox
+
+```bash
+bunx prisma generate
+```
+
+> จะได้ไฟล์ `generated/prismabox/Product.ts` ที่มี Schema สำหรับ Validation อัตโนมัติ
+
+---
+
+## 8. สร้าง CRUD API ด้วย Elysia
+
+สร้างไฟล์ `src/index.ts`:
+
+```typescript
+import { Elysia, t } from "elysia";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
+
+import { PrismaClient } from "../generated/prisma/client";
+import {
+  ProductPlain,
+  ProductPlainInputCreate,
+  ProductPlainInputUpdate,
+} from "../generated/prismabox/Product";
+
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
+
+// แปลง Decimal เป็น number สำหรับ JSON response
+const toResponse = (product: {
+  id: string;
+  name: string;
+  detail: string;
+  price: { toNumber: () => number } | null;
+}) => ({
+  id: product.id,
+  name: product.name,
+  detail: product.detail,
+  price: product.price?.toNumber() ?? null,
+});
+
+const app = new Elysia()
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // CREATE — สร้างสินค้าใหม่
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  .post(
+    "/products",
+    async ({ body }) => {
+      const product = await prisma.product.create({ data: body });
+      return toResponse(product);
+    },
+    {
+      body: ProductPlainInputCreate,
+      response: ProductPlain,
+    }
+  )
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // READ — ดึงสินค้าทั้งหมด
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  .get(
+    "/products",
+    async () => {
+      const products = await prisma.product.findMany();
+      return products.map(toResponse);
+    },
+    {
+      response: t.Array(ProductPlain),
+    }
+  )
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // READ — ดึงสินค้าตาม ID
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  .get(
+    "/products/:id",
+    async ({ params: { id }, status }) => {
+      const product = await prisma.product.findUnique({ where: { id } });
+      if (!product) return status(404, "Product not found");
+      return toResponse(product);
+    },
+    {
+      response: {
+        200: ProductPlain,
+        404: t.String(),
+      },
+    }
+  )
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // UPDATE — อัปเดตสินค้า
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  .patch(
+    "/products/:id",
+    async ({ params: { id }, body, set }) => {
+      try {
+        const product = await prisma.product.update({
+          where: { id },
+          data: body,
+        });
+        return toResponse(product);
+      } catch {
+        set.status = 404;
+        return "Product not found";
+      }
+    },
+    {
+      body: ProductPlainInputUpdate,
+      response: {
+        200: ProductPlain,
+        404: t.String(),
+      },
+    }
+  )
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // DELETE — ลบสินค้า
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  .delete(
+    "/products/:id",
+    async ({ params: { id }, set }) => {
+      try {
+        await prisma.product.delete({ where: { id } });
+        return { message: "Product deleted" };
+      } catch {
+        set.status = 404;
+        return { message: "Product not found" };
+      }
+    },
+    {
+      response: t.Object({ message: t.String() }),
+    }
+  );
+
+// ✅ For Vercel: export as default
+export default app;
+
+// ✅ For local dev: start server
+if (import.meta.main || process.env.NODE_ENV !== "production") {
+  app.listen(3000);
+  console.log(
+    `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
+  );
+}
+```
+
+---
+
+## 9. สร้าง Seed Data
+
+สร้างไฟล์ `prisma/seed.ts`:
+
+```typescript
+import { PrismaClient } from "../generated/prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
+
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
+
+async function main() {
+  console.log("Start seeding...");
+
+  await prisma.product.createMany({
+    data: [
+      {
+        name: "Wireless Headphones",
+        detail:
+          "Noise-cancelling over-ear headphones with 30hr battery life",
+        price: 299.99,
+      },
+      {
+        name: "Mechanical Keyboard",
+        detail: "RGB backlit mechanical keyboard with brown switches",
+        price: 149.5,
+      },
+      {
+        name: "USB-C Hub",
+        detail:
+          "7-in-1 multiport adapter with HDMI, USB 3.0, and SD card reader",
+        price: 49.99,
+      },
+      {
+        name: "Laptop Stand",
+        detail: "Aluminum adjustable laptop stand for better ergonomics",
+        price: 79.0,
+      },
+      {
+        name: "Wireless Mouse",
+        detail: "Ergonomic wireless mouse with precision tracking",
+        price: 35.99,
+      },
+    ],
+    skipDuplicates: true,
+  });
+
+  console.log("Seeding finished.");
+}
+
+main()
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });
+```
+
+รัน seed data:
+
+```bash
+bun run prisma/seed.ts
+```
+
+---
+
+## 10. รันและทดสอบ API
+
+### 10.1 อัปเดต `package.json`
+
+```json
+{
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "seed": "bun run prisma/seed.ts"
+  }
+}
+```
+
+### 10.2 เริ่ม Server
+
+```bash
+bun run dev
+```
+
+> Server จะทำงานที่ `http://localhost:3000`
+
+### 10.3 ทดสอบ API
+
+#### สำหรับ Linux / macOS — ใช้ cURL
+
+**CREATE** — สร้างสินค้าใหม่:
+
+```bash
+curl -X POST http://localhost:3000/products \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Gaming Mouse","detail":"RGB gaming mouse with 16000 DPI","price":89.99}'
+```
+
+**READ** — ดึงสินค้าทั้งหมด:
+
+```bash
+curl http://localhost:3000/products
+```
+
+**READ** — ดึงสินค้าตาม ID:
+
+```bash
+curl http://localhost:3000/products/[PRODUCT_ID]
+```
+
+**UPDATE** — อัปเดตสินค้า:
+
+```bash
+curl -X PATCH http://localhost:3000/products/[PRODUCT_ID] \
+  -H "Content-Type: application/json" \
+  -d '{"price":79.99}'
+```
+
+**DELETE** — ลบสินค้า:
+
+```bash
+curl -X DELETE http://localhost:3000/products/[PRODUCT_ID]
+```
+
+#### สำหรับ Windows — ใช้ PowerShell
+
+**CREATE** — สร้างสินค้าใหม่:
+
+```powershell
+Invoke-RestMethod -Uri http://localhost:3000/products `
+  -Method POST -ContentType "application/json" `
+  -Body '{"name":"Gaming Mouse","detail":"RGB gaming mouse with 16000 DPI","price":89.99}'
+```
+
+**READ** — ดึงสินค้าทั้งหมด:
+
+```powershell
+Invoke-RestMethod -Uri http://localhost:3000/products -Method GET
+```
+
+**READ** — ดึงสินค้าตาม ID:
+
+```powershell
+Invoke-RestMethod -Uri http://localhost:3000/products/[PRODUCT_ID] -Method GET
+```
+
+**UPDATE** — อัปเดตสินค้า:
+
+```powershell
+Invoke-RestMethod -Uri http://localhost:3000/products/[PRODUCT_ID] `
+  -Method PATCH -ContentType "application/json" `
+  -Body '{"price":79.99}'
+```
+
+**DELETE** — ลบสินค้า:
+
+```powershell
+Invoke-RestMethod -Uri http://localhost:3000/products/[PRODUCT_ID] -Method DELETE
+```
+
+### 10.4 ตรวจสอบด้วย Supabase Table Editor
+
+เปิด **Supabase Dashboard** → **Table Editor** → เลือกตาราง `Product` → จะเห็นข้อมูลที่สร้างจาก API
+
+---
+
+## 11. Deploy ไปยัง Vercel ด้วย Bun Runtime
+
+> Vercel รองรับ **Bun Runtime** สำหรับ deploy backend applications แล้ว (Public Beta)
+
+### 11.1 สร้างไฟล์ `vercel.json`
+
+```json
+{
+  "buildCommand": "bunx prisma generate",
+  "bunVersion": "1.x",
+  "rewrites": [{ "source": "/(.*)", "destination": "/src" }]
+}
+```
+
+### 11.2 สร้างไฟล์ `tsconfig.json`
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "module": "ES2022",
+    "moduleResolution": "node",
+    "types": ["bun-types"],
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true
+  }
+}
+```
+
+### 11.3 ตั้งค่า Environment Variables บน Vercel
+
+1. Push code ไปยัง **GitHub**
+2. Import project บน [Vercel](https://vercel.com)
+3. ไปที่ **Settings → Environment Variables**
+4. เพิ่ม `DATABASE_URL`:
+
+```
+DATABASE_URL = postgresql://postgres.xxx:[PASSWORD]@aws-0-region.pooler.supabase.com:6543/postgres?pgbouncer=true
+```
+
+> ใช้ **PgBouncer URL** (port `6543`) สำหรับ Vercel เพื่อประสิทธิภาพที่ดีกว่า
+
+### 11.4 Deploy
+
+```bash
+bunx vercel
+```
+
+หรือ **auto-deploy** เมื่อ push ไปยัง GitHub branch `main`
+
+### 11.5 ตรวจสอบ Deployment
+
+เมื่อ deploy สำเร็จ จะได้ URL เช่น:
+
+- `https://your-app.vercel.app`
+- `https://your-app.vercel.app/products`
+- `https://your-app.vercel.app/products/:id`
+
+---
+
+## 12. API Endpoints สรุป
+
+| Method | Route | Description |
+|--------|-------|-------------|
+| `POST` | `/products` | สร้างสินค้าใหม่ |
+| `GET` | `/products` | ดึงสินค้าทั้งหมด |
+| `GET` | `/products/:id` | ดึงสินค้าตาม ID |
+| `PATCH` | `/products/:id` | อัปเดตสินค้า |
+| `DELETE` | `/products/:id` | ลบสินค้า |
+
+---
+
+## 13. โครงสร้างโปรเจกต์สรุป
+
+```
+bun-elysia-crud/
+├── prisma/
+│   ├── schema.prisma          ← Database schema + PrismaBox config
+│   └── seed.ts                ← Seed data
+├── prisma.config.ts           ← Prisma 7 config (Driver Adapter)
+├── src/
+│   ├── index.ts               ← Elysia CRUD API entry point
+│   └── generated/
+│       └── prisma/            ← Generated Prisma Client
+├── generated/
+│   └── prismabox/
+│       └── Product.ts         ← Generated TypeBox schemas
+├── .env                       ← Database credentials (อย่า commit!)
+├── vercel.json                ← Vercel deployment config
+├── tsconfig.json
+└── package.json
+```
+
+---
+
+## 14. สรุป
+
+### ข้อดีของ Stack นี้
+
+| จุดเด่น | รายละเอียด |
+|---------|------------|
+| 🚀 **Bun** | เร็วกว่า Node.js ทั้ง runtime และ package manager |
+| 📘 **Elysia** | Type-safe Validation ในตัว พร้อม Syntax ที่สวยงาม |
+| 🎨 **PrismaBox** | ลดการเขียน Schema ซ้ำ — generate จาก Prisma Model โดยตรง |
+| 💾 **Supabase** | PostgreSQL ฟรีพร้อม Dashboard สำหรับจัดการข้อมูล |
+| ☁️ **Vercel** | Deploy ง่ายด้วย Bun Runtime (auto-deploy จาก GitHub) |
+
+### แหล่งอ้างอิง
+
+- [Bun Documentation](https://bun.sh/docs)
+- [Elysia Documentation](https://elysiajs.com)
+- [Prisma Documentation](https://www.prisma.io/docs)
+- [Supabase Documentation](https://supabase.com/docs)
+- [Vercel Bun Runtime](https://vercel.com/docs/functions/runtimes/bun)
+- [Elysia on Vercel](https://elysiajs.com/integrations/vercel)

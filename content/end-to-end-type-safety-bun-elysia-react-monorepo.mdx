@@ -1,0 +1,674 @@
+---
+title: "เริ่มต้นโปรเจค End-to-End Type Safety ด้วย Bun, ElysiaJS และ React (Monorepo Setup)"
+publishedAt: "2026-01-21"
+updatedAt: "2026-01-21"
+author: "Wick Thaweep"
+summary: "พาขึ้นโครงสร้าง Monorepo ที่ 'เร็ว' ด้วย Bun และ 'ปลอดภัย' ด้วย Eden Treaty — Frontend มองเห็น Type ของ Backend ได้ทะลุปรุโปร่ง โดยไม่ต้องเขียน Type ซ้ำ!"
+image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=192&fit=crop"
+---
+
+# เริ่มต้นโปรเจค End-to-End Type Safety ด้วย Bun, ElysiaJS และ React (Monorepo Setup)
+
+ในยุคนี้การทำเว็บไม่ได้แข่งกันแค่ที่ฟีเจอร์ แต่แข่งกันที่ **Dev Experience (DX)** ครับ บทความนี้จะพาไปขึ้นโครงสร้างโปรเจคที่ **"เร็ว"** (ด้วย Bun) และ **"ปลอดภัย"** (ด้วย Eden Treaty) ที่ทำให้ Frontend มองเห็น Type ของ Backend ได้ทะลุปรุโปร่ง โดยไม่ต้องเขียน Type ซ้ำ!
+
+---
+
+## 🧰 Tech Stack
+
+| Layer | Technology | หมายเหตุ |
+|---|---|---|
+| **Runtime** | Bun | เร็วแรง รวม Package Manager ในตัว |
+| **Backend** | ElysiaJS | Framework ที่เกิดมาเพื่อ Bun |
+| **Database** | Prisma (ORM) + PostgreSQL (Supabase) | Type-safe ORM |
+| **Frontend** | Vite (React + TypeScript) | HMR เร็วสุด |
+| **Connector** | Eden Treaty | เชื่อมต่อ Frontend/Backend แบบ Type-Safe |
+
+---
+
+## Step 1: จัดโครงสร้างแบบ Monorepo
+
+### สร้างโฟลเดอร์หลัก
+
+```bash
+mkdir my-fullstack-app
+cd my-fullstack-app
+```
+
+### สร้างไฟล์ `package.json` ให้รองรับ Workspaces
+
+```json
+{
+  "name": "my-fullstack-app",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ]
+}
+```
+
+### สร้างโฟลเดอร์ `apps` รอไว้
+
+```bash
+mkdir apps
+```
+
+โครงสร้างตอนนี้จะเป็นแบบนี้:
+
+```
+my-fullstack-app/
+├── package.json
+└── apps/
+    ├── backend/   ← ElysiaJS
+    └── frontend/  ← Vite + React
+```
+
+---
+
+## Step 2: Setup Backend (Elysia)
+
+### สร้างโปรเจค Backend
+
+```bash
+cd apps
+bun create elysia backend
+```
+
+### ติดตั้ง Plugins ที่จำเป็น
+
+```bash
+cd backend
+
+# Dependencies หลัก
+bun add elysia @elysiajs/bearer @elysiajs/cors @elysiajs/jwt @elysiajs/swagger \
+  @prisma/client @prisma/adapter-pg pg bcryptjs
+
+# Dev Dependencies
+bun add -d prisma prismabox @types/bun @types/pg @types/bcryptjs typescript dotenv
+```
+
+### เริ่มต้น Prisma
+
+```bash
+bunx prisma init
+```
+
+---
+
+### ออกแบบตารางใน `prisma/schema.prisma`
+
+เพิ่ม Model และตั้งค่า **PrismaBox** เพื่อช่วยทำ Validation:
+
+```prisma
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+generator prismabox {
+  provider                    = "prismabox"
+  typeboxImportDependencyName = "elysia"
+  typeboxImportVariableName   = "t"
+  inputModel                  = true
+  output                      = "../generated/prismabox"
+}
+
+datasource db {
+  provider = "postgresql"
+  // ไม่ต้องใส่ url ตรงนี้ใน Prisma 7 (เราจะไป config ในไฟล์แยก)
+}
+
+// 🔐 User — สำหรับ Authentication
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+```
+
+---
+
+### ไฟล์ `prisma.config.ts`
+
+```typescript
+import "dotenv/config";
+import { defineConfig } from "@prisma/config";
+
+export default defineConfig({
+  schema: "prisma/schema.prisma",
+  datasource: {
+    url: process.env.DIRECT_URL,
+  },
+});
+```
+
+---
+
+### ไฟล์ `.env`
+
+> ⚠️ **อย่า commit ไฟล์นี้ขึ้น Git!** ใส่ใน `.gitignore` เสมอ
+
+```env
+# Connect to Supabase via connection pooling
+DATABASE_URL="postgresql://postgres.xxxxx:YOUR_PASSWORD@aws-0-region.pooler.supabase.com:6543/postgres?pgbouncer=true"
+
+# Direct connection — ใช้สำหรับ Migrations
+DIRECT_URL="postgresql://postgres.xxxxx:YOUR_PASSWORD@aws-0-region.pooler.supabase.com:5432/postgres"
+
+JWT_SECRET="your-super-secret-jwt-key-change-this"
+COOKIE_SECRET="your-super-secret-cookie-key-change-this"
+NODE_ENV="development"
+```
+
+---
+
+### สร้างไฟล์ `vercel.json` (สำหรับ Deploy)
+
+```json
+{
+  "buildCommand": "bunx prisma generate",
+  "bunVersion": "1.x",
+  "rewrites": [{ "source": "/(.*)", "destination": "/src" }]
+}
+```
+
+### Generate Prisma Client และ Push Schema
+
+```bash
+bunx prisma generate
+bunx prisma db push
+```
+
+---
+
+### ไฟล์ `src/db.ts` — Database Connection
+
+```typescript
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
+import { PrismaClient } from "../generated/prisma/client";
+
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const adapter = new PrismaPg(pool);
+
+export const prisma = new PrismaClient({ adapter });
+```
+
+---
+
+### ไฟล์ `src/auth.ts` — Authentication Routes
+
+นี่คือหัวใจของ Backend — ครบทั้ง Register, Login, Logout และ Protected Route:
+
+```typescript
+import { Elysia, t } from "elysia";
+import { jwt } from "@elysiajs/jwt";
+import { bearer } from "@elysiajs/bearer";
+import bcrypt from "bcryptjs";
+import { prisma } from "./db";
+
+const JWT_SECRET = process.env.JWT_SECRET || "🔑-change-me-to-a-strong-key";
+const COOKIE_SECRET =
+  process.env.COOKIE_SECRET || "🍪-change-me-to-another-strong-key";
+
+export const authRoutes = new Elysia({
+  // Config Cookie แบบ Global
+  cookie: {
+    secrets: COOKIE_SECRET,
+    sign: ["session"],
+  },
+})
+  // ติดตั้ง Plugins
+  .use(bearer())
+  .use(
+    jwt({
+      name: "jwt",
+      secret: JWT_SECRET,
+      exp: "7d",
+    })
+  )
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // 🔹 REGISTER
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  .post(
+    "/register",
+    async ({ body, set }) => {
+      const { name, email, password } = body;
+
+      const existingUser = await prisma.user.findUnique({
+        where: { email },
+      });
+
+      if (existingUser) {
+        set.status = 409;
+        return { error: "Email already used" };
+      }
+
+      const passwordHash = await bcrypt.hash(password, 10);
+
+      const user = await prisma.user.create({
+        data: {
+          name,
+          email,
+          password: passwordHash,
+        },
+      });
+
+      return {
+        ok: true,
+        userId: user.id,
+        message: "Registration successful",
+      };
+    },
+    {
+      body: t.Object({
+        name: t.String({ minLength: 2 }),
+        email: t.String({ format: "email" }),
+        password: t.String({ minLength: 6 }),
+      }),
+    }
+  )
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // 🔹 LOGIN
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  .post(
+    "/login",
+    async ({ body, jwt, set, cookie: { session } }) => {
+      const { email, password } = body;
+
+      const user = await prisma.user.findUnique({
+        where: { email },
+      });
+
+      if (!user || !(await bcrypt.compare(password, user.password))) {
+        set.status = 401;
+        return { error: "User or password not correct" };
+      }
+
+      // สร้าง JWT Token
+      const token = await jwt.sign({ sub: user.id });
+
+      const isProduction =
+        process.env.NODE_ENV === "production" ||
+        process.env.VERCEL === "1";
+
+      // ✅ ส่ง Token ผ่าน Cookie
+      session.value = token;
+      session.path = "/";
+      session.httpOnly = true;
+      session.maxAge = 60 * 60 * 24 * 7; // 7 วัน
+
+      if (isProduction) {
+        session.secure = true;
+        session.sameSite = "none"; // ข้ามโดเมน (Vercel)
+      } else {
+        session.secure = false;
+        session.sameSite = "lax"; // localhost
+      }
+
+      // ✅ Return Token ด้วย (สำหรับ Mobile/API)
+      return {
+        ok: true,
+        token,
+        userId: user.id,
+        name: user.name,
+        email: user.email,
+      };
+    },
+    {
+      body: t.Object({
+        email: t.String({ format: "email" }),
+        password: t.String(),
+      }),
+    }
+  )
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // 🔹 LOGOUT
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  .post("/logout", ({ cookie: { session } }) => {
+    session.remove();
+    return { ok: true, message: "Logged out successfully" };
+  })
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // 🔹 Protected Routes (Hybrid: Cookie + Bearer)
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  // 1. Derive: แปลง Token เป็น userId
+  .derive(async ({ cookie, bearer, jwt }) => {
+    const token = bearer || cookie.session?.value;
+
+    if (!token || typeof token !== "string") {
+      return { userId: null };
+    }
+
+    const payload = await jwt.verify(token);
+    if (!payload) {
+      return { userId: null };
+    }
+
+    return { userId: payload.sub as string };
+  })
+
+  // 2. Guard: ดักจับ Unauthorized
+  .onBeforeHandle(({ userId, set }) => {
+    if (!userId) {
+      set.status = 401;
+      return { error: "Unauthorized" };
+    }
+  })
+
+  // 3. Protected Route: /me
+  .get("/me", async ({ userId, set }) => {
+    const id = userId!;
+
+    const user = await prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        createdAt: true,
+      },
+    });
+
+    if (!user) {
+      set.status = 404;
+      return { error: "User not found" };
+    }
+
+    return user;
+  });
+```
+
+> **💡 สังเกต:** เราใช้ `.derive()` → `.onBeforeHandle()` → `.get("/me")` แบบ **chaining** เพื่อให้ TypeScript เข้าใจ context ของ `userId` ได้อย่างถูกต้อง
+
+---
+
+### ไฟล์ `src/index.ts` — Entry Point
+
+```typescript
+import { Elysia } from "elysia";
+import { swagger } from "@elysiajs/swagger";
+import { cors } from "@elysiajs/cors";
+import { authRoutes } from "./auth";
+
+const app = new Elysia()
+  .use(
+    cors({
+      // 🔒 ระบุ Domain ของ Frontend ให้ชัดเจน (ห้ามใช้ *)
+      origin: [
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "https://your-frontend.vercel.app", // เปลี่ยนเป็น Domain จริง
+      ],
+      credentials: true,
+      methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+    })
+  )
+  .use(swagger())
+  .use(authRoutes);
+
+// ✅ For Vercel / Production
+export default app;
+
+// ✅ Export Type สำหรับ Frontend (Eden Treaty)
+export type App = typeof app;
+
+// ✅ For local dev
+if (import.meta.main || process.env.NODE_ENV !== "production") {
+  app.listen(3000);
+  console.log(
+    `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
+  );
+}
+```
+
+> **🔑 บรรทัดสำคัญ:** `export type App = typeof app;` — นี่คือสิ่งที่ทำให้ Eden Treaty สามารถอ่าน Type ของทุก Route ได้!
+
+---
+
+### โครงสร้างไฟล์ Backend สรุป
+
+```
+apps/backend/
+├── prisma/
+│   └── schema.prisma
+├── prisma.config.ts
+├── generated/
+│   ├── prisma/
+│   └── prismabox/
+├── src/
+│   ├── index.ts          ← Entry point + export type App
+│   ├── auth.ts           ← Register / Login / Logout / /me
+│   └── db.ts             ← Prisma Client
+├── .env
+├── vercel.json
+├── package.json
+└── tsconfig.json
+```
+
+---
+
+## Step 3: Setup Frontend (Vite + React)
+
+### สร้างโปรเจค Frontend
+
+```bash
+cd apps
+bun create vite@latest frontend -- --template react-ts
+cd frontend
+```
+
+### ติดตั้ง Eden Treaty
+
+```bash
+bun add @elysiajs/eden
+bun add -d elysia
+```
+
+---
+
+### เชื่อมต่อด้วย Eden Treaty — `src/lib/api.ts`
+
+นี่คือ **ไฟล์ที่สำคัญที่สุด** ของฝั่ง Frontend:
+
+```typescript
+import { treaty } from "@elysiajs/eden";
+import type { App } from "../../../backend/src/index";
+
+const backendUrl = import.meta.env.PROD
+  ? "https://your-backend.vercel.app" // เปลี่ยนเป็น URL จริง
+  : "http://localhost:3000";
+
+// @ts-ignore — Eden ต้องการ runtime type ที่ไม่ตรงกับ generic
+export const api = treaty<App>(backendUrl, {
+  fetch: {
+    credentials: "include", // สำคัญสำหรับการส่ง Cookie/Session
+  },
+});
+```
+
+> **💡 ทำไมต้อง `@ts-ignore`?** เพราะ Eden Treaty ใช้ Type-level inference ที่อาจ conflict กับ strict mode บางรุ่น แต่ runtime ทำงานถูกต้อง 100%
+
+---
+
+### ตัวอย่างการใช้งานใน Component — `src/App.tsx`
+
+```tsx
+import { useState } from "react";
+import { api } from "./lib/api";
+
+function App() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // 🔹 Login
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  const handleLogin = async () => {
+    const { data, error } = await api.login.post({
+      email,
+      password,
+    });
+
+    if (error) {
+      setMessage(`❌ Error: ${error.value}`);
+      return;
+    }
+
+    setMessage(`✅ Welcome, ${data.name}!`);
+  };
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // 🔹 Get Profile (/me)
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  const handleGetProfile = async () => {
+    const { data, error } = await api.me.get();
+
+    if (error) {
+      setMessage("❌ Unauthorized — กรุณา Login ก่อน");
+      return;
+    }
+
+    setMessage(`👤 ${data.name} (${data.email})`);
+  };
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // 🔹 Logout
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  const handleLogout = async () => {
+    await api.logout.post();
+    setMessage("👋 Logged out");
+  };
+
+  return (
+    <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
+      <h1>🦊 Elysia + Eden Treaty Demo</h1>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", maxWidth: 300 }}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button onClick={handleLogin}>Login</button>
+        <button onClick={handleGetProfile}>Get Profile (/me)</button>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
+
+      {message && (
+        <pre style={{ marginTop: "1rem", padding: "1rem", background: "#f0f0f0", borderRadius: 8 }}>
+          {message}
+        </pre>
+      )}
+    </div>
+  );
+}
+
+export default App;
+```
+
+> **✨ สังเกต:** เราเขียน `api.login.post({ email, password })` — TypeScript จะ **auto-complete** ทุก field ให้เลย! ไม่ต้องไปจำว่า Backend รับ body อะไรบ้าง นี่คือพลังของ **End-to-End Type Safety**
+
+---
+
+### โครงสร้างไฟล์ Frontend สรุป
+
+```
+apps/frontend/
+├── src/
+│   ├── lib/
+│   │   └── api.ts         ← Eden Treaty connector
+│   ├── App.tsx             ← ตัวอย่าง Login/Profile/Logout
+│   └── main.tsx
+├── package.json
+├── tsconfig.json
+└── vite.config.ts
+```
+
+---
+
+## Step 5: รัน Dev Server ทั้ง 2 ฝั่ง
+
+### Terminal 1 — Backend
+
+```bash
+cd apps/backend
+bun run dev
+# 🦊 Elysia is running at localhost:3000
+```
+
+### Terminal 2 — Frontend
+
+```bash
+cd apps/frontend
+bun run dev
+# ➜ Local: http://localhost:5173/
+```
+
+เปิด `http://localhost:5173` แล้วลอง Login ได้เลย!
+
+---
+
+## 🗺️ สรุปโครงสร้างโปรเจคทั้งหมด
+
+```
+my-fullstack-app/
+├── package.json                 ← Workspaces root
+├── apps/
+│   ├── backend/
+│   │   ├── prisma/
+│   │   │   └── schema.prisma    ← Database schema
+│   │   ├── prisma.config.ts
+│   │   ├── generated/           ← Prisma + PrismaBox output
+│   │   ├── src/
+│   │   │   ├── index.ts         ← Entry + export type App
+│   │   │   ├── auth.ts          ← Auth routes
+│   │   │   └── db.ts            ← Prisma client
+│   │   ├── .env
+│   │   ├── vercel.json
+│   │   └── package.json
+│   └── frontend/
+│       ├── src/
+│       │   ├── lib/
+│       │   │   └── api.ts       ← Eden Treaty
+│       │   ├── App.tsx
+│       │   └── main.tsx
+│       ├── package.json
+│       └── vite.config.ts
+```
+
+---
+
+## 🔑 Key Takeaways
+
+1. **`export type App = typeof app`** — บรรทัดเดียวที่ทำให้ Frontend รู้จักทุก Route, ทุก Body, ทุก Response ของ Backend
+2. **Eden Treaty** — ทำให้การเรียก API เหมือนเรียก function ธรรมดา พร้อม autocomplete เต็มรูปแบบ
+3. **Monorepo + Workspaces** — Frontend import type จาก Backend ได้โดยตรง ไม่ต้อง publish package
+4. **Prisma + PrismaBox** — Type จาก Database → Backend → Frontend ต่อเนื่องกันหมด
+5. **Cookie + Bearer Hybrid** — รองรับทั้ง Web (Cookie) และ Mobile/API (Bearer Token)
+
+---
+
+## ⚡ ถัดไปทำอะไรได้บ้าง?
+
+- เพิ่ม **CRUD routes** (เช่น Todo, Post) แล้ว Frontend จะเห็น Type ทันที
+- ตั้งค่า **Vite proxy** เพื่อหลีกเลี่ยง CORS ตอน dev
+- Deploy ขึ้น **Vercel** ทั้ง Backend และ Frontend
+- เพิ่ม **Zustand / TanStack Query** สำหรับ state management ฝั่ง Frontend
+- ใช้ **PrismaBox generated types** สำหรับ form validation ทั้ง 2 ฝั่ง

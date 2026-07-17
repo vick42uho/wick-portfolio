@@ -1,0 +1,172 @@
+---
+title: "แชร์ Agent Skills ที่ฉันสร้างไว้ — แหล่งรวม AI Coding Skills"
+publishedAt: "2026-07-17"
+updatedAt: "2026-07-17"
+author: "Wick Thaweep"
+summary: "รวม Agent Skills ที่สร้างไว้สำหรับ AI Coding Assistant — ตั้งแต่ Tailwind UX/UI Design System ไปจนถึง Skills อื่นๆ ในอนาคต เพื่อยกระดับ Developer Experience"
+image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=192&fit=crop"
+---
+
+# แชร์ Agent Skills ที่ฉันสร้างไว้ — แหล่งรวม AI Coding Skills
+
+บทความนี้เป็น **แหล่งรวม** Agent Skills ที่ผมสร้างและดูแลไว้สำหรับ AI Coding Assistant ครับ แต่ละ Skill เปรียบเสมือน "สมองเสริม" ที่ทำให้ AI เข้าใจ context เฉพาะทาง แล้วทำงานได้แม่นยำและมีคุณภาพกว่าปกติ
+
+> 📌 **บทความนี้จะอัปเดตเรื่อยๆ** เมื่อมี Skill ใหม่ — กลับมาดูได้เสมอ!
+
+---
+
+## Agent Skill คืออะไร?
+
+Agent Skill คือชุดคำสั่งและ context ที่ป้อนให้ AI Coding Assistant (เช่น Gemini, Copilot, Cursor) เพื่อให้มัน:
+
+- **เข้าใจ design system** เฉพาะทาง เช่น สีที่ใช้, typography, spacing
+- **สร้าง code ที่มีคุณภาพ** ตาม best practices ที่กำหนดไว้
+- **ลดการแก้ไขซ้ำ** เพราะ AI รู้ "กฎ" ตั้งแต่ต้น
+
+### โครงสร้างของ Skill
+
+```
+skills/
+└── skill-name/
+    ├── SKILL.md          ← คำสั่งหลัก (frontmatter + instructions)
+    ├── scripts/          ← Helper scripts (ถ้ามี)
+    ├── examples/         ← ตัวอย่างโค้ด
+    ├── resources/        ← ไฟล์เสริม
+    └── references/       ← เอกสารอ้างอิง
+```
+
+---
+
+## 🎨 Skill #1: Tailwind UX/UI Premium Design System
+
+| รายละเอียด | |
+|---|---|
+| **GitHub** | [vick42uho/tailwind-ux-ui](https://github.com/vick42uho/tailwind-ux-ui) |
+| **เวอร์ชัน** | v3 |
+| **License** | Apache-2.0 |
+| **เหมาะสำหรับ** | ออกแบบ Web UI, Dashboard, Documentation ให้สวยระดับ Premium |
+
+### Skill นี้ทำอะไร?
+
+เป็น **masterclass-level reference** ที่ศึกษาจากเว็บ [tailwindcss.com](https://tailwindcss.com) แบบ pixel-perfect แล้วสรุปออกมาเป็นชุดกฎที่ AI สามารถนำไปใช้สร้าง UI ได้ทันที ครอบคลุม:
+
+1. **System Tokens & Color Codes** — ชุดสีที่ใช้จริง ไม่ใช่สีกว้างๆ
+2. **Tailwind CSS v4 Configuration** — CSS-first config แบบใหม่
+3. **Glowing Mesh Grids** — Background grid แบบเรืองแสง
+4. **Ambient Spotlights & Beams** — แสง glow และเลเซอร์ตกแต่ง
+5. **Gradient Border Glow Cards** — การ์ดที่เรืองแสงเมื่อ hover
+6. **Typography Grid & Hierarchy** — กฎ typography ระดับ premium
+7. **Interactive States** — Focus, Selection, Scrollbar styling
+8. **Layout Systems** — Three-column documentation layout
+9. **Code Editor Components** — Tab + code panel แบบเว็บ Tailwind
+10. **Common Pitfalls** — สิ่งที่ต้องหลีกเลี่ยง
+
+### ตัวอย่างโค้ดจาก Skill
+
+#### Dark Mode Glowing Grid Background
+
+```html
+<div class="absolute inset-0 -z-10 h-full w-full bg-slate-950
+  bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)]
+  bg-[size:4rem_4rem]
+  [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]
+  opacity-80">
+</div>
+```
+
+#### Gradient Border Glow Card
+
+```html
+<div class="relative group overflow-hidden rounded-2xl border border-slate-200/80
+  bg-white p-6 transition-all duration-300
+  dark:border-slate-800 dark:bg-slate-900/60 hover:-translate-y-0.5">
+
+  <!-- Glowing gradient on hover -->
+  <div class="absolute -inset-px -z-10 rounded-2xl bg-gradient-to-r
+    from-sky-500 to-indigo-500 opacity-0 blur transition-all duration-300
+    group-hover:opacity-20 group-hover:blur-md">
+  </div>
+
+  <!-- Subtle border highlight -->
+  <div class="absolute inset-[1px] rounded-[15px]
+    bg-gradient-to-b from-white/10 to-transparent pointer-events-none">
+  </div>
+
+  <!-- Content -->
+  <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2">Card Title</h3>
+  <p class="text-sm text-slate-500 dark:text-slate-400">Card content text.</p>
+</div>
+```
+
+#### Ambient Glow Spotlight
+
+```html
+<div class="absolute top-0 left-1/4 -z-10 h-[500px] w-[700px]
+  rounded-full bg-sky-500/10 blur-[120px] filter animate-pulse">
+</div>
+<div class="absolute top-10 right-1/4 -z-10 h-[450px] w-[600px]
+  rounded-full bg-violet-500/10 blur-[100px] filter animate-pulse"
+  style="animation-delay: 2s;">
+</div>
+```
+
+### Color Palette Reference
+
+| Role | Light Mode | Dark Mode | Hex |
+|------|-----------|-----------|-----|
+| **Background** | `bg-white` | `bg-slate-950` | `#020617` |
+| **Surface** | `bg-slate-50` | `bg-slate-900` | `#0f172a` |
+| **Brand Blue** | `text-sky-500` | `text-sky-500` | `#0ea5e9` |
+| **Accent Violet** | `text-violet-500` | `text-violet-500` | `#8b5cf6` |
+| **Accent Pink** | `text-pink-500` | `text-pink-500` | `#ec4899` |
+| **Primary Text** | `text-slate-900` | `text-slate-100` | — |
+| **Body Text** | `text-slate-700` | `text-slate-300` | — |
+| **Muted Text** | `text-slate-500` | `text-slate-400` | — |
+| **Border** | `border-slate-200/80` | `border-slate-800` | — |
+
+### วิธีติดตั้ง
+
+```bash
+# Clone repo
+git clone https://github.com/vick42uho/tailwind-ux-ui.git
+
+# คัดลอกไปยัง skills directory
+cp -r tailwind-ux-ui ~/.gemini/config/skills/
+```
+
+หรือจะสร้าง `skills.json` เพื่อ reference จาก path ที่ต้องการ:
+
+```json
+{
+  "entries": [
+    { "path": "path/to/tailwind-ux-ui" }
+  ]
+}
+```
+
+---
+
+## 🔮 Skills ที่กำลังพัฒนา (Coming Soon)
+
+| Skill | สถานะ | รายละเอียด |
+|-------|--------|------------|
+| — | 🚧 Planning | กำลังรวบรวม Skills เพิ่มเติม |
+
+> 💡 **มี Skill ที่ใช้อยู่?** หรืออยากให้สร้าง Skill ใหม่ — ติดต่อมาได้ครับ!
+
+---
+
+## สรุป
+
+Agent Skills เป็นวิธีที่ดีที่สุดในการ **ยกระดับ AI Coding Assistant** ให้เข้าใจ context เฉพาะทางของคุณ แทนที่จะสั่ง AI แบบกว้างๆ แล้วต้องแก้ไขซ้ำ — คุณสามารถสร้าง Skill ที่สอน AI ให้ "เก่ง" ในเรื่องที่คุณต้องการได้
+
+### ทำไมต้องสร้าง Skill?
+
+- ✅ **ลดเวลาแก้ไข** — AI ทำถูกตั้งแต่ครั้งแรก
+- ✅ **Consistency** — ทุกโปรเจกต์ใช้ design system เดียวกัน
+- ✅ **Reusable** — สร้างครั้งเดียว ใช้ได้ทุกโปรเจกต์
+- ✅ **Shareable** — แชร์ให้ทีมหรือ community ได้
+
+---
+
+> 📝 **บทความนี้จะถูกอัปเดต** เมื่อมี Skill ใหม่ — Bookmark ไว้ได้เลยครับ!
