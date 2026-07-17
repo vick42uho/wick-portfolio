@@ -11,8 +11,19 @@ import { DATA } from "@/data/resume";
 
 export default function Navbar() {
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-4 z-30">
-      <Dock className="z-50 pointer-events-auto relative h-14 p-2 w-fit mx-auto flex gap-2 border bg-card/90 backdrop-blur-3xl shadow-[0_0_10px_3px] shadow-primary/5">
+    <div className="pointer-events-none fixed inset-x-0 bottom-5 z-30">
+      <Dock
+        className={[
+          "z-50 pointer-events-auto relative mx-auto w-fit",
+          "flex items-center gap-1.5 px-3 py-2 h-14",
+          // Glassmorphism with metallic blue tint
+          "rounded-2xl border border-white/10 dark:border-white/10",
+          "bg-white/90 dark:bg-blue-950/20 backdrop-blur-2xl",
+          // Metallic glow shadow
+          "shadow-[0_0_0_1px_oklch(0.65_0.20_255/0.15),0_8px_32px_oklch(0.10_0.025_255/0.15),0_0_60px_oklch(0.55_0.22_255/0.05)]",
+          "dark:shadow-[0_0_0_1px_oklch(0.65_0.20_255/0.20),0_8px_32px_oklch(0.08_0.02_255/0.6),0_0_80px_oklch(0.55_0.22_255/0.12)]",
+        ].join(" ")}
+      >
         {DATA.navbar.map((item) => {
           const isExternal = item.href.startsWith("http");
           return (
@@ -22,27 +33,36 @@ export default function Navbar() {
                   href={item.href}
                   target={isExternal ? "_blank" : undefined}
                   rel={isExternal ? "noopener noreferrer" : undefined}
+                  aria-label={item.label}
                 >
-                  <DockIcon className="rounded-3xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+                  <DockIcon
+                    className={[
+                      "rounded-xl cursor-pointer size-full p-0",
+                      "text-neutral-500 hover:text-neutral-900 dark:text-white/50 dark:hover:text-white",
+                      "bg-transparent hover:bg-blue-500/15",
+                      "border border-transparent hover:border-blue-500/25",
+                      "transition-all duration-200",
+                    ].join(" ")}
+                  >
                     <item.icon className="size-full rounded-sm overflow-hidden object-contain" />
                   </DockIcon>
                 </a>
               </TooltipTrigger>
               <TooltipContent
                 side="top"
-                sideOffset={8}
-                className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]"
+                sideOffset={10}
+                className="rounded-xl bg-blue-600 text-white px-3 py-1.5 text-sm font-medium
+                  shadow-[0_4px_20px_oklch(0.55_0.22_255/0.4)]"
               >
                 <p>{item.label}</p>
-                <TooltipArrow className="fill-primary" />
+                <TooltipArrow className="fill-blue-600" />
               </TooltipContent>
             </Tooltip>
           );
         })}
-        <Separator
-          orientation="vertical"
-          className="h-2/3 m-auto w-px bg-border"
-        />
+
+        <Separator orientation="vertical" className="h-6 w-px bg-neutral-200 dark:bg-white/10 mx-0.5" />
+
         {Object.entries(DATA.contact.social)
           .filter(([_, social]) => social.navbar)
           .map(([name, social], index) => {
@@ -55,40 +75,58 @@ export default function Navbar() {
                     href={social.url}
                     target={isExternal ? "_blank" : undefined}
                     rel={isExternal ? "noopener noreferrer" : undefined}
+                    aria-label={name}
                   >
-                    <DockIcon className="rounded-3xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+                    <DockIcon
+                      className={[
+                        "rounded-xl cursor-pointer size-full p-0",
+                        "text-neutral-500 hover:text-neutral-900 dark:text-white/50 dark:hover:text-white",
+                        "bg-transparent hover:bg-blue-500/15",
+                        "border border-transparent hover:border-blue-500/25",
+                        "transition-all duration-200",
+                      ].join(" ")}
+                    >
                       <IconComponent className="size-full rounded-sm overflow-hidden object-contain" />
                     </DockIcon>
                   </a>
                 </TooltipTrigger>
                 <TooltipContent
                   side="top"
-                  sideOffset={8}
-                  className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]"
+                  sideOffset={10}
+                  className="rounded-xl bg-blue-600 text-white px-3 py-1.5 text-sm font-medium
+                    shadow-[0_4px_20px_oklch(0.55_0.22_255/0.4)]"
                 >
                   <p>{name}</p>
-                  <TooltipArrow className="fill-primary" />
+                  <TooltipArrow className="fill-blue-600" />
                 </TooltipContent>
               </Tooltip>
             );
           })}
-        <Separator
-          orientation="vertical"
-          className="h-2/3 m-auto w-px bg-border"
-        />
+
+        <Separator orientation="vertical" className="h-6 w-px bg-neutral-200 dark:bg-white/10 mx-0.5" />
+
         <Tooltip>
           <TooltipTrigger asChild>
-            <DockIcon className="rounded-3xl cursor-pointer size-full bg-background p-0 text-muted-foreground hover:text-foreground hover:bg-muted backdrop-blur-3xl border border-border transition-colors">
+            <DockIcon
+              className={[
+                "rounded-xl cursor-pointer size-full p-0",
+                "text-neutral-500 hover:text-neutral-900 dark:text-white/50 dark:hover:text-white",
+                "bg-transparent hover:bg-blue-500/15",
+                "border border-transparent hover:border-blue-500/25",
+                "transition-all duration-200",
+              ].join(" ")}
+            >
               <ModeToggle className="size-full cursor-pointer" />
             </DockIcon>
           </TooltipTrigger>
           <TooltipContent
             side="top"
-            sideOffset={8}
-            className="rounded-xl bg-primary text-primary-foreground px-4 py-2 text-sm shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)]"
+            sideOffset={10}
+            className="rounded-xl bg-blue-600 text-white px-3 py-1.5 text-sm font-medium
+              shadow-[0_4px_20px_oklch(0.55_0.22_255/0.4)]"
           >
             <p>Theme</p>
-            <TooltipArrow className="fill-primary" />
+            <TooltipArrow className="fill-blue-600" />
           </TooltipContent>
         </Tooltip>
       </Dock>

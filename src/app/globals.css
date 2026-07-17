@@ -4,111 +4,103 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* ============================================================
+   METALLIC BLUE + WHITE DESIGN SYSTEM
+   Primary: Blue metallic  (#1e40af → #3b82f6 → #93c5fd)
+   Dark bg: Deep navy #050d1a → #0a1628
+   ============================================================ */
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
+  --color-background:        var(--background);
+  --color-foreground:        var(--foreground);
+  --color-card:              var(--card);
+  --color-card-foreground:   var(--card-foreground);
+  --color-popover:           var(--popover);
+  --color-popover-foreground:var(--popover-foreground);
+  --color-primary:           var(--primary);
+  --color-primary-foreground:var(--primary-foreground);
+  --color-secondary:         var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
+  --color-muted:             var(--muted);
+  --color-muted-foreground:  var(--muted-foreground);
+  --color-accent:            var(--accent);
   --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --color-destructive:       var(--destructive);
+  --color-border:            var(--border);
+  --color-input:             var(--input);
+  --color-ring:              var(--ring);
 }
 
+/* ── Light Mode ─────────────────────────────────────────── */
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --radius: 0.75rem;
+  --background:         oklch(0.98 0.005 240);
+  --foreground:         oklch(0.12 0.03 250);
+  --card:               oklch(1 0 0);
+  --card-foreground:    oklch(0.12 0.03 250);
+  --popover:            oklch(1 0 0);
+  --popover-foreground: oklch(0.12 0.03 250);
+  --primary:            oklch(0.52 0.22 255);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary:          oklch(0.94 0.02 240);
+  --secondary-foreground: oklch(0.25 0.05 255);
+  --muted:              oklch(0.94 0.01 240);
+  --muted-foreground:   oklch(0.52 0.03 255);
+  --accent:             oklch(0.90 0.04 245);
+  --accent-foreground:  oklch(0.25 0.1 255);
+  --destructive:        oklch(0.577 0.245 27.325);
+  --border:             oklch(0.88 0.02 245);
+  --input:              oklch(0.90 0.02 245);
+  --ring:               oklch(0.52 0.22 255);
+
+  /* Metallic Blue gradients for text */
+  --metallic-gradient: linear-gradient(135deg, oklch(0.35 0.15 255), oklch(0.20 0.22 255), oklch(0.40 0.10 240));
+  --metallic-white-gradient: linear-gradient(135deg, oklch(0.20 0.05 255), oklch(0.35 0.15 255), oklch(0.12 0.03 250));
 }
 
+/* ── Dark Mode — Deep Navy / Metallic Blue ──────────────── */
 .dark {
-  --background: oklch(0.18 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background:         oklch(0.10 0.025 255);   /* deep navy #050d1a */
+  --foreground:         oklch(0.97 0.005 240);   /* near-white */
+  --card:               oklch(0.14 0.03 255);    /* card surface */
+  --card-foreground:    oklch(0.95 0.01 240);
+  --popover:            oklch(0.13 0.03 255);
+  --popover-foreground: oklch(0.95 0.01 240);
+  --primary:            oklch(0.65 0.20 255);    /* metallic blue */
+  --primary-foreground: oklch(0.07 0.02 255);
+  --secondary:          oklch(0.18 0.04 258);
+  --secondary-foreground: oklch(0.90 0.01 240);
+  --muted:              oklch(0.18 0.03 258);
+  --muted-foreground:   oklch(0.60 0.04 255);
+  --accent:             oklch(0.22 0.06 258);
+  --accent-foreground:  oklch(0.92 0.01 240);
+  --destructive:        oklch(0.60 0.22 22);
+  --border:             oklch(1 0 0 / 8%);
+  --input:              oklch(1 0 0 / 12%);
+  --ring:               oklch(0.65 0.20 255);
+
+  /* Shiny Silver/Metallic gradients for text */
+  --metallic-gradient: linear-gradient(135deg, oklch(0.75 0.12 240), oklch(0.65 0.22 255), oklch(0.80 0.08 200));
+  --metallic-white-gradient: linear-gradient(135deg, #ffffff, oklch(0.85 0.06 240), oklch(0.90 0.03 220));
+}
+
+/* ── Custom Tailwind Utilities (จาก Section 2 ของ Skill) ── */
+@utility text-metallic {
+  background: var(--metallic-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@utility text-metallic-white {
+  background: var(--metallic-white-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 @layer base {
@@ -116,24 +108,122 @@
     @apply border-border;
   }
 
-  body {
-    @apply bg-background text-foreground;
+  html {
+    scroll-behavior: smooth;
   }
 
-  /* Shiki dual theme support */
-  .shiki,
-  .shiki span {
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Selection colors — blue harmony */
+  ::selection {
+    background: oklch(0.65 0.20 255 / 25%);
+    color: oklch(0.97 0.005 240);
+  }
+
+  /* ── Ambient glow background ───────────────────────────── */
+  .glow-orb-blue {
+    @apply absolute rounded-full pointer-events-none;
+    background: radial-gradient(circle, oklch(0.55 0.22 255 / 18%) 0%, transparent 70%);
+    filter: blur(60px);
+    animation: pulse-glow 6s ease-in-out infinite;
+  }
+
+  .glow-orb-indigo {
+    @apply absolute rounded-full pointer-events-none;
+    background: radial-gradient(circle, oklch(0.50 0.24 280 / 12%) 0%, transparent 70%);
+    filter: blur(80px);
+    animation: pulse-glow 8s ease-in-out infinite reverse;
+  }
+
+  /* ── Mesh grid overlay ─────────────────────────────────── */
+  .mesh-grid {
+    background-image:
+      linear-gradient(oklch(1 0 0 / 3%) 1px, transparent 1px),
+      linear-gradient(to right, oklch(1 0 0 / 3%) 1px, transparent 1px);
+    background-size: 40px 40px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, #000 60%, transparent 100%);
+  }
+
+  /* ── Laser beam divider ────────────────────────────────── */
+  .laser-beam {
+    @apply absolute left-0 right-0 h-px;
+    background: linear-gradient(to right, transparent, oklch(0.65 0.20 255 / 40%), transparent);
+  }
+
+  /* ── Section heading ──────────────── */
+  .section-title {
+    @apply text-xl font-semibold tracking-tight text-metallic-white;
+  }
+
+  /* ── Glow card ─────────────────────────────────────────── */
+  .glow-card {
+    @apply relative overflow-hidden rounded-2xl border bg-card transition-all duration-300;
+    border-color: oklch(1 0 0 / 8%);
+    box-shadow: 0 0 0 1px oklch(0.65 0.20 255 / 0%);
+  }
+
+  .glow-card:hover {
+    border-color: oklch(0.65 0.20 255 / 30%);
+    box-shadow:
+      0 0 20px oklch(0.65 0.20 255 / 10%),
+      0 0 0 1px oklch(0.65 0.20 255 / 20%);
+    transform: translateY(-1px);
+  }
+
+  /* ── Skill badge ───────────────────────────────────────── */
+  .skill-badge {
+    @apply border rounded-xl h-8 px-4 flex items-center gap-2 text-sm font-medium transition-all duration-200;
+    background: oklch(1 0 0 / 4%);
+    border-color: oklch(1 0 0 / 8%);
+    color: oklch(0.75 0.04 240);
+  }
+
+  .skill-badge:hover {
+    background: oklch(0.65 0.20 255 / 12%);
+    border-color: oklch(0.65 0.20 255 / 35%);
+    color: oklch(0.85 0.08 240);
+    box-shadow: 0 0 12px oklch(0.65 0.20 255 / 15%);
+  }
+
+  /* Light mode skill badge */
+  :root .skill-badge {
+    background: oklch(0.94 0.02 240);
+    border-color: oklch(0.85 0.04 245);
+    color: oklch(0.35 0.06 255);
+  }
+
+  :root .skill-badge:hover {
+    background: oklch(0.87 0.06 245);
+    border-color: oklch(0.60 0.18 255);
+    color: oklch(0.30 0.15 255);
+  }
+
+  /* ── Animations ────────────────────────────────────────── */
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50%       { opacity: 1.0; transform: scale(1.08); }
+  }
+
+  @keyframes shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  /* ── Shiki syntax highlight ────────────────────────────── */
+  .shiki, .shiki span {
     color: var(--shiki-light);
     background-color: transparent;
   }
-
-  .dark .shiki,
-  .dark .shiki span {
+  .dark .shiki, .dark .shiki span {
     color: var(--shiki-dark);
     background-color: transparent;
   }
 
-.prose pre {
+  /* ── Prose overrides ───────────────────────────────────── */
+  .prose pre {
     @apply leading-relaxed bg-transparent! font-mono!;
   }
 
@@ -145,59 +235,29 @@
     @apply content-none!;
   }
 
-  .prose h1 {
-    @apply text-2xl! font-semibold! tracking-tight! leading-tight!;
-  }
-
-  .prose h2 {
-    @apply text-xl! font-semibold! tracking-tight! leading-tight!;
-  }
-
-  .prose h3 {
-    @apply text-lg! font-semibold! tracking-tight! leading-tight!;
-  }
-
-  .prose h4 {
-    @apply text-base! font-medium! tracking-tight! leading-tight!;
-  }
-
-  .prose h5 {
-    @apply text-base! font-medium! tracking-tight! leading-tight!;
-  }
-
-  .prose h6 {
-    @apply text-base! font-medium! tracking-tight! leading-tight!;
-  }
+  .prose h1 { @apply text-2xl! font-semibold! tracking-tight! leading-tight!; }
+  .prose h2 { @apply text-xl! font-semibold! tracking-tight! leading-tight!; }
+  .prose h3 { @apply text-lg! font-semibold! tracking-tight! leading-tight!; }
+  .prose h4 { @apply text-base! font-medium! tracking-tight! leading-tight!; }
 
   .prose a {
     @apply text-primary underline underline-offset-4;
   }
 
   .prose blockquote {
-    @apply border-l-4 border-amber-500! pl-4 italic bg-muted/50 p-4 rounded-md rounded-l-none;
+    @apply border-l-4 border-blue-500! pl-4 italic bg-blue-500/5 p-4 rounded-md rounded-l-none;
   }
 
-  .prose blockquote p {
-    @apply m-0!;
-  }
+  .prose blockquote p { @apply m-0!; }
+  .prose blockquote p:first-child { @apply mt-0!; }
 
-  .prose blockquote p:first-child {
-    @apply mt-0!;
-  }
-
-  /* Task lists (remark-gfm): remove bullet marker so it renders like a pure checklist */
   .prose :where(ul.contains-task-list):not(:where([class~="not-prose"] *)) {
     @apply list-none! pl-0!;
   }
-
   .prose :where(li.task-list-item):not(:where([class~="not-prose"] *)) {
     @apply pl-0!;
   }
-
-  .prose
-    :where(li.task-list-item > input[type="checkbox"]):not(
-      :where([class~="not-prose"] *)
-    ) {
+  .prose :where(li.task-list-item > input[type="checkbox"]):not(:where([class~="not-prose"] *)) {
     @apply mr-2 align-middle!;
   }
 
@@ -209,10 +269,10 @@
 
   .prose :where(th):not(:where([class~="not-prose"] *)),
   .prose :where(td):not(:where([class~="not-prose"] *)) {
-    @apply px-6 py-4 align-middle m-0 whitespace-nowrap;
+    @apply px-4 py-3 align-middle m-0;
   }
 
-  .prose tr{
+  .prose tr {
     @apply hover:bg-accent/50! transition-colors! cursor-pointer! h-10!;
   }
 
@@ -232,5 +292,4 @@
   .prose :where(tbody tr:last-child td):not(:where([class~="not-prose"] *)) {
     @apply border-b-0;
   }
-
 }
