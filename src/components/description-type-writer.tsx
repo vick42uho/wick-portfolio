@@ -50,25 +50,49 @@ export function DescriptionTypeWriter({
         }, deletionSpeed);
       } else {
         // Move to next word
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setIsDeleting(false);
         setSequenceIndex((prev) => (prev + 1) % sequence.length);
       }
     }
 
     return () => clearTimeout(timer);
-  }, [currentText, isDeleting, sequenceIndex, sequence, speed, deletionSpeed, delay]);
+  }, [
+    currentText,
+    isDeleting,
+    sequenceIndex,
+    sequence,
+    speed,
+    deletionSpeed,
+    delay,
+  ]);
 
   return (
     <div className={className}>
       <span>{staticText} </span>
       <span className="font-semibold">
-        <span className="bg-linear-to-r from-sky-400 via-violet-400 to-pink-500 bg-clip-text text-transparent dark:from-sky-300 dark:via-violet-300 dark:to-pink-400">
+        <span
+          className="
+font-semibold
+bg-gradient-to-r
+from-blue-700
+via-blue-500
+to-red-500
+bg-clip-text
+text-transparent
+
+dark:from-blue-400
+dark:via-blue-600
+dark:to-yellow-400
+"
+        >
           {currentText}
         </span>
+
         <motion.span
           animate={{ opacity: [1, 0, 1] }}
-          transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
-          className="inline-block ml-0.5 text-sky-400 font-bold"
+          transition={{ duration: 0.8, repeat: Infinity }}
+          className="inline-block ml-0.5 font-semibold text-blue-600 dark:text-blue-400"
         >
           |
         </motion.span>
