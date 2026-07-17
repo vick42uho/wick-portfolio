@@ -1,39 +1,68 @@
-# Features
+# 🌐 Wick's Developer Portfolio & AI Coding Skills
 
-- Setup only takes a few minutes by editing the [single config file](./src/data/resume.tsx)
-- Built using Next.js 14, React, Typescript, Shadcn/UI, TailwindCSS, Framer Motion, Magic UI
-- Includes a blog
-- Responsive for different devices
-- Optimized for Next.js and Vercel
+พอร์ตโฟลิโอส่วนตัวและแหล่งรวบรวม **Agent Skills** สำหรับ AI Coding Assistant พัฒนาขึ้นด้วยเทคโนโลยีที่ทันสมัยที่สุดโดยใช้ระบบการออกแบบ **Tailwind CSS v4** ร่วมกับเฉดสีน้ำเงินเมทาลิก-ขาว เพื่อสร้างประสบการณ์ระดับพรีเมียมและสวยงามสะดุดตา
 
-# Getting Started Locally
+---
 
-1. Clone this repository to your local machine:
+## ⚡ Tech Stack & Architecture
 
-   ```bash
-   git clone https://github.com/dillionverma/portfolio
-   ```
+พอร์ตโฟลิโอนี้เลือกใช้ Stack ที่เน้นความทันสมัย ความเสถียร และความเร็วในการแสดงผล:
 
-2. Move to the cloned directory
+*   **Framework:** [Next.js 16.1 (App Router)](https://nextjs.org/) — รันและประมวลผลบน React 19 อย่างมีประสิทธิภาพ
+*   **Styling & Design System:** [Tailwind CSS v4](https://tailwindcss.com/) — ระบบสไตล์แบบ CSS-First Configuration ร่วมกับระบบสี **OKLCH Color Space** คุมโทนน้ำเงินเมทาลิก
+*   **Design Tokens:**
+    *   `--background`: `#050d1a` (Deep Navy Metallic) / Light Mode: Off-white
+    *   `--primary`: `#3b82f6` (Metallic Blue Glow)
+    *   `--card`: `#0b172a` (Lighter Navy Surface)
+*   **Typography:** [Vercel Geist & Geist Mono](https://vercel.com/font) — มินิมอล อ่านง่าย เหมาะสำหรับนักพัฒนา
+*   **Interactivity:** [Framer Motion](https://www.framer.com/motion/) — แอนิเมชันลื่นไหล, Spotlight Card (เมาส์สาดสะท้อนเส้นขอบกระจก), Mesh Grid Background
+*   **Content Management:** [content-collections](https://content-collections.dev/) — จัดการไฟล์บล็อกบทความรูปแบบ MDX พร้อมคอมโพเนนต์พิเศษ
 
-   ```bash
-   cd portfolio
-   ```
+---
 
-3. Install dependencies:
+## 🤖 Featured Agent Skills (AI Coding Skills)
 
-   ```bash
-   pnpm install
-   ```
+พอร์ตโฟลิโอนี้ทำหน้าที่เป็นคลังรวม **Agent Skills** ที่พัฒนาขึ้นมาเฉพาะทาง เพื่อสอน AI Coding Assistant ให้ทำงานตาม Pattern ที่มีระดับใน Production:
 
-4. Start the local Server:
+1.  **Tailwind UX/UI Premium Design System (v4)**
+    *   *ศึกษาจาก:* live source code ของ tailwindcss.com
+    *   *รายละเอียด:* กฎ 11 หัวข้อสำหรับการดีไซน์ Web UI เช่น 3-Column Page Grid, 200vw Full-Bleed Dividers, Diagonal Gutter Stripe, Accessible Focus Rings และ Dark Mode oklch Swap
+2.  **Rust + Axum Production Backend (v1)**
+    *   *ศึกษาจาก:* rust-crud-api (RequestTicker backend)
+    *   *รายละเอียด:* รวมแนวทาง 19 หัวข้อสำคัญ เช่น Global `ApiError`, JWT Middleware Injection, Dynamic QueryBuilder ป้องกัน SQL injection, Database Transaction, Real-time SSE Broadcast, Telegram Bot notifications และ Static File Serving
 
-   ```bash
-   pnpm dev
-   ```
+---
 
-5. Open the [Config file](./src/data/resume.tsx) and make changes
+## 💻 Getting Started Locally
 
-# License
+### 1. Requirements
+*   Node.js (>= 18)
+*   pnpm (>= 9.0)
 
-Licensed under the [MIT license](https://github.com/dillionverma/portfolio/blob/main/LICENSE.md).
+### 2. Installation
+```bash
+# Clone the repository
+git clone https://github.com/vick42uho/tailwind-ux-ui.git my-portfolio
+cd my-portfolio
+
+# Install dependencies
+pnpm install
+```
+
+### 3. Running Dev Server
+```bash
+pnpm dev
+```
+เปิดบราวเซอร์ที่ [http://localhost:3000](http://localhost:3000)
+
+### 4. Build Production Bundle
+```bash
+pnpm build
+```
+
+---
+
+## 📄 License
+
+ลิขสิทธิ์โค้ดภายใต้ [Apache License 2.0](./LICENSE)
+โค้ดพอร์ตโฟลิโอเวอร์ชัน Redesign ปรับปรุงโดย **Wick Thaweep** ห้ามคัดลอกเชิงพาณิชย์โดยไม่ได้รับอนุญาต
