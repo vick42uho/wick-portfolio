@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import BlurFade from "@/components/magicui/blur-fade";
 import BlurFadeText from "@/components/magicui/blur-fade-text";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { AvatarInteractive } from "@/components/avatar-interactive";
+import { DescriptionTypeWriter } from "@/components/description-type-writer";
 import { DATA } from "@/data/resume";
 import Link from "next/link";
 import Markdown from "react-markdown";
@@ -26,17 +27,21 @@ export default function Page() {
                 yOffset={8}
                 text={`Hi, I'm ${DATA.name.split(" ")[0]}`}
               />
-              <BlurFadeText
-                className="text-muted-foreground max-w-[600px] md:text-lg lg:text-xl"
-                delay={BLUR_FADE_DELAY}
-                text={DATA.description}
-              />
+              <div className="text-muted-foreground max-w-[600px] md:text-lg lg:text-xl">
+                <BlurFade delay={BLUR_FADE_DELAY}>
+                  <DescriptionTypeWriter
+                    staticText="Systems-minded full-stack engineer turning"
+                    sequence={DATA.descriptionSequence}
+                  />
+                </BlurFade>
+              </div>
             </div>
             <BlurFade delay={BLUR_FADE_DELAY} className="order-1 md:order-2">
-              <Avatar className="size-24 md:size-32 border rounded-full shadow-lg ring-4 ring-muted">
-                <AvatarImage alt={DATA.name} src={DATA.avatarUrl} />
-                <AvatarFallback>{DATA.initials}</AvatarFallback>
-              </Avatar>
+              <AvatarInteractive
+                avatarUrl={DATA.avatarUrl}
+                name={DATA.name}
+                initials={DATA.initials}
+              />
             </BlurFade>
           </div>
         </div>

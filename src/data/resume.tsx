@@ -18,33 +18,52 @@ import { Elysia } from "@/components/ui/svgs/elysia";
 import { SqlServer } from "@/components/ui/svgs/sqlserver";
 
 export const DATA = {
-  name: "Wick Thaweep",
-  initials: "DV",
-  url: "https://dillion.io",
+  name: "𝕎𝕚𝕔𝕜",
+  initials: "WT",
+  url: "https://wick.dev",
+
   location: "Bangkok, Thailand",
   locationLink: "https://www.google.com/maps/place/Bangkok",
+
   description:
-    "Systems-minded full-stack engineer turning hospital operations and enterprise requirements into software teams can trust in production.",
-  summary:
-    "Systems-minded full-stack engineer turning hospital operations and enterprise requirements into software teams can trust in production.\n\n- **Production-ready interfaces** for complex hospital and enterprise flows.\n- **Cross-functional delivery** with dependable backend and frontend handoff.\n- **Clear product communication** supported by measurable operational outcomes.",
+    "Full-stack Software Engineer building scalable healthcare and enterprise solutions.",
+
+  descriptionSequence: [
+    "Transforming complex business workflows into intuitive web applications.",
+    "Designing reliable backend services and modern frontend experiences.",
+    "Building secure, maintainable, and production-ready software.",
+    "Passionate about clean architecture, performance, and user experience.",
+  ],
+
+  summary: `
+I'm a Full-stack Software Engineer passionate about building software that solves real business challenges.
+
+I specialize in developing modern web applications, backend services, and internal platforms for healthcare and enterprise environments. My work focuses on creating reliable systems that simplify complex workflows, improve operational efficiency, and provide an excellent user experience.
+
+I enjoy working across the entire development lifecycle—from planning and system design to deployment and maintenance—while writing clean, maintainable, and scalable code.
+
+`,
+
   avatarUrl: "/me.jpg",
+
   skills: [
     { name: "React", icon: ReactLight },
     { name: "Next.js", icon: NextjsIconDark },
-    { name: "Typescript", icon: Typescript },
+    { name: "TypeScript", icon: Typescript },
+
     { name: "Node.js", icon: Nodejs },
     { name: "Python", icon: Python },
     { name: "Rust", icon: Rust },
+    { name: "PHP", icon: Php },
 
-    { name: "PHP", icon: Php},
-    { name: "FastAPI", icon: FastApi},
-    { name: "Bun", icon: Bun},
-    { name: "Elysia", icon: Elysia},
-    { name: "Sql Server", icon: SqlServer},
-    { name: "Postgres", icon: Postgresql },
+    { name: "FastAPI", icon: FastApi },
+    { name: "Elysia", icon: Elysia },
+    { name: "Bun", icon: Bun },
+
+    { name: "SQL Server", icon: SqlServer },
+    { name: "PostgreSQL", icon: Postgresql },
+
     { name: "Docker", icon: Docker },
-    
-
   ],
   navbar: [
     { href: "/", icon: HomeIcon, label: "Home" },
