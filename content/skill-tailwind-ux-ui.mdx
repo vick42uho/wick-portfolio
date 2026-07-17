@@ -1,0 +1,201 @@
+---
+title: "Tailwind UX/UI Premium Design System Skill — ออกแบบ Web UI ระดับ Premium"
+publishedAt: "2026-07-17"
+updatedAt: "2026-07-17T14:29:00+07:00"
+author: "Wick Thaweep"
+summary: "Agent Skill สำหรับ Tailwind CSS v4 — ศึกษาจาก tailwindcss.com โดยตรง ครอบคลุม Grid, Typography, Visual Hierarchy, Responsive, Accessibility และ Dark Mode Patterns"
+image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=192&fit=crop"
+---
+
+# 🎨 Tailwind UX/UI Premium Design System Skill
+
+Agent Skill ที่ศึกษาจาก [tailwindcss.com](https://tailwindcss.com) แบบ pixel-perfect — อ่านตรง live source code จริง แล้วสรุปออกมาเป็นชุดกฎที่ AI สามารถนำไปใช้สร้าง UI ระดับ Premium ได้ทันที
+
+| รายละเอียด | |
+|---|---|
+| **GitHub** | [vick42uho/tailwind-ux-ui](https://github.com/vick42uho/tailwind-ux-ui) |
+| **เวอร์ชัน** | v4 |
+| **License** | Apache-2.0 |
+| **เหมาะสำหรับ** | ออกแบบ Web UI, Dashboard, Documentation ให้สวยระดับ Premium |
+
+---
+
+## สิ่งที่ Skill ครอบคลุม (11 หัวข้อ)
+
+1. **System Tokens & Color Palette** — ชุดสีที่ใช้จริง (v4 เปลี่ยนจาก `slate-*` → `gray-*`)
+2. **Tailwind v4 CSS-First Configuration** — `@theme`, `@utility`, `@custom-variant dark`
+3. **Typography System** — Inter Variable + IBM Plex Mono, `text-lg/7` shorthand, `text-balance`
+4. **Visual Hierarchy Techniques** — 200vw pseudo-element dividers, diagonal stripe gutter
+5. **Grid & Layout System** — `grid-rows-[1fr_1px_auto]`, gutter columns, 3-column docs layout
+6. **Glowing Mesh Grids & Spotlights** — Background grid, ambient glow, laser beams
+7. **Gradient Border Glow Cards** — การ์ดที่เรืองแสงเมื่อ hover
+8. **Responsive Design Patterns** — Dual-element pattern, `max-sm:hidden`, breakpoint range syntax
+9. **Accessibility (A11y)** — Focus rings, `aria-hidden`, `aria-label`, `aria-haspopup`, skip-nav
+10. **Button & Interactive Patterns** — CTA, Version badge, Plus badge, Search bar
+11. **Dark Mode Implementation** — oklch theme-color, image swap, dark class strategy
+
+---
+
+## Color Palette Reference (v4 — gray-* ไม่ใช่ slate-*)
+
+| Role | Light Mode | Dark Mode | หมายเหตุ |
+|------|-----------|-----------|----------|
+| **Background** | `bg-white` | `dark:bg-gray-950` | oklch(.13 .028 261) |
+| **Surface** | `bg-gray-50` | `dark:bg-gray-900` | panels/cards |
+| **Subtle Border** | `border-gray-950/5` | `dark:border-white/10` | opacity-based |
+| **Divider Line** | `bg-gray-950/5` | `dark:bg-white/10` | pseudo-elements |
+| **Primary Text** | `text-gray-950` | `dark:text-white` | headings |
+| **Body Text** | `text-gray-600` | `dark:text-gray-400` | paragraphs |
+| **Brand Sky** | `text-sky-500` | `dark:text-sky-400` | `#0ea5e9` |
+| **Monospace Label** | `text-sky-500` | `dark:text-sky-400` | badges, code |
+
+---
+
+## Code ตัวอย่างสำคัญ
+
+### 1. Full-Viewport Section Dividers
+
+```html
+<!-- เส้น hairline ที่พาด full browser width — เทคนิคจาก tailwindcss.com จริง -->
+<div class="relative
+  before:absolute before:top-0 before:h-px before:w-[200vw] before:left-[-100vw]
+  before:bg-gray-950/5 dark:before:bg-white/10
+  after:absolute after:bottom-0 after:h-px after:w-[200vw] after:left-[-100vw]
+  after:bg-gray-950/5 dark:after:bg-white/10">
+  <!-- Section content -->
+</div>
+```
+
+> `w-[200vw]` + `left-[-100vw]` = เส้นพาดเกิน 100vw ทั้งซ้ายและขวา
+
+### 2. Hero Page Grid (Tailwind v4)
+
+```html
+<div class="grid min-h-dvh grid-cols-1
+            grid-rows-[1fr_1px_auto_1px_auto]
+            [--gutter-width:2.5rem]
+            md:grid-cols-[var(--gutter-width)_minmax(0,var(--breakpoint-2xl))_var(--gutter-width)]">
+  <!-- 1px rows = auto dividers — ไม่ต้องเพิ่ม HTML พิเศษ -->
+</div>
+```
+
+### 3. Responsive Hero Typography
+
+```html
+<!-- แสดง class ที่ใช้อยู่เหนือ heading (self-documenting pattern) -->
+<div aria-hidden="true" class="font-mono text-xs/6 text-black/20 dark:text-white/25">
+  <span class="hidden max-sm:inline">text-4xl </span>
+  <span class="hidden sm:max-md:inline">text-5xl </span>
+  <span class="hidden xl:inline">text-8xl </span>
+  tracking-tighter text-balance
+</div>
+
+<h1 class="text-4xl tracking-tighter text-balance
+           sm:text-5xl lg:text-6xl xl:text-8xl">
+  Rapidly build modern websites.
+</h1>
+```
+
+### 4. Gradient Border Glow Card
+
+```html
+<div class="relative group overflow-hidden rounded-2xl
+  border border-gray-950/5 bg-white p-6
+  transition-all duration-300
+  dark:border-white/10 dark:bg-gray-900/60
+  hover:-translate-y-0.5">
+
+  <!-- Glow ปรากฏเมื่อ hover -->
+  <div class="absolute -inset-px -z-10 rounded-2xl
+    bg-gradient-to-r from-sky-500 to-indigo-500
+    opacity-0 blur transition-all duration-300
+    group-hover:opacity-20 group-hover:blur-md">
+  </div>
+
+  <h3 class="text-lg font-semibold text-gray-950 dark:text-white mb-2">
+    Card Title
+  </h3>
+  <p class="text-sm text-gray-500 dark:text-gray-400">Description</p>
+</div>
+```
+
+### 5. Accessible Focus Ring
+
+```html
+<button class="focus:outline-none
+               focus-visible:ring-2
+               focus-visible:ring-sky-500
+               focus-visible:ring-offset-2
+               dark:focus-visible:ring-offset-gray-950">
+  Click me
+</button>
+```
+
+### 6. Diagonal Stripe Gutter Pattern
+
+```html
+<!-- Side gutter ที่ adapt dark/light ด้วย inline CSS variable -->
+<div class="bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)]
+            bg-size-[10px_10px] bg-fixed
+            [--pattern-fg:var(--color-black)]/5
+            dark:[--pattern-fg:var(--color-white)]/10">
+</div>
+```
+
+### 7. Dual-Element Responsive Pattern
+
+```html
+<!-- Desktop (hidden on mobile) -->
+<a class="max-sm:hidden inline-block rounded-4xl bg-black px-4 py-2
+          text-sm/6 font-semibold text-white hover:bg-gray-800
+          dark:bg-gray-700 dark:hover:bg-gray-600"
+   href="/docs">
+  Get started
+</a>
+
+<!-- Mobile (hidden on desktop) -->
+<div class="mt-10 sm:hidden">
+  <a class="w-full text-center inline-block rounded-4xl bg-black px-4 py-2
+            text-sm/6 font-semibold text-white">
+    Get started
+  </a>
+</div>
+```
+
+---
+
+## v4 New Utilities ที่ใช้จริงบน tailwindcss.com
+
+| Utility | สิ่งที่ทำ |
+|---|---|
+| `text-lg/7` | Font size + line-height shorthand |
+| `inset-ring` | Inner box-shadow ring |
+| `rounded-4xl` | border-radius: 2rem (32px) |
+| `min-h-dvh` | min-height: 100dvh |
+| `bg-size-[10px_10px]` | background-size shorthand |
+| `[--name:value]` | Inline CSS custom property |
+| `data-active:...` | Style on data-active attribute |
+| `text-balance` | เพิ่มใน heading ทุกตัว |
+
+---
+
+## Common Pitfalls
+
+1. **`slate-*` ใน v4** → ใช้ `gray-*` แทน (`gray-950` ไม่ใช่ `slate-950`)
+2. **Missing focus ring** → ต้องมี `focus-visible:ring-2 focus-visible:ring-sky-500` ทุก interactive element
+3. **`rounded` ใน card** → ใช้ `rounded-2xl` ขึ้นไป, button ใช้ `rounded-4xl`
+4. **ไม่มี `text-balance`** → heading หลายบรรทัดจะ wrap ไม่สวย
+5. **`text-lg leading-7`** → เขียนเป็น `text-lg/7` แบบ v4 shorthand
+
+---
+
+## วิธีติดตั้ง
+
+```bash
+git clone https://github.com/vick42uho/tailwind-ux-ui.git
+cp -r tailwind-ux-ui ~/.gemini/config/skills/
+```
+
+---
+
+> 📝 Skill นี้ได้จากการอ่าน live source code ของ tailwindcss.com โดยตรง ไม่ใช่จาก documentation — ทำให้ได้ pattern จริงที่ใช้จริง

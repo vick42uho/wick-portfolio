@@ -1,0 +1,200 @@
+---
+title: "Rust + Axum Production Backend Skill — สิ่งที่เรียนรู้จากการสร้าง REST API จริง"
+publishedAt: "2026-07-17"
+updatedAt: "2026-07-17T14:29:00+07:00"
+author: "Wick Thaweep"
+summary: "Agent Skill สำหรับ Rust backend — สรุปเทคนิคจากโปรเจกต์จริง ครอบคลุม ApiError, JWT Middleware, Dynamic QueryBuilder, Transaction, SSE, Multipart Upload และ Telegram Notification"
+image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=192&fit=crop"
+---
+
+# 🦀 Rust + Axum Production Backend Skill
+
+Agent Skill ที่สร้างจากการศึกษา source code จริงของ **rust-crud-api** (ระบบ Request Ticker) — REST API ที่เขียนด้วย Rust และใช้งาน production จริง สรุปออกมาเป็น **19 หัวข้อ** พร้อม code ตัวอย่างจากโค้ดจริงทั้งหมด
+
+| รายละเอียด | |
+|---|---|
+| **GitHub** | [vick42uho/skill-rust-axum-backend](https://github.com/vick42uho/skill-rust-axum-backend) |
+| **เวอร์ชัน** | v1 |
+| **License** | Apache-2.0 |
+| **เหมาะสำหรับ** | สร้าง REST API ด้วย Rust, Axum, SQLx, PostgreSQL |
+
+---
+
+## Tech Stack ที่ใช้จริง
+
+| Layer | Technology | หน้าที่ |
+|---|---|---|
+| **Framework** | Axum 0.7 | HTTP routing + extractors |
+| **Async Runtime** | Tokio | async/await execution |
+| **Database** | SQLx 0.7 + PostgreSQL | Compile-time SQL checking |
+| **Auth** | jsonwebtoken | JWT encode/decode |
+| **Password** | Argon2 | Secure password hashing |
+| **Validation** | validator | Derive-based input validation |
+| **Notifications** | reqwest | Telegram Bot API HTTP calls |
+| **Real-time** | Tokio broadcast | SSE fan-out to all clients |
+| **CORS + Files** | tower-http | Middleware + static serving |
+
+---
+
+## สิ่งที่ Skill ครอบคลุม (19 หัวข้อ)
+
+1. **Stack & Dependencies** — Cargo.toml พร้อมเหตุผลที่เลือกแต่ละ crate
+2. **โครงสร้างโปรเจกต์** — Module pattern: 1 feature = 1 folder (mod/models/handlers/routes)
+3. **Application Bootstrap** — main.rs: env, DB pool, CORS, Router, Render.com deployment
+4. **Error Handling** — `ApiError` enum + `IntoResponse` + `From<sqlx::Error>` trait
+5. **JWT Auth Middleware** — Bearer token, Claims struct, Extensions injection
+6. **Login & Password** — Argon2 hashing + verify, JWT generation, multi-field login
+7. **Input Validation** — `validator` crate + derive macro
+8. **SQLx Query Patterns** — `query_as`, `query!` macro, CTE, JSON aggregation
+9. **Dynamic QueryBuilder** — Pagination + multi-filter ป้องกัน SQL injection
+10. **Database Transactions** — `pool.begin()` + `&mut *tx` + `tx.commit()`
+11. **Multipart File Upload** — UUID filename, async write, URL storage
+12. **Server-Sent Events (SSE)** — broadcast channel, BoxStream, keepalive
+13. **Background Tasks** — `tokio::spawn`, scheduled daily jobs
+14. **Telegram Notifications** — reqwest HTTP client, dept chat_id lookup
+15. **Role-Based Access Control** — SQL filtering ตาม role + Forbidden error
+16. **Inline Struct** — Local struct เฉพาะที่ต้องการ ซ่อน sensitive fields
+17. **Environment Config** — .env, Render.com deployment pattern
+18. **Static File Serving** — `ServeDir` + auto-create uploads folder
+19. **Common Pitfalls** — 8 ข้อผิดพลาดที่ต้องหลีกเลี่ยง
+
+---
+
+## Code ตัวอย่างสำคัญ
+
+### 1. ApiError Pattern — Global Error Type
+
+```rust
+pub enum ApiError {
+    InternalServerError(String),
+    NotFound(String),
+    BadRequest(String),
+    Forbidden(String),
+}
+
+// สอน Axum วิธีแปลง Error เป็น HTTP Response
+impl IntoResponse for ApiError {
+    fn into_response(self) -> Response {
+        let (status, message) = match self {
+            ApiError::InternalServerError(msg) => (StatusCode::INTERNAL_SERVER_ERROR, msg),
+            ApiError::NotFound(msg)            => (StatusCode::NOT_FOUND, msg),
+            ApiError::BadRequest(msg)          => (StatusCode::BAD_REQUEST, msg),
+            ApiError::Forbidden(msg)           => (StatusCode::FORBIDDEN, msg),
+        };
+        (status, Json(json!({ "error": message }))).into_response()
+    }
+}
+
+// ✨ From trait: ใช้ ? operator กับ sqlx query ได้โดยตรง
+impl From<sqlx::Error> for ApiError {
+    fn from(err: sqlx::Error) -> Self {
+        eprintln!("🔥 DB Error: {:?}", err);
+        ApiError::InternalServerError("เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล".to_string())
+    }
+}
+```
+
+### 2. JWT Middleware — Claims ผ่าน Extensions
+
+```rust
+pub async fn auth(mut req: Request, next: Next) -> Result<Response, StatusCode> {
+    let auth_header = req.headers()
+        .get(header::AUTHORIZATION)
+        .and_then(|h| h.to_str().ok());
+
+    let token = match auth_header {
+        Some(h) if h.starts_with("Bearer ") => &h[7..],
+        _ => return Err(StatusCode::UNAUTHORIZED),
+    };
+
+    let claims = decode::<Claims>(token, &key, &Validation::default())
+        .map_err(|_| StatusCode::UNAUTHORIZED)?.claims;
+
+    // ✨ ฝัง Claims ไว้ใน request — handler ดึงด้วย Extension(claims)
+    req.extensions_mut().insert(claims);
+    Ok(next.run(req).await)
+}
+```
+
+### 3. Dynamic QueryBuilder — Pagination + Multi-Filter
+
+```rust
+let mut qb: QueryBuilder<Postgres> = QueryBuilder::new(
+    "SELECT * FROM requests WHERE is_deleted = FALSE"
+);
+
+// Search filter (SQL injection safe)
+if let Some(search) = &params.search {
+    let pattern = format!("%{}%", search.to_lowercase());
+    qb.push(" AND LOWER(description) LIKE ");
+    qb.push_bind(pattern); // ✅ parameterized — ปลอดภัยจาก injection
+}
+
+// Array filter ด้วย ANY
+if let Some(ids_str) = &params.status_ids {
+    let ids: Vec<i32> = ids_str.split(',')
+        .filter_map(|s| s.parse().ok()).collect();
+    if !ids.is_empty() {
+        qb.push(" AND status_id = ANY(");
+        qb.push_bind(ids); // Vec<i32> → PostgreSQL array
+        qb.push(")");
+    }
+}
+
+// Pagination
+qb.push(" ORDER BY priority ASC LIMIT ").push_bind(limit)
+  .push(" OFFSET ").push_bind(offset);
+```
+
+### 4. Database Transaction
+
+```rust
+let mut tx = pool.begin().await.map_err(|e|
+    ApiError::InternalServerError(format!("เริ่ม Transaction ไม่ได้: {}", e))
+)?;
+
+// ใช้ &mut *tx — ต้องใช้ tx ทุก query ไม่ใช่ pool
+let id: (i32,) = sqlx::query_as(INSERT_SQL)
+    .bind(&payload.description)
+    .fetch_one(&mut *tx).await?;
+
+for approver in &payload.approvers {
+    sqlx::query(INSERT_APPROVAL_SQL)
+        .bind(id.0).bind(approver.approver_id)
+        .execute(&mut *tx).await?;
+}
+
+tx.commit().await?; // commit — ถ้า error ก่อนถึงบรรทัดนี้ → auto rollback
+```
+
+### 5. SSE Real-time Broadcast
+
+```rust
+// ส่ง event หลัง transaction commit
+sse_state.broadcast_event(SSEEvent {
+    event_type: "request_created".to_string(),
+    request_id: new_id,
+    status_id: Some(1),
+    req_code: Some(req_code.clone()),
+});
+
+// Frontend
+const es = new EventSource(`/events?token=${token}`);
+es.addEventListener('request_update', (e) => {
+    const data = JSON.parse(e.data);
+    // อัพเดต UI ทันที — ไม่ต้อง polling
+});
+```
+
+---
+
+## วิธีติดตั้ง
+
+```bash
+git clone https://github.com/vick42uho/skill-rust-axum-backend.git
+cp -r skill-rust-axum-backend ~/.gemini/config/skills/rust-axum-backend
+```
+
+---
+
+> 📝 Skill นี้ได้จากการอ่าน source code จริงของระบบ Request Ticker — Rust backend ที่ใช้งาน production จริง
