@@ -101,7 +101,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="th" suppressHydrationWarning>
+    <html lang="th" className="overflow-x-hidden" suppressHydrationWarning>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased relative overflow-x-hidden",
@@ -137,7 +137,7 @@ export default function RootLayout({
               <div className="grid grid-cols-1 md:grid-cols-[60px_1fr_60px] lg:grid-cols-[100px_1fr_100px] min-h-screen">
                 
                 {/* Left diagonal stripe gutter */}
-                <div className="col-start-1 row-span-full hidden md:block relative border-r border-white/5 bg-fixed">
+                <div className="md:col-start-1 row-span-full hidden md:block relative border-r border-white/5 bg-fixed">
                   <div className="absolute inset-0
                     bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)]
                     bg-size-[8px_8px] opacity-15 dark:opacity-30
@@ -146,12 +146,12 @@ export default function RootLayout({
                 </div>
 
                 {/* Main Content Area */}
-                <div className="col-start-2 py-12 pb-28 sm:py-24 px-4 sm:px-8 lg:px-16 max-w-3xl mx-auto w-full">
+                <div className="col-start-1 md:col-start-2 py-12 pb-28 sm:py-24 px-4 sm:px-8 lg:px-16 max-w-3xl mx-auto w-full">
                   {children}
                 </div>
 
                 {/* Right diagonal stripe gutter */}
-                <div className="col-start-3 row-span-full hidden md:block relative border-l border-white/5 bg-fixed">
+                <div className="md:col-start-3 row-span-full hidden md:block relative border-l border-white/5 bg-fixed">
                   <div className="absolute inset-0
                     bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)]
                     bg-size-[8px_8px] opacity-15 dark:opacity-30

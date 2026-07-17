@@ -43,10 +43,9 @@ export default function Page() {
       {/* ══ HERO ═══════════════════════════════════════════════ */}
       <section id="hero" className="relative">
         <div className="mx-auto w-full space-y-8">
-          <div className="gap-4 gap-y-8 flex flex-col md:flex-row justify-between items-start">
-            {/* Text */}
-            <div className="gap-3 flex flex-col order-2 md:order-1 flex-1">
-
+          <div className="grid grid-cols-[1fr_auto] gap-4 items-center md:items-start">
+            {/* Left side: Location, Name, Subtitle */}
+            <div className="gap-3 flex flex-col col-span-1">
               {/* Location badge */}
               <BlurFade delay={BLUR_FADE_DELAY * 0.5}>
                 <span className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium w-fit
@@ -65,8 +64,8 @@ export default function Page() {
                 as="h1"
               />
 
-              {/* Typewriter subtitle */}
-              <div className="text-muted-foreground max-w-[600px] text-base md:text-lg">
+              {/* Typewriter subtitle (Visible on Desktop, Hidden on Mobile) */}
+              <div className="hidden md:block text-muted-foreground max-w-[600px] text-base md:text-lg">
                 <BlurFade delay={BLUR_FADE_DELAY * 2}>
                   <DescriptionTypeWriter
                     staticText="Systems-minded full-stack engineer turning"
@@ -76,14 +75,24 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Avatar */}
-            <BlurFade delay={BLUR_FADE_DELAY} className="order-1 md:order-2 flex-none">
+            {/* Right side: Avatar */}
+            <BlurFade delay={BLUR_FADE_DELAY} className="col-span-1 flex-none">
               <AvatarInteractive
                 avatarUrl={DATA.avatarUrl}
                 name={DATA.name}
                 initials={DATA.initials}
               />
             </BlurFade>
+
+            {/* Typewriter subtitle (Visible on Mobile, Hidden on Desktop) */}
+            <div className="col-span-2 md:hidden text-muted-foreground text-sm mt-2">
+              <BlurFade delay={BLUR_FADE_DELAY * 2}>
+                <DescriptionTypeWriter
+                  staticText="Systems-minded full-stack engineer turning"
+                  sequence={DATA.descriptionSequence}
+                />
+              </BlurFade>
+            </div>
           </div>
         </div>
 

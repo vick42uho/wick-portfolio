@@ -63,7 +63,7 @@ export function AvatarInteractive({ avatarUrl, name, initials }: AvatarInteracti
 
   return (
     <div 
-      className="relative flex items-center justify-center p-8"
+      className="relative flex items-center justify-center p-2 md:p-8"
       style={{ perspective: "1000px" }}
     >
       <motion.div
