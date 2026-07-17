@@ -1,7 +1,7 @@
 ---
 title: "แชร์ Agent Skills ที่ฉันสร้างไว้ — แหล่งรวม AI Coding Skills"
 publishedAt: "2026-07-17"
-updatedAt: "2026-07-17"
+updatedAt: "2026-07-17T13:36:00+07:00"
 author: "Wick Thaweep"
 summary: "รวม Agent Skills ที่สร้างไว้สำหรับ AI Coding Assistant — ตั้งแต่ Tailwind UX/UI Design System ไปจนถึง Skills อื่นๆ ในอนาคต เพื่อยกระดับ Developer Experience"
 image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=192&fit=crop"
@@ -42,44 +42,58 @@ skills/
 | รายละเอียด | |
 |---|---|
 | **GitHub** | [vick42uho/tailwind-ux-ui](https://github.com/vick42uho/tailwind-ux-ui) |
-| **เวอร์ชัน** | v3 |
+| **เวอร์ชัน** | v4 |
 | **License** | Apache-2.0 |
 | **เหมาะสำหรับ** | ออกแบบ Web UI, Dashboard, Documentation ให้สวยระดับ Premium |
 
 ### Skill นี้ทำอะไร?
 
-เป็น **masterclass-level reference** ที่ศึกษาจากเว็บ [tailwindcss.com](https://tailwindcss.com) แบบ pixel-perfect แล้วสรุปออกมาเป็นชุดกฎที่ AI สามารถนำไปใช้สร้าง UI ได้ทันที ครอบคลุม:
+เป็น **masterclass-level reference** ที่ศึกษาจากเว็บ [tailwindcss.com](https://tailwindcss.com) แบบ pixel-perfect — อ่านตรง live source code จริง แล้วสรุปออกมาเป็นชุดกฎที่ AI สามารถนำไปใช้สร้าง UI ได้ทันที ครอบคลุม **11 หัวข้อ**:
 
-1. **System Tokens & Color Codes** — ชุดสีที่ใช้จริง ไม่ใช่สีกว้างๆ
-2. **Tailwind CSS v4 Configuration** — CSS-first config แบบใหม่
-3. **Glowing Mesh Grids** — Background grid แบบเรืองแสง
-4. **Ambient Spotlights & Beams** — แสง glow และเลเซอร์ตกแต่ง
-5. **Gradient Border Glow Cards** — การ์ดที่เรืองแสงเมื่อ hover
-6. **Typography Grid & Hierarchy** — กฎ typography ระดับ premium
-7. **Interactive States** — Focus, Selection, Scrollbar styling
-8. **Layout Systems** — Three-column documentation layout
-9. **Code Editor Components** — Tab + code panel แบบเว็บ Tailwind
-10. **Common Pitfalls** — สิ่งที่ต้องหลีกเลี่ยง
+1. **System Tokens & Color Palette** — ชุดสีที่ใช้จริง (เปลี่ยนจาก `slate-*` → `gray-*` ตาม v4)
+2. **Tailwind v4 CSS-First Configuration** — `@theme`, `@utility`, `@custom-variant dark`
+3. **Typography System** — Inter Variable + IBM Plex Mono, `text-lg/7` shorthand, `text-balance`
+4. **Visual Hierarchy Techniques** — 200vw pseudo-element dividers, diagonal stripe gutter, CSS var opacity
+5. **Grid & Layout System** — `grid-rows-[1fr_1px_auto]`, gutter columns, 3-column docs layout
+6. **Glowing Mesh Grids & Spotlights** — Background grid, ambient glow, laser beams
+7. **Gradient Border Glow Cards** — การ์ดที่เรืองแสงเมื่อ hover
+8. **Responsive Design Patterns** — Dual-element pattern, `max-sm:hidden`, breakpoint range syntax
+9. **Accessibility (A11y)** — Focus rings, `aria-hidden`, `aria-label`, `aria-haspopup`, skip-nav
+10. **Button & Interactive Patterns** — CTA, Version badge, Plus badge, Search bar
+11. **Dark Mode Implementation** — oklch theme-color, image swap, dark class strategy
 
 ### ตัวอย่างโค้ดจาก Skill
 
-#### Dark Mode Glowing Grid Background
+#### Full-Viewport Section Dividers (v4 Trick)
 
 ```html
-<div class="absolute inset-0 -z-10 h-full w-full bg-slate-950
-  bg-[linear-gradient(to_right,#1e293b_1px,transparent_1px),linear-gradient(to_bottom,#1e293b_1px,transparent_1px)]
-  bg-[size:4rem_4rem]
-  [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]
-  opacity-80">
+<!-- เส้น hairline ที่พาด full browser width โดยไม่สนใจ max-width ของ content -->
+<div class="relative
+  before:absolute before:top-0 before:h-px before:w-[200vw] before:left-[-100vw]
+  before:bg-gray-950/5 dark:before:bg-white/10
+  after:absolute after:bottom-0 after:h-px after:w-[200vw] after:left-[-100vw]
+  after:bg-gray-950/5 dark:after:bg-white/10">
+  <!-- Section content -->
 </div>
 ```
 
-#### Gradient Border Glow Card
+#### Hero Page Grid (Tailwind v4)
 
 ```html
-<div class="relative group overflow-hidden rounded-2xl border border-slate-200/80
-  bg-white p-6 transition-all duration-300
-  dark:border-slate-800 dark:bg-slate-900/60 hover:-translate-y-0.5">
+<div class="grid min-h-dvh grid-cols-1
+            grid-rows-[1fr_1px_auto_1px_auto]
+            [--gutter-width:2.5rem]
+            md:grid-cols-[var(--gutter-width)_minmax(0,var(--breakpoint-2xl))_var(--gutter-width)]">
+  <!-- 1px rows = automatic dividers, no extra HTML needed -->
+</div>
+```
+
+#### Gradient Border Glow Card (v4 colors)
+
+```html
+<div class="relative group overflow-hidden rounded-2xl
+  border border-gray-950/5 bg-white p-6 transition-all duration-300
+  dark:border-white/10 dark:bg-gray-900/60 hover:-translate-y-0.5">
 
   <!-- Glowing gradient on hover -->
   <div class="absolute -inset-px -z-10 rounded-2xl bg-gradient-to-r
@@ -87,42 +101,35 @@ skills/
     group-hover:opacity-20 group-hover:blur-md">
   </div>
 
-  <!-- Subtle border highlight -->
-  <div class="absolute inset-[1px] rounded-[15px]
-    bg-gradient-to-b from-white/10 to-transparent pointer-events-none">
-  </div>
-
-  <!-- Content -->
-  <h3 class="text-lg font-semibold text-slate-900 dark:text-white mb-2">Card Title</h3>
-  <p class="text-sm text-slate-500 dark:text-slate-400">Card content text.</p>
+  <h3 class="text-lg font-semibold text-gray-950 dark:text-white mb-2">Card Title</h3>
+  <p class="text-sm text-gray-500 dark:text-gray-400">Card content text.</p>
 </div>
 ```
 
-#### Ambient Glow Spotlight
+#### Accessible Focus Ring
 
 ```html
-<div class="absolute top-0 left-1/4 -z-10 h-[500px] w-[700px]
-  rounded-full bg-sky-500/10 blur-[120px] filter animate-pulse">
-</div>
-<div class="absolute top-10 right-1/4 -z-10 h-[450px] w-[600px]
-  rounded-full bg-violet-500/10 blur-[100px] filter animate-pulse"
-  style="animation-delay: 2s;">
-</div>
+<button class="focus:outline-none
+               focus-visible:ring-2
+               focus-visible:ring-sky-500
+               focus-visible:ring-offset-2
+               dark:focus-visible:ring-offset-gray-950">
+  Click me
+</button>
 ```
 
-### Color Palette Reference
+### Color Palette Reference (v4 — gray-* ไม่ใช่ slate-*)
 
-| Role | Light Mode | Dark Mode | Hex |
-|------|-----------|-----------|-----|
-| **Background** | `bg-white` | `bg-slate-950` | `#020617` |
-| **Surface** | `bg-slate-50` | `bg-slate-900` | `#0f172a` |
-| **Brand Blue** | `text-sky-500` | `text-sky-500` | `#0ea5e9` |
-| **Accent Violet** | `text-violet-500` | `text-violet-500` | `#8b5cf6` |
-| **Accent Pink** | `text-pink-500` | `text-pink-500` | `#ec4899` |
-| **Primary Text** | `text-slate-900` | `text-slate-100` | — |
-| **Body Text** | `text-slate-700` | `text-slate-300` | — |
-| **Muted Text** | `text-slate-500` | `text-slate-400` | — |
-| **Border** | `border-slate-200/80` | `border-slate-800` | — |
+| Role | Light Mode | Dark Mode | หมายเหตุ |
+|------|-----------|-----------|----------|
+| **Background** | `bg-white` | `dark:bg-gray-950` | oklch(.13 .028 261) |
+| **Surface** | `bg-gray-50` | `dark:bg-gray-900` | panels/cards |
+| **Subtle Border** | `border-gray-950/5` | `dark:border-white/10` | opacity-based |
+| **Divider Line** | `bg-gray-950/5` | `dark:bg-white/10` | pseudo-elements |
+| **Primary Text** | `text-gray-950` | `dark:text-white` | headings |
+| **Body Text** | `text-gray-600` | `dark:text-gray-400` | paragraphs |
+| **Brand Sky** | `text-sky-500` | `dark:text-sky-400` | `#0ea5e9` |
+| **Monospace Label** | `text-sky-500` | `dark:text-sky-400` | badges, code |
 
 ### วิธีติดตั้ง
 
@@ -150,7 +157,9 @@ cp -r tailwind-ux-ui ~/.gemini/config/skills/
 
 | Skill | สถานะ | รายละเอียด |
 |-------|--------|------------|
-| — | 🚧 Planning | กำลังรวบรวม Skills เพิ่มเติม |
+| Next.js App Router Patterns | 🚧 Planning | Server Components, data fetching, layouts |
+| Framer Motion Animation | 🚧 Planning | Animation patterns สำหรับ React |
+| — | 💭 Idea | มีไอเดียอื่นๆ อีก |
 
 > 💡 **มี Skill ที่ใช้อยู่?** หรืออยากให้สร้าง Skill ใหม่ — ติดต่อมาได้ครับ!
 
