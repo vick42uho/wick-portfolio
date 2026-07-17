@@ -1,38 +1,221 @@
 ---
-title: "แชร์ Agent Skills ที่ฉันสร้างไว้ — แหล่งรวม AI Coding Skills"
+title: "Rust + Axum Production Backend — สิ่งที่เรียนรู้จากการสร้าง REST API จริง"
 publishedAt: "2026-07-17"
-updatedAt: "2026-07-17T13:36:00+07:00"
+updatedAt: "2026-07-17T14:20:00+07:00"
 author: "Wick Thaweep"
-summary: "รวม Agent Skills ที่สร้างไว้สำหรับ AI Coding Assistant — ตั้งแต่ Tailwind UX/UI Design System ไปจนถึง Skills อื่นๆ ในอนาคต เพื่อยกระดับ Developer Experience"
-image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=192&fit=crop"
+summary: "Agent Skill ใหม่: สรุปเทคนิคการสร้าง Rust backend ด้วย Axum + SQLx + PostgreSQL จากโปรเจกต์จริง ครอบคลุม Error Handling, JWT Auth, Dynamic QueryBuilder, SSE, Multipart Upload และ Transaction"
+image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=192&fit=crop"
 ---
 
-# แชร์ Agent Skills ที่ฉันสร้างไว้ — แหล่งรวม AI Coding Skills
+# Rust + Axum Production Backend Skill
 
-บทความนี้เป็น **แหล่งรวม** Agent Skills ที่ผมสร้างและดูแลไว้สำหรับ AI Coding Assistant ครับ แต่ละ Skill เปรียบเสมือน "สมองเสริม" ที่ทำให้ AI เข้าใจ context เฉพาะทาง แล้วทำงานได้แม่นยำและมีคุณภาพกว่าปกติ
+Agent Skill ใหม่ที่สร้างจากการศึกษา source code จริงของ **rust-crud-api** (ระบบ Request Ticker) — REST API ที่เขียนด้วย Rust ใช้งาน production จริง ครอบคลุมทุกเทคนิคที่นักพัฒนา Rust ต้องรู้
 
 > 📌 **บทความนี้จะอัปเดตเรื่อยๆ** เมื่อมี Skill ใหม่ — กลับมาดูได้เสมอ!
 
 ---
 
-## Agent Skill คืออะไร?
+## 🦀 Skill #2: Rust + Axum Production Backend
 
-Agent Skill คือชุดคำสั่งและ context ที่ป้อนให้ AI Coding Assistant (เช่น Gemini, Copilot, Cursor) เพื่อให้มัน:
+| รายละเอียด | |
+|---|---|
+| **GitHub** | [vick42uho/rust-axum-backend](https://github.com/vick42uho/rust-axum-backend) *(coming soon)* |
+| **เวอร์ชัน** | v1 |
+| **License** | Apache-2.0 |
+| **เหมาะสำหรับ** | สร้าง REST API ด้วย Rust, Axum, SQLx, PostgreSQL |
 
-- **เข้าใจ design system** เฉพาะทาง เช่น สีที่ใช้, typography, spacing
-- **สร้าง code ที่มีคุณภาพ** ตาม best practices ที่กำหนดไว้
-- **ลดการแก้ไขซ้ำ** เพราะ AI รู้ "กฎ" ตั้งแต่ต้น
+### Skill นี้ทำอะไร?
 
-### โครงสร้างของ Skill
+ศึกษาจาก **rust-crud-api** แบบ deep-dive — อ่านทุกไฟล์ ทุก pattern ที่ใช้จริงใน production แล้วสรุปออกมาเป็น 19 หัวข้อ:
 
+1. **Stack & Dependencies** — Cargo.toml ที่ใช้จริง + เหตุผลที่เลือกแต่ละ crate
+2. **โครงสร้างโปรเจกต์** — Module pattern: 1 feature = 1 folder (mod/models/handlers/routes)
+3. **Application Bootstrap** — main.rs: env, DB pool, CORS, Router assembly, Render.com deployment
+4. **Error Handling** — `ApiError` enum + `IntoResponse` + `From<sqlx::Error>` trait
+5. **JWT Auth Middleware** — Bearer token, Claims struct, Extensions injection
+6. **Login & Password** — Argon2 hashing + verify, JWT generation, multi-field login
+7. **Input Validation** — `validator` crate + derive macro
+8. **SQLx Query Patterns** — `query_as`, `query!` macro, CTE, JSON aggregation
+9. **Dynamic QueryBuilder** — Pagination + multi-filter โดยไม่เสี่ยง SQL injection
+10. **Database Transactions** — `pool.begin()` + `&mut *tx` + `tx.commit()`
+11. **Multipart File Upload** — UUID filename, async write, URL storage
+12. **Server-Sent Events (SSE)** — broadcast channel, BoxStream, keepalive
+13. **Background Tasks** — `tokio::spawn`, scheduled daily jobs
+14. **Telegram Notifications** — reqwest HTTP client, dept chat_id lookup
+15. **Role-Based Access Control** — SQL filtering ตาม role + Forbidden error
+16. **Inline Struct** — Local struct definition เพื่อซ่อน sensitive fields
+17. **Environment Config** — .env, Render.com deployment pattern
+18. **Static File Serving** — `ServeDir` + auto-create uploads folder
+19. **Common Pitfalls** — 8 ข้อผิดพลาดที่ต้องหลีกเลี่ยง
+
+---
+
+### ตัวอย่างโค้ดที่น่าสนใจ
+
+#### ApiError — Global Error Type ที่สะอาดที่สุด
+
+```rust
+pub enum ApiError {
+    InternalServerError(String),
+    NotFound(String),
+    BadRequest(String),
+    Forbidden(String),
+}
+
+// สอน Axum วิธีแปลง Error เป็น HTTP Response
+impl IntoResponse for ApiError {
+    fn into_response(self) -> Response {
+        let (status, message) = match self {
+            ApiError::InternalServerError(msg) => (StatusCode::INTERNAL_SERVER_ERROR, msg),
+            ApiError::NotFound(msg)            => (StatusCode::NOT_FOUND, msg),
+            ApiError::BadRequest(msg)          => (StatusCode::BAD_REQUEST, msg),
+            ApiError::Forbidden(msg)           => (StatusCode::FORBIDDEN, msg),
+        };
+        (status, Json(json!({ "error": message }))).into_response()
+    }
+}
+
+// ✨ From trait: ใช้ ? operator กับ sqlx query ได้โดยตรง
+impl From<sqlx::Error> for ApiError {
+    fn from(err: sqlx::Error) -> Self {
+        eprintln!("🔥 DB Error: {:?}", err);
+        ApiError::InternalServerError("เกิดข้อผิดพลาดในการเชื่อมต่อฐานข้อมูล".to_string())
+    }
+}
 ```
-skills/
-└── skill-name/
-    ├── SKILL.md          ← คำสั่งหลัก (frontmatter + instructions)
-    ├── scripts/          ← Helper scripts (ถ้ามี)
-    ├── examples/         ← ตัวอย่างโค้ด
-    ├── resources/        ← ไฟล์เสริม
-    └── references/       ← เอกสารอ้างอิง
+
+#### Dynamic QueryBuilder — Pagination + Multi-Filter
+
+```rust
+let mut query_builder: QueryBuilder<Postgres> = QueryBuilder::new(
+    "SELECT r.id, r.req_code FROM requests r WHERE r.is_deleted = FALSE"
+);
+
+// Filter ตาม search text (SQL injection safe)
+if let Some(search) = &params.search {
+    let pattern = format!("%{}%", search.to_lowercase());
+    query_builder.push(" AND LOWER(r.description) LIKE ");
+    query_builder.push_bind(pattern); // ✅ parameterized
+}
+
+// Filter array ด้วย ANY($N)
+if let Some(ids_str) = &params.status_ids {
+    let ids: Vec<i32> = ids_str.split(',')
+        .filter_map(|s| s.parse().ok())
+        .collect();
+    if !ids.is_empty() {
+        query_builder.push(" AND r.status_id = ANY(");
+        query_builder.push_bind(ids); // Vec<i32> → PostgreSQL array
+        query_builder.push(")");
+    }
+}
+
+// Pagination
+query_builder.push(" ORDER BY r.priority ASC LIMIT ");
+query_builder.push_bind(limit);
+query_builder.push(" OFFSET ");
+query_builder.push_bind(offset);
+```
+
+#### JWT Middleware — Claims ผ่าน Extensions
+
+```rust
+// middleware.rs
+pub async fn auth(mut req: Request, next: Next) -> Result<Response, StatusCode> {
+    let token = req.headers()
+        .get(header::AUTHORIZATION)
+        .and_then(|h| h.to_str().ok())
+        .filter(|h| h.starts_with("Bearer "))
+        .map(|h| &h[7..])
+        .ok_or(StatusCode::UNAUTHORIZED)?;
+
+    let claims = decode::<Claims>(token, &key, &Validation::default())
+        .map_err(|_| StatusCode::UNAUTHORIZED)?.claims;
+
+    // ✨ ฝัง Claims ไว้ใน request extensions
+    req.extensions_mut().insert(claims);
+    Ok(next.run(req).await)
+}
+
+// handler — ดึง Claims ออกมาใช้
+pub async fn create_request(
+    State(pool): State<PgPool>,
+    Extension(claims): Extension<Claims>, // ← ดึงจาก middleware
+    Json(payload): Json<CreateRequestPayload>,
+) -> Result<..., ApiError> {
+    let user_id: i32 = claims.sub.parse()
+        .map_err(|_| ApiError::InternalServerError("Token ไม่ถูกต้อง".to_string()))?;
+}
+```
+
+#### Database Transaction
+
+```rust
+let mut tx = pool.begin().await.map_err(|e| {
+    ApiError::InternalServerError(format!("ไม่สามารถเริ่ม Transaction: {}", e))
+})?;
+
+// INSERT หลาย table — ใช้ &mut *tx ทั้งหมด
+let id: (i32,) = sqlx::query_as(INSERT_SQL)
+    .bind(&payload.description)
+    .fetch_one(&mut *tx).await?; // ← ต้องใช้ tx ไม่ใช่ pool
+
+for approver in &payload.approvers {
+    sqlx::query(INSERT_APPROVAL_SQL)
+        .bind(id.0)
+        .bind(approver.approver_id)
+        .execute(&mut *tx).await?;
+}
+
+tx.commit().await?; // ✅ ทุก INSERT สำเร็จ → commit
+// ถ้า error ก่อน commit → rollback อัตโนมัติ
+```
+
+#### SSE (Server-Sent Events) — Real-time Update
+
+```rust
+// ส่ง event ไปหา client ทุกคน
+sse_state.broadcast_event(SSEEvent {
+    event_type: "request_created".to_string(),
+    request_id: new_id,
+    status_id: Some(1),
+    req_code: Some(req_code.clone()),
+});
+
+// Frontend (JavaScript)
+const es = new EventSource(`/events?token=${token}`);
+es.addEventListener('request_update', (e) => {
+    const data = JSON.parse(e.data);
+    // อัพเดต UI ทันที ไม่ต้อง polling
+});
+```
+
+---
+
+### Tech Stack Summary
+
+| Layer | Technology | หน้าที่ |
+|---|---|---|
+| **Framework** | Axum 0.7 | HTTP routing + extractors |
+| **Async Runtime** | Tokio | async/await execution |
+| **Database** | SQLx 0.7 + PostgreSQL | Compile-time SQL checking |
+| **Auth** | jsonwebtoken | JWT encode/decode |
+| **Password** | Argon2 | Secure password hashing |
+| **Validation** | validator | Derive-based input validation |
+| **Notifications** | reqwest | Telegram Bot API HTTP calls |
+| **Real-time** | Tokio broadcast | SSE fan-out to all clients |
+| **CORS + Files** | tower-http | Middleware + static serving |
+
+---
+
+### วิธีติดตั้ง Skill
+
+```bash
+# Clone repo (coming soon)
+git clone https://github.com/vick42uho/rust-axum-backend.git
+
+# คัดลอกไปยัง skills directory
+cp -r rust-axum-backend ~/.gemini/config/skills/
 ```
 
 ---
@@ -45,8 +228,6 @@ skills/
 | **เวอร์ชัน** | v4 |
 | **License** | Apache-2.0 |
 | **เหมาะสำหรับ** | ออกแบบ Web UI, Dashboard, Documentation ให้สวยระดับ Premium |
-
-### Skill นี้ทำอะไร?
 
 เป็น **masterclass-level reference** ที่ศึกษาจากเว็บ [tailwindcss.com](https://tailwindcss.com) แบบ pixel-perfect — อ่านตรง live source code จริง แล้วสรุปออกมาเป็นชุดกฎที่ AI สามารถนำไปใช้สร้าง UI ได้ทันที ครอบคลุม **11 หัวข้อ**:
 
@@ -62,93 +243,10 @@ skills/
 10. **Button & Interactive Patterns** — CTA, Version badge, Plus badge, Search bar
 11. **Dark Mode Implementation** — oklch theme-color, image swap, dark class strategy
 
-### ตัวอย่างโค้ดจาก Skill
-
-#### Full-Viewport Section Dividers (v4 Trick)
-
-```html
-<!-- เส้น hairline ที่พาด full browser width โดยไม่สนใจ max-width ของ content -->
-<div class="relative
-  before:absolute before:top-0 before:h-px before:w-[200vw] before:left-[-100vw]
-  before:bg-gray-950/5 dark:before:bg-white/10
-  after:absolute after:bottom-0 after:h-px after:w-[200vw] after:left-[-100vw]
-  after:bg-gray-950/5 dark:after:bg-white/10">
-  <!-- Section content -->
-</div>
-```
-
-#### Hero Page Grid (Tailwind v4)
-
-```html
-<div class="grid min-h-dvh grid-cols-1
-            grid-rows-[1fr_1px_auto_1px_auto]
-            [--gutter-width:2.5rem]
-            md:grid-cols-[var(--gutter-width)_minmax(0,var(--breakpoint-2xl))_var(--gutter-width)]">
-  <!-- 1px rows = automatic dividers, no extra HTML needed -->
-</div>
-```
-
-#### Gradient Border Glow Card (v4 colors)
-
-```html
-<div class="relative group overflow-hidden rounded-2xl
-  border border-gray-950/5 bg-white p-6 transition-all duration-300
-  dark:border-white/10 dark:bg-gray-900/60 hover:-translate-y-0.5">
-
-  <!-- Glowing gradient on hover -->
-  <div class="absolute -inset-px -z-10 rounded-2xl bg-gradient-to-r
-    from-sky-500 to-indigo-500 opacity-0 blur transition-all duration-300
-    group-hover:opacity-20 group-hover:blur-md">
-  </div>
-
-  <h3 class="text-lg font-semibold text-gray-950 dark:text-white mb-2">Card Title</h3>
-  <p class="text-sm text-gray-500 dark:text-gray-400">Card content text.</p>
-</div>
-```
-
-#### Accessible Focus Ring
-
-```html
-<button class="focus:outline-none
-               focus-visible:ring-2
-               focus-visible:ring-sky-500
-               focus-visible:ring-offset-2
-               dark:focus-visible:ring-offset-gray-950">
-  Click me
-</button>
-```
-
-### Color Palette Reference (v4 — gray-* ไม่ใช่ slate-*)
-
-| Role | Light Mode | Dark Mode | หมายเหตุ |
-|------|-----------|-----------|----------|
-| **Background** | `bg-white` | `dark:bg-gray-950` | oklch(.13 .028 261) |
-| **Surface** | `bg-gray-50` | `dark:bg-gray-900` | panels/cards |
-| **Subtle Border** | `border-gray-950/5` | `dark:border-white/10` | opacity-based |
-| **Divider Line** | `bg-gray-950/5` | `dark:bg-white/10` | pseudo-elements |
-| **Primary Text** | `text-gray-950` | `dark:text-white` | headings |
-| **Body Text** | `text-gray-600` | `dark:text-gray-400` | paragraphs |
-| **Brand Sky** | `text-sky-500` | `dark:text-sky-400` | `#0ea5e9` |
-| **Monospace Label** | `text-sky-500` | `dark:text-sky-400` | badges, code |
-
-### วิธีติดตั้ง
-
 ```bash
-# Clone repo
+# ติดตั้ง
 git clone https://github.com/vick42uho/tailwind-ux-ui.git
-
-# คัดลอกไปยัง skills directory
 cp -r tailwind-ux-ui ~/.gemini/config/skills/
-```
-
-หรือจะสร้าง `skills.json` เพื่อ reference จาก path ที่ต้องการ:
-
-```json
-{
-  "entries": [
-    { "path": "path/to/tailwind-ux-ui" }
-  ]
-}
 ```
 
 ---
@@ -165,16 +263,15 @@ cp -r tailwind-ux-ui ~/.gemini/config/skills/
 
 ---
 
-## สรุป
+## สรุป: ทำไมต้องสร้าง Agent Skill?
 
-Agent Skills เป็นวิธีที่ดีที่สุดในการ **ยกระดับ AI Coding Assistant** ให้เข้าใจ context เฉพาะทางของคุณ แทนที่จะสั่ง AI แบบกว้างๆ แล้วต้องแก้ไขซ้ำ — คุณสามารถสร้าง Skill ที่สอน AI ให้ "เก่ง" ในเรื่องที่คุณต้องการได้
-
-### ทำไมต้องสร้าง Skill?
+Agent Skills คือวิธีที่ดีที่สุดในการ **ยกระดับ AI Coding Assistant** ให้เข้าใจ context เฉพาะทางของคุณ
 
 - ✅ **ลดเวลาแก้ไข** — AI ทำถูกตั้งแต่ครั้งแรก
-- ✅ **Consistency** — ทุกโปรเจกต์ใช้ design system เดียวกัน
+- ✅ **Consistency** — ทุกโปรเจกต์ใช้ patterns เดียวกัน
 - ✅ **Reusable** — สร้างครั้งเดียว ใช้ได้ทุกโปรเจกต์
 - ✅ **Shareable** — แชร์ให้ทีมหรือ community ได้
+- ✅ **Living Documentation** — Skill คือ documentation ที่ AI อ่านแล้วนำไปใช้ได้เลย
 
 ---
 
