@@ -3,7 +3,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -19,6 +19,17 @@ const geistMono = Geist_Mono({
   variable: "--font-mono",
 });
 
+// ── Next.js Dynamic Viewport (สลับสีแถบบน Browser ตาม theme) ──
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#050d1a" },
+  ],
+  width: "device-width",
+  initialScale: 1,
+};
+
+// ── Complete SEO Metadata Configuration ──
 export const metadata: Metadata = {
   metadataBase: new URL(DATA.url),
   title: {
@@ -26,14 +37,51 @@ export const metadata: Metadata = {
     template: `%s | ${DATA.name}`,
   },
   description: DATA.description,
+  keywords: [
+    "Wick",
+    "Wick Thaweep Poraha",
+    "Thaweep Poraha",
+    "Full-Stack Software Engineer",
+    "Rust Developer",
+    "Axum REST API",
+    "Tailwind CSS v4 Design System",
+    "Healthcare Web Applications",
+    "Next.js Portfolio",
+    "TypeScript Developer",
+    "AI Coding Skills",
+    "Agent Skills",
+    "พอร์ตโฟลิโอวิค",
+    "วิค ทวีป โพราหา",
+    "วิค ทวีป",
+    "วิค โปราหา"
+  ],
+  authors: [{ name: "Wick Thaweep", url: DATA.url }],
+  creator: "Wick Thaweep",
+  publisher: "Wick Thaweep",
+  
+  // Favicon and Device Icons
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/apple-touch-icon.png",
+  },
+
   openGraph: {
-    title: `${DATA.name}`,
+    title: `${DATA.name} | Full-Stack Software Engineer`,
     description: DATA.description,
     url: DATA.url,
     siteName: `${DATA.name}`,
     locale: "th_TH",
     type: "website",
   },
+  
+  twitter: {
+    title: `${DATA.name} | Full-Stack Software Engineer`,
+    card: "summary_large_image",
+    description: DATA.description,
+    creator: "@vick42uho",
+  },
+
   robots: {
     index: true,
     follow: true,
@@ -44,10 +92,6 @@ export const metadata: Metadata = {
       "max-image-preview": "large",
       "max-snippet": -1,
     },
-  },
-  twitter: {
-    title: `${DATA.name}`,
-    card: "summary_large_image",
   },
 };
 
@@ -88,7 +132,7 @@ export default function RootLayout({
               />
             </div>
 
-            {/* ── Wide Grid Layout System with side gutters (จาก Section 5 ของ Skill) ── */}
+            {/* ── Wide Grid Layout System with side gutters ── */}
             <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 relative z-10">
               <div className="grid grid-cols-1 md:grid-cols-[60px_1fr_60px] lg:grid-cols-[100px_1fr_100px] min-h-screen">
                 
