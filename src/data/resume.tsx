@@ -17,6 +17,7 @@ import { Bun } from "@/components/ui/svgs/bun";
 import { Elysia } from "@/components/ui/svgs/elysia";
 import { SqlServer } from "@/components/ui/svgs/sqlserver";
 
+
 export const DATA = {
   name: "𝕎𝕚𝕔𝕜",
   initials: "WT",
@@ -26,23 +27,29 @@ export const DATA = {
   locationLink: "https://www.google.com/maps/place/Bangkok",
 
   description:
-    "Full-stack Software Engineer building scalable healthcare and enterprise solutions.",
+    "Senior Full-Stack Software Engineer building scalable healthcare and enterprise systems.",
 
   descriptionSequence: [
-    "Transforming complex business workflows into intuitive web applications.",
-    "Designing reliable backend services and modern frontend experiences.",
-    "Building secure, maintainable, and production-ready software.",
-    "Passionate about clean architecture, performance, and user experience.",
+    "Transforming complex business challenges into elegant software solutions.",
+    "Designing scalable architectures across Frontend, Backend, and Infrastructure.",
+    "Building secure, maintainable, and production-ready applications.",
+    "Passionate about DevOps, performance optimization, and operational excellence.",
   ],
 
   summary: `
-I'm a Full-stack Software Engineer passionate about building software that solves real business challenges.
+I'm a Full-Stack Software Engineer with a passion for building software that creates meaningful business impact.
 
-I specialize in developing modern web applications, backend services, and internal platforms for healthcare and enterprise environments. My work focuses on creating reliable systems that simplify complex workflows, improve operational efficiency, and provide an excellent user experience.
+I specialize in architecting and developing scalable web applications, backend services, and enterprise platforms for healthcare and business environments. With expertise spanning Frontend, Backend, Database, Infrastructure, and Deployment, I thrive on delivering end-to-end solutions that simplify complex workflows and improve operational efficiency.
 
-I enjoy working across the entire development lifecycle—from planning and system design to deployment and maintenance—while writing clean, maintainable, and scalable code.
+My technical background includes React, Next.js, TypeScript, Rust, Python, PostgreSQL, Docker, and modern cloud technologies, complemented by hands-on experience in DevOps, CI/CD, and production infrastructure management.
 
-`,
+I enjoy working throughout the entire software development lifecycle—from requirements analysis and system design to implementation, deployment, and long-term maintenance—while maintaining a strong focus on performance, security, scalability, and clean architecture.
+
+Driven by continuous learning and engineering excellence, I am committed to building reliable, high-quality systems that provide exceptional user experiences and long-term business value.
+  `,
+
+
+
 
   avatarUrl: "/me.jpg",
 
