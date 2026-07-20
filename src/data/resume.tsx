@@ -20,7 +20,7 @@ import { SqlServer } from "@/components/ui/svgs/sqlserver";
 export const DATA = {
   name: "𝕎𝕚𝕔𝕜",
   initials: "WT",
-  url: "https://wick.dev",
+  url: "https://wick-portfolio-22.vercel.app/",
 
   location: "Bangkok, Thailand",
   locationLink: "https://www.google.com/maps/place/Bangkok",
@@ -118,8 +118,8 @@ I enjoy working across the entire development lifecycle—from planning and syst
   location: "Remote",
   title: "Office Staff / Health Checkup Operations",
   logoUrl: "/vichaivej.png",
-  start: "May 2022",
-  end: "Oct 2023",
+  start: "2015",
+  end: "2022",
   description:
     "Managed enterprise health-checkup operations by maintaining accurate medical records, coordinating workflows, and preparing operational reports. Built Excel-based formulas and data validation logic to improve laboratory result processing and reporting accuracy. Collaborated with cross-functional teams to support client services, operational efficiency, and accounting documentation.",
 },
@@ -130,7 +130,7 @@ I enjoy working across the entire development lifecycle—from planning and syst
   location: "Remote",
   title: "Developer / Programmer",
   logoUrl: "/yanhee.jpg",
-  start: "January 2024",
+  start: "2023",
   end: "Present",
   description:
     "Develop and maintain enterprise web applications that digitalize hospital operations and support multiple business units. Design scalable solutions, optimize existing systems, and implement new features across CRM, KPI, Competency, HR, and request-management platforms. Build secure role-based modules, automate operational workflows, improve reporting capabilities, and collaborate with stakeholders to deliver reliable, user-focused solutions that enhance productivity and reduce manual processes.",
