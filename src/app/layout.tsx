@@ -177,6 +177,9 @@ export default function RootLayout({
   return (
     <html lang="th" className="overflow-x-hidden" suppressHydrationWarning>
       <head>
+        <link rel="icon" type="image/jpeg" href="/me.jpg" />
+        <link rel="shortcut icon" type="image/jpeg" href="/me.jpg" />
+        <link rel="apple-touch-icon" href="/me.jpg" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdPerson) }}
