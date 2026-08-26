@@ -68,9 +68,13 @@ export const metadata: Metadata = {
   
   // Favicon and Device Icons
   icons: {
-    icon: "/icon.svg",
-    shortcut: "/icon.svg",
-    apple: "/apple-touch-icon.png",
+    icon: [
+      { url: "/icon", sizes: "48x48", type: "image/png" },
+      { url: "/me.jpg", sizes: "any" },
+    ],
+    apple: [
+      { url: "/apple-icon", sizes: "180x180", type: "image/png" },
+    ],
   },
 
   openGraph: {
