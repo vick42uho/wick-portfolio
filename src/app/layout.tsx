@@ -29,35 +29,42 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+const siteCleanUrl = (DATA.url || "https://wick-portfolio-22.vercel.app").replace(/\/$/, '');
+
 // ── Complete SEO Metadata Configuration ──
 export const metadata: Metadata = {
-  metadataBase: new URL(DATA.url),
+  metadataBase: new URL(siteCleanUrl),
   title: {
-    default: DATA.name,
-    template: `%s | ${DATA.name}`,
+    default: "Wick Thaweep (วิค ทวีป) — Senior Full-Stack Software Engineer",
+    template: "%s | Wick Thaweep",
   },
   description: DATA.description,
   keywords: [
     "Wick",
+    "Wick Thaweep",
     "Wick Thaweep Poraha",
     "Thaweep Poraha",
+    "วิค ทวีป",
+    "วิค ทวีป โพราหา",
+    "พอร์ตโฟลิโอวิค",
     "Full-Stack Software Engineer",
-    "Rust Developer",
+    "Senior Full Stack Developer Thailand",
+    "Rust Developer Thailand",
     "Axum REST API",
+    "Next.js Portfolio",
+    "React Developer Bangkok",
+    "TypeScript Expert",
     "Tailwind CSS v4 Design System",
     "Healthcare Web Applications",
-    "Next.js Portfolio",
-    "TypeScript Developer",
-    "AI Coding Skills",
-    "Agent Skills",
-    "พอร์ตโฟลิโอวิค",
-    "วิค ทวีป โพราหา",
-    "วิค ทวีป",
-    "วิค โปราหา"
+    "High Availability PostgreSQL",
+    "AI Agent Skills",
+    "Loop Engineering AI Agents",
+    "Software Architecture",
+    "DevOps Docker Kubernetes"
   ],
-  authors: [{ name: "Wick Thaweep", url: DATA.url }],
-  creator: "Wick Thaweep",
-  publisher: "Wick Thaweep",
+  authors: [{ name: "Wick Thaweep Poraha", url: siteCleanUrl }],
+  creator: "Wick Thaweep Poraha",
+  publisher: "Wick Thaweep Poraha",
   
   // Favicon and Device Icons
   icons: {
@@ -67,19 +74,28 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: `${DATA.name} | Full-Stack Software Engineer`,
+    title: "Wick Thaweep (วิค ทวีป) — Senior Full-Stack Software Engineer",
     description: DATA.description,
-    url: DATA.url,
-    siteName: `${DATA.name}`,
+    url: siteCleanUrl,
+    siteName: "Wick Thaweep Portfolio",
     locale: "th_TH",
+    alternateLocale: ["en_US"],
     type: "website",
   },
   
   twitter: {
-    title: `${DATA.name} | Full-Stack Software Engineer`,
+    title: "Wick Thaweep (วิค ทวีป) — Senior Full-Stack Software Engineer",
     card: "summary_large_image",
     description: DATA.description,
     creator: "@vick42uho",
+  },
+
+  alternates: {
+    canonical: siteCleanUrl,
+    languages: {
+      "th-TH": siteCleanUrl,
+      "en-US": siteCleanUrl,
+    },
   },
 
   robots: {
@@ -100,8 +116,68 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Enhanced Schema.org JSON-LD for Search Engine Knowledge Graphs
+  const jsonLdPerson = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${siteCleanUrl}/#person`,
+    name: "Wick Thaweep Poraha",
+    alternateName: ["Wick", "วิค ทวีป", "ทวีป โพราหา", "𝕎𝕚𝕔𝕜"],
+    url: siteCleanUrl,
+    image: `${siteCleanUrl}/me.png`,
+    jobTitle: "Senior Full-Stack Software Engineer",
+    worksFor: {
+      "@type": "Organization",
+      name: "Healthcare & Enterprise Technology",
+    },
+    description: DATA.description,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Bangkok",
+      addressCountry: "TH",
+    },
+    sameAs: [
+      "https://github.com/vick42uho",
+      "https://x.com/vick42uho",
+    ],
+    knowsAbout: [
+      "Full-Stack Software Engineering",
+      "Rust (Axum API)",
+      "Next.js & React",
+      "TypeScript",
+      "PostgreSQL Architecture",
+      "Docker & Containerization",
+      "AI Agent Skills & Loop Engineering",
+      "Tailwind CSS v4 Design Systems",
+      "Healthcare Enterprise Systems",
+    ],
+  };
+
+  const jsonLdWebSite = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${siteCleanUrl}/#website`,
+    url: siteCleanUrl,
+    name: "Wick Thaweep Portfolio",
+    description: DATA.description,
+    author: {
+      "@id": `${siteCleanUrl}/#person`,
+    },
+    inLanguage: ["th", "en"],
+  };
+
   return (
     <html lang="th" className="overflow-x-hidden" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdPerson) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdWebSite) }}
+        />
+      </head>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased relative overflow-x-hidden",
