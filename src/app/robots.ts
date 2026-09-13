@@ -1,9 +1,7 @@
 import { MetadataRoute } from 'next';
-import { DATA } from '@/data/resume';
+import { SITE_URL } from '@/lib/seo';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = (process.env.NEXT_PUBLIC_BASE_URL || DATA.url || 'https://wick-portfolio-22.vercel.app').replace(/\/$/, '');
-
   return {
     rules: [
       {
@@ -11,10 +9,31 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
       },
       {
-        userAgent: 'Googlebot',
+        userAgent: [
+          'Googlebot',
+          'Bingbot',
+          'Applebot',
+          'DuckDuckBot',
+          'Baiduspider',
+          'YandexBot',
+        ],
+        allow: '/',
+      },
+      // AI Crawlers & LLM Indexers for AI Search (Perplexity, ChatGPT Search, Claude, Gemini)
+      {
+        userAgent: [
+          'GPTBot',
+          'ChatGPT-User',
+          'PerplexityBot',
+          'ClaudeBot',
+          'Google-Extended',
+          'Applebot-Extended',
+          'CCBot',
+        ],
         allow: '/',
       },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL,
   };
 }

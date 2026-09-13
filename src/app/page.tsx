@@ -10,34 +10,32 @@ import ContactSection from "@/components/section/contact-section";
 import ProjectsSection from "@/components/section/projects-section";
 import WorkSection from "@/components/section/work-section";
 import { ArrowUpRight, MapPin } from "lucide-react";
+import { SITE_URL } from "@/lib/seo";
 
 const BLUR_FADE_DELAY = 0.04;
 
 export default function Page() {
-  const jsonLdContent = JSON.stringify({
+  const jsonLdProfilePage = {
     "@context": "https://schema.org",
-    "@type": "Person",
-    name: DATA.name,
-    url: DATA.url,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: DATA.location.split(",")[0].trim(),
-      addressCountry: DATA.location.split(",")[1]?.trim() || DATA.location,
+    "@type": "ProfilePage",
+    "@id": `${SITE_URL}/#profilepage`,
+    url: SITE_URL,
+    name: "Wick Thaweep Poraha Portfolio",
+    mainEntity: {
+      "@id": `${SITE_URL}/#person`,
     },
-    jobTitle: "Full-Stack Engineer",
-    worksFor: {
-      "@type": "Organization",
-      name: "Yanhee International Hospital",
+    isPartOf: {
+      "@id": `${SITE_URL}/#website`,
     },
-    sameAs: [DATA.contact.social.GitHub.url],
-  }).replace(/</g, "\\u003c");
+    inLanguage: ["th-TH", "en-US"],
+  };
 
   return (
     <main className="min-h-dvh flex flex-col gap-20 relative">
       <script
         type="application/ld+json"
         suppressHydrationWarning
-        dangerouslySetInnerHTML={{ __html: jsonLdContent }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdProfilePage).replace(/</g, "\\u003c") }}
       />
 
       {/* ══ HERO ═══════════════════════════════════════════════ */}

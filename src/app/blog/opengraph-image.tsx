@@ -1,10 +1,11 @@
  
 import { ImageResponse } from "next/og";
 import { DATA } from "@/data/resume";
+import { resolveImageUrl } from "@/lib/seo";
 
 export const runtime = "edge";
 
-export const alt = "Blog";
+export const alt = "Wick Thaweep — Technical Blog";
 export const size = {
     width: 1200,
     height: 630,
@@ -108,11 +109,9 @@ const styles = {
 export default async function Image() {
     try {
         const fontData = await getFontData();
-        const title = "Blog";
-        const description = "Thoughts on software development, life, and more.";
-        const imageUrl = DATA.avatarUrl
-            ? new URL(DATA.avatarUrl, DATA.url).toString()
-            : undefined;
+        const title = "Blog — Wick Thaweep";
+        const description = "บทความและบันทึกเชิงเทคนิคเกี่ยวกับ Full-Stack Software Engineering, Rust, Next.js, PostgreSQL และ AI Agent Loops";
+        const imageUrl = resolveImageUrl(DATA.avatarUrl);
 
         return new ImageResponse(
             (

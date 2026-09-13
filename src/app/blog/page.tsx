@@ -4,18 +4,37 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { paginate, normalizePage } from "@/lib/pagination";
 import { ChevronRight } from "lucide-react";
+import { SITE_URL, absoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Blog",
-  description: "Thoughts on software development, life, and more.",
+  title: "Blog — Technical Articles & Engineering Notes",
+  description: "บทความและบันทึกเชิงเทคนิคเกี่ยวกับ Full-Stack Software Engineering, Rust, Next.js, PostgreSQL และ AI Agent Loops โดย Wick Thaweep",
+  alternates: {
+    canonical: absoluteUrl("/blog"),
+  },
   openGraph: {
-    title: "Blog",
-    description: "Thoughts on software development, life, and more.",
+    title: "Blog — Technical Articles & Engineering Notes | Wick Thaweep",
+    description: "บทความและบันทึกเชิงเทคนิคเกี่ยวกับ Full-Stack Software Engineering, Rust, Next.js, PostgreSQL และ AI Agent Loops",
+    url: absoluteUrl("/blog"),
+    siteName: "Wick Thaweep Portfolio",
+    type: "website",
+    locale: "th_TH",
+    alternateLocale: ["en_US"],
+    images: [
+      {
+        url: absoluteUrl("/blog/opengraph-image"),
+        width: 1200,
+        height: 630,
+        alt: "Wick Thaweep Blog",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Blog",
-    description: "Thoughts on software development, life, and more.",
+    title: "Blog — Technical Articles & Engineering Notes | Wick Thaweep",
+    description: "บทความและบันทึกเชิงเทคนิคเกี่ยวกับ Full-Stack Software Engineering, Rust, Next.js, PostgreSQL และ AI Agent Loops",
+    images: [absoluteUrl("/blog/opengraph-image")],
+    creator: "@vick42uho",
   },
 };
 
@@ -44,8 +63,65 @@ export default async function BlogPage({
     pageSize: PAGE_SIZE,
   });
 
+  const jsonLdBlogCollection = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "@id": `${SITE_URL}/blog#blog`,
+    url: absoluteUrl("/blog"),
+    name: "Wick Thaweep Blog",
+    description: "บทความและบันทึกเชิงเทคนิคเกี่ยวกับ Full-Stack Software Engineering, Rust, Next.js, PostgreSQL และ AI Agent Loops",
+    publisher: {
+      "@id": `${SITE_URL}/#person`,
+    },
+    inLanguage: "th-TH",
+    blogPost: sortedPosts.map((post) => {
+      const slug = post._meta.path.replace(/\.mdx$/, "");
+      return {
+        "@type": "BlogPosting",
+        headline: post.title,
+        url: absoluteUrl(`/blog/${slug}`),
+        datePublished: post.publishedAt,
+        dateModified: post.updatedAt || post.publishedAt,
+        description: post.summary,
+      };
+    }),
+  };
+
+  const jsonLdBreadcrumbs = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: absoluteUrl("/blog"),
+      },
+    ],
+  };
+
   return (
     <section id="blog">
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLdBlogCollection).replace(/</g, "\\u003c"),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLdBreadcrumbs).replace(/</g, "\\u003c"),
+        }}
+      />
       <BlurFade delay={BLUR_FADE_DELAY}>
         <h1 className="text-2xl font-semibold tracking-tight mb-2">Blog <span className="ml-1 bg-card border border-border rounded-md px-2 py-1 text-muted-foreground text-sm">{sortedPosts.length} posts</span></h1>
         <p className="text-sm text-muted-foreground mb-8">

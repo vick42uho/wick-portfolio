@@ -3,6 +3,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { DATA } from "@/data/resume";
 import { cn } from "@/lib/utils";
+import { SITE_URL, absoluteUrl, resolveImageUrl } from "@/lib/seo";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -29,11 +30,9 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-const siteCleanUrl = (DATA.url || "https://wick-portfolio-22.vercel.app").replace(/\/$/, '');
-
 // ── Complete SEO Metadata Configuration ──
 export const metadata: Metadata = {
-  metadataBase: new URL(siteCleanUrl),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Wick Thaweep (วิค ทวีป) — Senior Full-Stack Software Engineer",
     template: "%s | Wick Thaweep",
@@ -41,12 +40,28 @@ export const metadata: Metadata = {
   description: DATA.description,
   keywords: [
     "Wick",
-    "Wick Thaweep",
-    "Wick Thaweep Poraha",
-    "Thaweep Poraha",
+    "Wic",
+    "Vic",
+    "Vick",
+    "วิค",
+    "วิก",
     "วิค ทวีป",
-    "วิค ทวีป โพราหา",
-    "พอร์ตโฟลิโอวิค",
+    "วิก ทวีป",
+    "วิค ทวีป โปราหา",
+    "วิก ทวีป โปราหา",
+    "ทวีป โปราหา",
+    "Thaweep Poraha",
+    "Wick Thaweep",
+    "Vic Thaweep",
+    "Vick Thaweep",
+    "Wic Thaweep",
+    "Wick Thaweep Poraha",
+    "Vic Thaweep Poraha",
+    "Vick Thaweep Poraha",
+    "Wic Thaweep Poraha",
+    "พอร์ตโฟลิโอ วิค",
+    "พอร์ตโฟลิโอ วิก",
+    "พอร์ตโฟลิโอ ทวีป โปราหา",
     "Full-Stack Software Engineer",
     "Senior Full Stack Developer Thailand",
     "Rust Developer Thailand",
@@ -56,13 +71,16 @@ export const metadata: Metadata = {
     "TypeScript Expert",
     "Tailwind CSS v4 Design System",
     "Healthcare Web Applications",
+    "Hospital Information Systems",
     "High Availability PostgreSQL",
+    "Patroni PostgreSQL Cluster",
     "AI Agent Skills",
     "Loop Engineering AI Agents",
     "Software Architecture",
-    "DevOps Docker Kubernetes"
+    "DevOps Docker Kubernetes",
+    "Bun Elysia Framework",
   ],
-  authors: [{ name: "Wick Thaweep Poraha", url: siteCleanUrl }],
+  authors: [{ name: "Wick Thaweep Poraha", url: SITE_URL }],
   creator: "Wick Thaweep Poraha",
   publisher: "Wick Thaweep Poraha",
   
@@ -80,11 +98,19 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Wick Thaweep (วิค ทวีป) — Senior Full-Stack Software Engineer",
     description: DATA.description,
-    url: siteCleanUrl,
+    url: SITE_URL,
     siteName: "Wick Thaweep Portfolio",
     locale: "th_TH",
     alternateLocale: ["en_US"],
     type: "website",
+    images: [
+      {
+        url: `${SITE_URL}/opengraph-image`,
+        width: 1200,
+        height: 630,
+        alt: "Wick Thaweep — Senior Full-Stack Software Engineer",
+      },
+    ],
   },
   
   twitter: {
@@ -92,13 +118,18 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     description: DATA.description,
     creator: "@vick42uho",
+    images: [`${SITE_URL}/opengraph-image`],
   },
 
   alternates: {
-    canonical: siteCleanUrl,
+    canonical: SITE_URL,
+    types: {
+      "application/rss+xml": `${SITE_URL}/rss.xml`,
+    },
     languages: {
-      "th-TH": siteCleanUrl,
-      "en-US": siteCleanUrl,
+      "th-TH": SITE_URL,
+      "en-US": SITE_URL,
+      "x-default": SITE_URL,
     },
   },
 
@@ -117,6 +148,10 @@ export const metadata: Metadata = {
   verification: {
     google: "bZ9Kr1lTGv_Bb5dHcZZRy1iiUaFvt2gD0Opmenpm5BM",
   },
+  other: {
+    "geo.region": "TH-10",
+    "geo.placename": "Bangkok",
+  },
 };
 
 export default function RootLayout({
@@ -128,15 +163,49 @@ export default function RootLayout({
   const jsonLdPerson = {
     "@context": "https://schema.org",
     "@type": "Person",
-    "@id": `${siteCleanUrl}/#person`,
+    "@id": `${SITE_URL}/#person`,
     name: "Wick Thaweep Poraha",
-    alternateName: ["Wick", "วิค ทวีป", "ทวีป โพราหา", "𝕎𝕚𝕔𝕜"],
-    url: siteCleanUrl,
-    image: `${siteCleanUrl}/me.png`,
+    alternateName: [
+      "Wick",
+      "Wic",
+      "Vic",
+      "Vick",
+      "วิค",
+      "วิก",
+      "วิค ทวีป",
+      "วิก ทวีป",
+      "วิค ทวีป โปราหา",
+      "วิก ทวีป โปราหา",
+      "ทวีป โปราหา",
+      "Thaweep Poraha",
+      "Wick Thaweep",
+      "Vic Thaweep",
+      "Vick Thaweep",
+      "Wic Thaweep",
+      "Wick Thaweep Poraha",
+      "Vic Thaweep Poraha",
+      "Vick Thaweep Poraha",
+      "Wic Thaweep Poraha",
+      "𝕎𝕚𝕔𝕜",
+    ],
+    url: SITE_URL,
+    image: resolveImageUrl("/me.jpg"),
     jobTitle: "Senior Full-Stack Software Engineer",
+    email: `mailto:${DATA.contact.email}`,
+    telephone: DATA.contact.tel,
+    nationality: {
+      "@type": "Country",
+      name: "Thailand",
+    },
     worksFor: {
       "@type": "Organization",
-      name: "Healthcare & Enterprise Technology",
+      name: "Yanhee International Hospital",
+      url: "https://th.yanhee.net/",
+    },
+    alumniOf: {
+      "@type": "CollegeOrUniversity",
+      name: "Dhonburi Rajabhat University",
+      url: "https://dru1.dru.ac.th/",
     },
     description: DATA.description,
     address: {
@@ -164,22 +233,31 @@ export default function RootLayout({
   const jsonLdWebSite = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "@id": `${siteCleanUrl}/#website`,
-    url: siteCleanUrl,
-    name: "Wick Thaweep Portfolio",
+    "@id": `${SITE_URL}/#website`,
+    url: SITE_URL,
+    name: "Wick Thaweep Portfolio & Technical Blog",
+    alternateName: [
+      "Wick Portfolio",
+      "Vic Portfolio",
+      "Vick Portfolio",
+      "Wic Portfolio",
+      "วิค ทวีป พอร์ตโฟลิโอ",
+      "วิก ทวีป พอร์ตโฟลิโอ",
+      "พอร์ตโฟลิโอ ทวีป โปราหา",
+    ],
     description: DATA.description,
     author: {
-      "@id": `${siteCleanUrl}/#person`,
+      "@id": `${SITE_URL}/#person`,
     },
-    inLanguage: ["th", "en"],
+    publisher: {
+      "@id": `${SITE_URL}/#person`,
+    },
+    inLanguage: ["th-TH", "en-US"],
   };
 
   return (
     <html lang="th" className="overflow-x-hidden" suppressHydrationWarning>
       <head>
-        <link rel="icon" type="image/jpeg" href="/me.jpg" />
-        <link rel="shortcut icon" type="image/jpeg" href="/me.jpg" />
-        <link rel="apple-touch-icon" href="/me.jpg" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdPerson) }}

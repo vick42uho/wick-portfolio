@@ -3,10 +3,11 @@
 import { ImageResponse } from "next/og";
 import { allPosts } from "content-collections";
 import { DATA } from "@/data/resume";
+import { resolveImageUrl } from "@/lib/seo";
 
 export const runtime = "edge";
 
-export const alt = "Blog Post";
+export const alt = "Wick Thaweep — Blog Post";
 export const size = {
     width: 1200,
     height: 630,
@@ -130,9 +131,7 @@ export default async function Image({
         const fontData = await getFontData();
         const { slug } = await params;
         const post = allPosts.find((p) => p._meta.path.replace(/\.mdx$/, "") === slug);
-        const imageUrl = DATA.avatarUrl
-            ? new URL(DATA.avatarUrl, DATA.url).toString()
-            : undefined;
+        const imageUrl = resolveImageUrl(DATA.avatarUrl);
 
         if (!post) {
             return new ImageResponse(

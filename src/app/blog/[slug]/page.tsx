@@ -7,6 +7,7 @@ import { MDXContent } from "@content-collections/mdx/react";
 import { mdxComponents } from "@/mdx-components";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { SITE_URL, absoluteUrl, resolveImageUrl } from "@/lib/seo";
 
 function getSortedPosts() {
   return [...allPosts].sort((a, b) => {
@@ -23,6 +24,8 @@ export async function generateStaticParams() {
   }));
 }
 
+export const dynamicParams = false;
+
 export async function generateMetadata({
   params,
 }: {
@@ -37,37 +40,43 @@ export async function generateMetadata({
     return undefined;
   }
 
-  let {
-    title,
-    publishedAt: publishedTime,
-    summary: description,
-    image,
-  } = post;
+  const postUrl = absoluteUrl(`/blog/${slug}`);
+  const ogImageUrl = resolveImageUrl(
+    post.image,
+    `/blog/${slug}/opengraph-image`
+  );
 
   return {
-    title,
-    description,
+    title: post.title,
+    description: post.summary,
+    alternates: {
+      canonical: postUrl,
+    },
     openGraph: {
-      title,
-      description,
+      title: post.title,
+      description: post.summary,
       type: "article",
-      publishedTime,
-      url: `${DATA.url}/blog/${slug}`,
-      ...(image && {
-        images: [
-          {
-            url: `${DATA.url}${image}`,
-          },
-        ],
-      }),
+      publishedTime: post.publishedAt,
+      modifiedTime: post.updatedAt || post.publishedAt,
+      authors: [post.author || "Wick Thaweep Poraha"],
+      url: postUrl,
+      siteName: "Wick Thaweep Portfolio",
+      locale: "th_TH",
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description,
-      ...(image && {
-        images: [`${DATA.url}${image}`],
-      }),
+      title: post.title,
+      description: post.summary,
+      images: [ogImageUrl],
+      creator: "@vick42uho",
     },
   };
 }
@@ -96,22 +105,64 @@ export default async function Blog({
   const getSlug = (post: (typeof sortedPosts)[0]) =>
     post._meta.path.replace(/\.mdx$/, "");
 
-  const jsonLdContent = JSON.stringify({
+  const postUrl = absoluteUrl(`/blog/${slug}`);
+  const ogImageUrl = resolveImageUrl(
+    post.image,
+    `/blog/${slug}/opengraph-image`
+  );
+
+  const jsonLdArticle = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
+    "@id": `${postUrl}#article`,
+    isPartOf: {
+      "@id": `${SITE_URL}/#website`,
+    },
+    mainEntityOfPage: postUrl,
     headline: post.title,
     datePublished: post.publishedAt,
-    dateModified: post.publishedAt,
+    dateModified: post.updatedAt || post.publishedAt,
     description: post.summary,
-    image: post.image
-      ? `${DATA.url}${post.image}`
-      : `${DATA.url}/blog/${slug}/opengraph-image`,
-    url: `${DATA.url}/blog/${slug}`,
+    image: ogImageUrl,
+    url: postUrl,
     author: {
       "@type": "Person",
-      name: DATA.name,
+      name: post.author || "Wick Thaweep Poraha",
+      url: SITE_URL,
     },
-  }).replace(/</g, "\\u003c");
+    publisher: {
+      "@type": "Person",
+      name: "Wick Thaweep Poraha",
+      url: SITE_URL,
+      image: resolveImageUrl("/me.jpg"),
+    },
+    inLanguage: "th-TH",
+  };
+
+  const jsonLdBreadcrumbs = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Blog",
+        item: absoluteUrl("/blog"),
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: post.title,
+        item: postUrl,
+      },
+    ],
+  };
 
   return (
     <section id="blog">
@@ -119,7 +170,14 @@ export default async function Blog({
         type="application/ld+json"
         suppressHydrationWarning
         dangerouslySetInnerHTML={{
-          __html: jsonLdContent,
+          __html: JSON.stringify(jsonLdArticle).replace(/</g, "\\u003c"),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLdBreadcrumbs).replace(/</g, "\\u003c"),
         }}
       />
       <div className="flex justify-start gap-4 items-center">
