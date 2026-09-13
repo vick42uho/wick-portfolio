@@ -186,6 +186,33 @@ Driven by continuous learning and engineering excellence, I am committed to buil
         "/Vflow.mp4",
     },
     {
+      title: "TimeTrack OT",
+      href: "https://github.com/vick42uho/TimeTrackOT",
+      dates: "2026",
+      active: true,
+      description:
+        "A high-performance mobile application for work time tracking and overtime (OT) management built with React Native and Expo. Features an automated morning/evening OT calculation engine, Thai Buddhist Era calendar, attendance photo proof attachment with permanent sandboxed local storage, full-screen smart workday alarm with lockscreen takeover, and 100% offline SQLite database with WAL mode.",
+      technologies: [
+        "React Native",
+        "Expo",
+        "TypeScript",
+        "Expo SQLite",
+        "Expo Notifications",
+        "Kotlin",
+        "TailwindCSS",
+        "BNA UI",
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/vick42uho/TimeTrackOT",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "",
+      video: "/TimeTrackOT.mp4",
+    },
+    {
       title: "Media",
       href: "",
       dates: "2025",
