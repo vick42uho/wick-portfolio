@@ -2,11 +2,12 @@
 
 **Last Audit Timestamp**: 2026-09-13T15:18:30+07:00  
 **Current Autonomy Level**: L2 (Verified & Executed)  
-**Build Health**: 🟢 100% Healthy (Next.js 16.1.1 Turbopack SSG 18/18 Routes)  
+**Build Health**: 🟢 100% Healthy (Next.js 16.1.1 Turbopack SSG 20/20 Routes)  
 
 ---
 
 ## 🚀 Full-System SEO Upgrades (SEO เต็มระบบขั้นสุด)
+- [x] **Interactive Presentation Deck (`/presentation`)**: สร้างระบบสไลด์นำเสนอ Interactive เต็มจอ รองรับคีย์บอร์ดลัด (Arrow, Space, N, F), สคริปต์บทพูดบรรยาย, และลิงก์ GitHub
 - [x] **Canonical URLs & Absolute URL Resolver**: แก้ไข Double Slash Bug (`//`) และ Absolute Image URL Resolution สำหรับรูปภาพภายนอก (Unsplash) ใน OpenGraph & Twitter Cards
 - [x] **Schema.org Structured Data (JSON-LD)**:
   - `WebSite` & `Person` Knowledge Graph ที่สมบูรณ์ในระดับ Root Layout (`#person`, `#website`) แก้ไข 404 รูปภาพ `/me.png` เป็น `/me.jpg`
@@ -27,7 +28,7 @@
 ---
 
 ## 📝 Recent Articles
-- `fullstack-developer-interview-playbook.mdx` — Interview Cheat Sheet & Presentation Playbook สำหรับ Full-Stack Developer
+- `fullstack-developer-interview-playbook.mdx` — Full-Stack Software Engineering Presentation (Production Systems & Architecture)
 - `loop-engineering-ai-agents.mdx` — สรุปแนวคิด Loop Engineering
 - `my-agent-skills-collection.mdx` — คอลเลกชัน Agent Skills
 - `skill-rust-axum-backend.mdx` — Rust + Axum Production Backend Skill
@@ -39,6 +40,7 @@
 ---
 
 ## 📜 Audit Log
+- **2026-09-16 (08:32)**: ปรับปรุงโหมดนำเสนอจริง (Real Presentation Mode): (1) ปรับปรุงบทความ `fullstack-developer-interview-playbook.mdx` เป็นบทนำเสนอทางการระดับ Executive สไลด์ 01-11 พร้อมบทบรรยายนำเสนอจริง, (2) เพิ่มหน้า Interactive Presentation Deck `/presentation` รองรับปุ่มลัดคีย์บอร์ด, สคริปต์บทพูด toggle, ลิงก์ GitHub และ Fullscreen mode. Build ผ่าน 100% (20/20 routes).
 - **2026-09-16 (08:20)**: เพิ่มบทความใหม่ `fullstack-developer-interview-playbook.mdx` พร้อมภาพประกอบ `p1.png` และลิงก์ GitHub ทั้ง 5 โปรเจกต์. Build ผ่าน 100% (19/19 routes).
 - **2026-09-13 (15:28)**: ทำการ Clean up และ Refine ระบบ SEO 5 รายการ: (1) ลบ manual RSS link ใน head ให้ metadata จัดการ, (2) ลบ manual icon links ใน head, (3) เพิ่ม `export const dynamicParams = false` ใน blog/[slug]/page.tsx, (4) Normalize `updatedAt` ใน MDX ทั้งหมดเป็น ISO 8601, (5) ลบ google verification file ที่ root (เก็บใน public/ เท่านั้น). Build ผ่าน 100% (18/18 static routes).
 - **2026-09-13 (15:25)**: แก้ไขชื่อ-นามสกุลภาษาไทยเป็น "ทวีป โปราหา" (สระโอ ป ปลา ร เรือ า ห หีบ า) และเพิ่มคำค้นหา/Alternate Names ทุกรูปแบบ (วิค, วิก, Wic, Wick, Vic, Vick, ทวีป โปราหา, Thaweep Poraha) ใน Metadata, Keywords, Schema.org JSON-LD, และ LLMs.txt. Build ผ่าน 100%.
