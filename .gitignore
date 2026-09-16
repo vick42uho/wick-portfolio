@@ -39,8 +39,10 @@ yarn-error.log*
 next-env.d.ts
 .content-collections
 
-# scratch reference files
+# scratch reference files in root
 /*.pdf
 /center.png
 /p1.png
 /*Program*.png
+/it*.png
+

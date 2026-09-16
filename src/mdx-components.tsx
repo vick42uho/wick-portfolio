@@ -1,5 +1,6 @@
 import { CodeBlock } from "@/components/mdx/code-block";
 import { MediaContainer } from "@/components/mdx/media-container";
+import { ZoomableImage } from "@/components/mdx/zoomable-image";
 import type { ComponentProps } from "react";
 
 type CodeProps = ComponentProps<"code"> & {
@@ -8,6 +9,14 @@ type CodeProps = ComponentProps<"code"> & {
 
 export const mdxComponents = {
   MediaContainer,
+  ZoomableImage,
+  img: (props: ComponentProps<"img">) => (
+    <ZoomableImage
+      src={typeof props.src === "string" ? props.src : ""}
+      alt={props.alt}
+      className={props.className}
+    />
+  ),
   pre: (props: ComponentProps<"pre">) => <CodeBlock {...props} />,
   hr: (props: ComponentProps<"hr">) => (
     <div className="my-10 flex w-full items-center" {...props}>
