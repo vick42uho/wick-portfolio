@@ -1,0 +1,363 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎙️ สคริปต์สัมภาษณ์ | รพ.จักษุ รัตนิน | 16 ก.ย. 2569</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22273a;
+      --border: #2e3350;
+      --accent: #6c8ef5;
+      --accent2: #4ade80;
+      --accent3: #f59e0b;
+      --accent4: #f472b6;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --tag-bg: #1e2a4a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', 'Noto Sans Thai', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: #0d101a;
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    }
+    .topbar h1 { font-size: 1rem; color: var(--accent); font-weight: 700; }
+    .topbar .badge {
+      background: var(--accent3); color: #000;
+      font-size: 0.75rem; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px;
+    }
+    .topbar .timer {
+      margin-left: auto; font-size: 1.2rem; font-weight: 800;
+      color: var(--accent2); font-variant-numeric: tabular-nums; letter-spacing: 2px;
+    }
+    nav {
+      display: flex; gap: 8px; padding: 12px 24px;
+      background: var(--surface); border-bottom: 1px solid var(--border); flex-wrap: wrap;
+    }
+    nav a {
+      text-decoration: none; color: var(--muted); font-size: 0.85rem;
+      padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border); transition: all 0.2s;
+    }
+    nav a:hover { color: var(--text); border-color: var(--accent); background: var(--tag-bg); }
+    main { max-width: 900px; margin: 0 auto; padding: 32px 24px 80px; }
+    .section {
+      margin-bottom: 40px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+    }
+    .section-header {
+      padding: 16px 24px; display: flex; align-items: center; gap: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-header .icon { font-size: 1.6rem; }
+    .section-header .label { font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+    .section-header .sublabel { font-size: 0.8rem; color: var(--muted); }
+    .section-body { padding: 20px 24px; }
+    .script-box {
+      background: var(--surface2); border-left: 4px solid var(--accent);
+      padding: 16px 20px; border-radius: 0 12px 12px 0; margin-bottom: 16px;
+      font-size: 1.05rem; color: #c7d2fe; line-height: 1.9;
+    }
+    .key-points { display: flex; flex-direction: column; gap: 10px; }
+    .kp {
+      display: flex; align-items: flex-start; gap: 12px;
+      background: var(--surface2); border-radius: 10px;
+      padding: 12px 16px; border: 1px solid var(--border);
+    }
+    .kp .dot {
+      width: 8px; height: 8px; background: var(--accent2);
+      border-radius: 50%; margin-top: 8px; flex-shrink: 0;
+    }
+    .kp .kp-text { font-size: 0.95rem; color: var(--text); }
+    .kp .kp-text strong { color: var(--accent2); }
+    .projects { display: flex; flex-direction: column; gap: 14px; }
+    .proj-card {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px 20px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .proj-card:hover { border-color: var(--accent); }
+    .proj-header { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .proj-name { font-weight: 700; font-size: 1rem; color: var(--accent); }
+    .proj-status { font-size: 0.72rem; font-weight: 700; padding: 2px 10px; border-radius: 20px; }
+    .prod { background: #16a34a22; color: #4ade80; border: 1px solid #4ade8044; }
+    .dev  { background: #f59e0b22; color: #f59e0b; border: 1px solid #f59e0b44; }
+    .wip  { background: #6c8ef522; color: #818cf8; border: 1px solid #818cf844; }
+    .proj-desc { font-size: 0.9rem; color: var(--muted); }
+    .proj-desc strong { color: var(--text); }
+    .proj-stack { display: flex; gap: 6px; flex-wrap: wrap; }
+    .tag {
+      font-size: 0.72rem; background: var(--tag-bg); color: var(--accent);
+      border: 1px solid var(--border); padding: 2px 10px; border-radius: 20px;
+    }
+    .proj-links { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+    .git-link {
+      display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem;
+      color: var(--accent3); text-decoration: none;
+      background: #f59e0b11; border: 1px solid #f59e0b33;
+      padding: 4px 14px; border-radius: 20px; transition: all 0.2s;
+    }
+    .git-link:hover { background: #f59e0b22; border-color: var(--accent3); }
+    .talk { font-size: 0.88rem; color: #818cf8; font-style: italic; }
+    .img-wrap {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden; margin: 16px 0; text-align: center;
+    }
+    .img-wrap img {
+      max-width: 100%; cursor: zoom-in; display: block; margin: 0 auto; transition: transform 0.2s;
+    }
+    .img-caption { font-size: 0.78rem; color: var(--muted); padding: 8px 16px 12px; }
+    #lightbox {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92);
+      z-index: 9999; cursor: zoom-out; justify-content: center; align-items: center; padding: 20px;
+    }
+    #lightbox.open { display: flex; }
+    #lightbox img {
+      max-width: 100%; max-height: 90vh; border-radius: 8px;
+      box-shadow: 0 0 60px #000; cursor: default; transition: transform 0.3s; transform-origin: center center;
+    }
+    #lb-close {
+      position: fixed; top: 20px; right: 24px; font-size: 2rem; color: #fff; cursor: pointer;
+      z-index: 10000; background: #ffffff22; width: 44px; height: 44px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; border: 1px solid #ffffff44;
+    }
+    #lb-hint {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      color: #ffffff88; font-size: 0.8rem; background: #00000066;
+      padding: 6px 16px; border-radius: 20px;
+    }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+    @media (max-width: 600px) { body { font-size: 14px; } main { padding: 16px 12px 60px; } }
+  </style>
+</head>
+<body>
+
+<div id="lightbox" onclick="closeLB(event)">
+  <div id="lb-close" onclick="closeLB()">&#x2715;</div>
+  <img id="lb-img" src="" alt="ขยาย" />
+  <div id="lb-hint">&#x1F50D; Scroll เพื่อซูม | คลิกนอกรูปเพื่อปิด</div>
+</div>
+
+<div class="topbar">
+  <span class="icon">&#x1F399;</span>
+  <h1>สคริปต์สัมภาษณ์ — ทวีป โปราหา (วิค)</h1>
+  <span class="badge">&#x1F4C5; 16 ก.ย. 2569 | 13:00–17:00</span>
+  <span class="badge" style="background:#e879f9;color:#fff;">&#x1F3E5; รพ.จักษุ รัตนิน</span>
+  <div class="timer" id="clock">--:--:--</div>
+</div>
+
+<nav>
+  <a href="#s1">&#x1F44B; แนะนำตัว</a>
+  <a href="#s2">&#x1F5C2; พาร์ท 1 — PHP Legacy</a>
+  <a href="#s3">&#x1F680; พาร์ท 2 — ระบบใหม่</a>
+</nav>
+
+<main>
+
+  <section class="section" id="s1">
+    <div class="section-header">
+      <span class="icon">&#x1F44B;</span>
+      <div>
+        <div class="label">การแนะนำตัว</div>
+        <div class="sublabel">เปิดให้ตรงๆ ไม่ต้องท่องทุกคำ แค่จำ Key Point</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="script-box">
+        "สวัสดีครับพี่ๆ ทั้งสองท่านครับ ผมชื่อวิคนะครับ หรือชื่อจริง <strong>ทวีป โปราหา</strong> ครับ<br>
+        ปัจจุบันผมเป็นโปรแกรมเมอร์อยู่ที่โรงพยาบาลยันฮีครับ<br>
+        งานหลักๆ ที่ผมรับผิดชอบอยู่ที่ยันฮีตอนนี้ จะแบ่งเป็น <strong>2 พาร์ทใหญ่ๆ</strong> ครับ"
+      </div>
+      <div class="key-points">
+        <div class="kp"><div class="dot"></div><div class="kp-text">ชื่อ <strong>วิค / ทวีป โปราหา</strong> — โปรแกรมเมอร์ รพ.ยันฮี</div></div>
+        <div class="kp"><div class="dot"></div><div class="kp-text">งานแบ่ง <strong>2 พาร์ท</strong> — Legacy PHP + ระบบใหม่ Full-Stack</div></div>
+        <div class="kp"><div class="dot"></div><div class="kp-text">ชอบ <strong>เข้าใจ Business Process</strong> ก่อนเขียนโค้ด — ประชุมเก็บ Req กับ ผอ./ผจก.</div></div>
+        <div class="kp"><div class="dot"></div><div class="kp-text">ถนัด <strong>Full-Stack</strong>: Frontend + Backend + DevOps เบื้องต้น</div></div>
+        <div class="kp"><div class="dot"></div><div class="kp-text">มีประสบการณ์ <strong>HIS Integration, PDPA, Active Directory (LDAP)</strong> — ตรงกับที่รัตนินต้องการ</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="s2">
+    <div class="section-header">
+      <span class="icon">&#x1F5C2;</span>
+      <div>
+        <div class="label">พาร์ท 1 — ดูแล Legacy PHP (~30 โปรแกรม)</div>
+        <div class="sublabel">ดูแลคนเดียว ทั้ง Maintain / Fix Bug / เพิ่ม Feature</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="script-box">
+        "พาร์ทแรกคือ ผมดูแลระบบเดิมของโรงพยาบาลที่เขียนด้วย <strong>PHP</strong> ครับ<br>
+        ซึ่งตอนนี้ผมดูแลอยู่คนเดียวเกือบ <strong>30 โปรแกรม</strong> เลยครับ<br>
+        หลักๆ ที่ทำบ่อยๆ ก็จะมี Mini CRM, HOIR, KPI, โปรแกรมอบรม, ห้องพักญาติ ฯลฯ<br>
+        กระบวนการทำงานก็คือ ประชุมเก็บความต้องการกับ ผอ./ผจก. → พัฒนา → ทำคู่มือ → อบรม User → Support หน้างาน"
+      </div>
+      <div class="key-points" style="margin-bottom:16px">
+        <div class="kp"><div class="dot" style="background:#f59e0b"></div><div class="kp-text"><strong>Mini CRM</strong> — บริหารข้อมูลลูกค้า/ผู้ป่วย</div></div>
+        <div class="kp"><div class="dot" style="background:#f59e0b"></div><div class="kp-text"><strong>HOIR</strong> — Human Occupational Incident Report</div></div>
+        <div class="kp"><div class="dot" style="background:#f59e0b"></div><div class="kp-text"><strong>KPI</strong> — ระบบติดตามตัวชี้วัดองค์กร</div></div>
+        <div class="kp"><div class="dot" style="background:#f59e0b"></div><div class="kp-text"><strong>โปรแกรมอบรม</strong> / ห้องพักญาติ / จองเครื่องมือ / คลังภาพ ฯลฯ</div></div>
+        <div class="kp"><div class="dot" style="background:#f59e0b"></div><div class="kp-text">Flow: ประชุม Req → พัฒนา PHP+SQL → คู่มือ+อบรม → Support หน้างาน</div></div>
+      </div>
+      <div class="img-wrap">
+        <img src="p1.png" alt="ศูนย์รวมโปรแกรม รพ.ยันฮี" onclick="openLB(this.src)" title="คลิกเพื่อขยายรูป" />
+        <div class="img-caption">&#x1F4CC; ศูนย์รวมโปรแกรม รพ.ยันฮี — แถวที่มีชื่อ "ทวีป โปราหา" คือโปรแกรมที่ผมดูแล | คลิกรูปเพื่อขยาย</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="s3">
+    <div class="section-header">
+      <span class="icon">&#x1F680;</span>
+      <div>
+        <div class="label">พาร์ท 2 — ระบบใหม่ Full-Stack (ของผมเอง 100%)</div>
+        <div class="sublabel">ออกแบบ + พัฒนา + Deploy เอง ทั้ง Frontend / Backend / DB</div>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="script-box">
+        "พาร์ทที่สองคือ ระบบใหม่ที่ผมพัฒนาขึ้นเองครับ<br>
+        ตั้งแต่ออกแบบ วางสถาปัตยกรรม จนถึง Deploy ขึ้น Production เอง<br>
+        Stack หลักที่ใช้คือ <strong>React / Next.js + Rust (Axum) + PostgreSQL</strong> ครับ"
+      </div>
+      <div class="projects">
+
+        <div class="proj-card">
+          <div class="proj-header">
+            <span class="proj-name">&#x1F4CB; IT Request (Paperless System)</span>
+            <span class="proj-status prod">&#x2705; Production</span>
+          </div>
+          <div class="proj-desc">ระบบยื่นคำร้อง IT แทน paper form — <strong>Flow:</strong> User สร้างคำร้อง → อนุมัติ Flow (ผจก./ผอ.) → IT Admin รับ Assign → กำหนดวัน → User ปิดงาน</div>
+          <div class="proj-stack">
+            <span class="tag">Vite + React</span><span class="tag">Rust Axum</span>
+            <span class="tag">PostgreSQL</span><span class="tag">JWT Auth</span><span class="tag">Role-Based</span>
+          </div>
+          <div class="proj-links">
+            <a class="git-link" href="https://github.com/vick42uho/RequestTicker" target="_blank">&#x2B50; GitHub: RequestTicker</a>
+          </div>
+          <div class="talk">&#x1F4AC; เน้น: ใช้จริงแล้ว | Multi-level approval | IT Assign + Track งาน</div>
+        </div>
+
+        <div class="proj-card">
+          <div class="proj-header">
+            <span class="proj-name">&#x1F5BC; Patient Media (PDPA-Compliant)</span>
+            <span class="proj-status dev">&#x1F504; พัฒนาเสร็จ (รอขึ้น Production)</span>
+          </div>
+          <div class="proj-desc">จัดเก็บภาพการรักษา + ใบ Consent ผู้ป่วย ตามมาตรฐาน <strong>PDPA</strong> — รองรับอัปโหลด / ค้นหา / จัดการสิทธิ์การเข้าถึง</div>
+          <div class="proj-stack">
+            <span class="tag">Vite + React</span><span class="tag">FastAPI</span>
+            <span class="tag">uv (Python)</span><span class="tag">PostgreSQL</span><span class="tag">PDPA</span>
+          </div>
+          <div class="proj-links">
+            <a class="git-link" href="https://github.com/vick42uho/media" target="_blank">&#x2B50; GitHub: media</a>
+          </div>
+          <div class="talk">&#x1F4AC; เน้น: Healthcare + PDPA | ตรงกับงาน รพ. | พร้อม Production แล้ว</div>
+        </div>
+
+        <div class="proj-card">
+          <div class="proj-header">
+            <span class="proj-name">&#x1F510; Yanhee IAM Portal (Single Sign-On)</span>
+            <span class="proj-status wip">&#x1F6E0; กำลังพัฒนา</span>
+          </div>
+          <div class="proj-desc">SSO ทุกโปรแกรมในรพ.ยันฮี — ผูก <strong>Active Directory (LDAP)</strong> + sync HR จาก Biosoft (MSSQL) — <strong>Dynamic RBAC</strong> รองรับโยกย้ายฝ่าย/แผนกอัตโนมัติ</div>
+          <div class="proj-stack">
+            <span class="tag">Next.js</span><span class="tag">Rust Axum</span>
+            <span class="tag">PostgreSQL</span><span class="tag">MSSQL</span><span class="tag">LDAP / AD</span><span class="tag">RBAC</span>
+          </div>
+          <div class="proj-links">
+            <a class="git-link" href="https://github.com/vick42uho/yanhee_protal" target="_blank">&#x2B50; GitHub: yanhee_protal</a>
+          </div>
+          <div class="talk">&#x1F4AC; เน้น: AD Integration | RBAC | HIS-linked user management | ตรงมากกับ รพ.</div>
+        </div>
+
+        <div class="proj-card">
+          <div class="proj-header">
+            <span class="proj-name">&#x1FA9F; Dynamic Icon Gate (iFrame HIS)</span>
+            <span class="proj-status wip">&#x1F6E0; กำลังพัฒนา</span>
+          </div>
+          <div class="proj-desc">ฝังเป็น <strong>iFrame แนวนอนใน Medhis (HIS)</strong> — API ดึงข้อมูลผู้ป่วยจาก DB Medhis → ประเมินเงื่อนไข → แสดงไอคอน Dynamic (เช่น อายุ 0–15 แสดงไอคอนเด็ก / ผู้ป่วย VIP มีแบดจ์)</div>
+          <div class="proj-stack">
+            <span class="tag">Next.js</span><span class="tag">Rust Axum</span>
+            <span class="tag">PostgreSQL</span><span class="tag">MongoDB</span><span class="tag">HIS Integration</span>
+          </div>
+          <div class="proj-links">
+            <a class="git-link" href="https://github.com/vick42uho/iFrame" target="_blank">&#x2B50; GitHub: iFrame</a>
+          </div>
+          <div class="talk">&#x1F4AC; เน้น: Integrate กับ HIS โดยตรง | Logic-driven UI จาก Real Patient Data | ตรงกับงาน รพ.รัตนิน</div>
+        </div>
+
+        <div class="proj-card">
+          <div class="proj-header">
+            <span class="proj-name">&#x1F4F1; TimeTrack OT (Mobile App)</span>
+            <span class="proj-status prod">&#x2705; Production</span>
+          </div>
+          <div class="proj-desc">Mobile app บันทึกเวลาทำงาน + OT — <strong>Offline-first</strong> ด้วย SQLite WAL Mode — ไม่ต้องอินเทอร์เน็ตก็ใช้งานได้</div>
+          <div class="proj-stack">
+            <span class="tag">React Native 0.81</span><span class="tag">Expo</span>
+            <span class="tag">SQLite WAL</span><span class="tag">Offline-first</span>
+          </div>
+          <div class="proj-links">
+            <a class="git-link" href="https://github.com/vick42uho/TimeTrackOT" target="_blank">&#x2B50; GitHub: TimeTrackOT</a>
+          </div>
+          <div class="talk">&#x1F4AC; เน้น: Mobile | Offline-first | ใช้จริงใน รพ. แล้ว</div>
+        </div>
+
+      </div>
+      <hr class="divider">
+      <div class="script-box" style="border-color:#f472b6">
+        "โดยรวมแล้ว ผมเชื่อว่าประสบการณ์ที่ผมมี — ทั้งเรื่อง <strong>HIS Integration, PDPA, Active Directory, Full-Stack Development</strong><br>
+        น่าจะตอบโจทย์สิ่งที่ทีมรพ.รัตนินกำลังมองหาครับ<br>
+        ถ้ามีโอกาสได้ร่วมงานด้วย ผมมั่นใจว่าจะเข้ามาช่วยพัฒนาระบบต่างๆ ได้ทันที<br>
+        และพร้อมเรียนรู้สิ่งใหม่ตลอดเวลาครับ &#x1F64F;"
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  function updateClock() {
+    var now = new Date();
+    var h = String(now.getHours()).padStart(2,'0');
+    var m = String(now.getMinutes()).padStart(2,'0');
+    var s = String(now.getSeconds()).padStart(2,'0');
+    document.getElementById('clock').textContent = h + ':' + m + ':' + s;
+  }
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  var lb = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lb-img');
+  var zoom = 1;
+
+  function openLB(src) {
+    lbImg.src = src; zoom = 1; lbImg.style.transform = 'scale(1)'; lb.classList.add('open');
+  }
+  function closeLB(e) {
+    if (!e || e.target === lb || e.target.id === 'lb-close') lb.classList.remove('open');
+  }
+  lb.addEventListener('wheel', function(e) {
+    e.preventDefault();
+    zoom += e.deltaY < 0 ? 0.1 : -0.1;
+    zoom = Math.min(Math.max(zoom, 0.5), 5);
+    lbImg.style.transform = 'scale(' + zoom + ')';
+  }, { passive: false });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') lb.classList.remove('open');
+  });
+</script>
+</body>
+</html>
