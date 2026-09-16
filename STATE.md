@@ -1,8 +1,8 @@
 # 📊 Project State — my-portfolio
 
-**Last Audit Timestamp**: 2026-09-16T09:20:00+07:00  
+**Last Audit Timestamp**: 2026-09-16T15:07:00+07:00  
 **Current Autonomy Level**: L2 (Verified & Executed)  
-**Build Health**: 🟢 100% Healthy (Next.js 16.1.1 Turbopack SSG 20/20 Routes)  
+**Build Health**: 🟢 100% Healthy (Next.js 16.1.1 Turbopack SSG 18/18 Routes)  
 
 ---
 
@@ -27,7 +27,6 @@
 ---
 
 ## 📝 Recent Articles
-- `interview-fullstack-developer-rutnin.mdx` — สรุปบทสัมภาษณ์ & เจาะลึกผลงาน Full-Stack Developer รพ.ยันฮี สำหรับการสัมภาษณ์ รพ.จักษุ รัตนิน (ภาพผังระบบ p1.png, ภาพระบบจริง IT Request it1-it3.png พร้อม Zoomable Lightbox และลิงก์ Git)
 - `loop-engineering-ai-agents.mdx` — สรุปแนวคิด Loop Engineering
 - `my-agent-skills-collection.mdx` — คอลเลกชัน Agent Skills
 - `skill-rust-axum-backend.mdx` — Rust + Axum Production Backend Skill
@@ -39,8 +38,7 @@
 ---
 
 ## 📜 Audit Log
-- **2026-09-16 (09:20)**: เพิ่มรูปภาพหน้าจอระบบจริงของ IT Request (`public/it1.png`, `public/it2.png`, `public/it3.png`) ลงในบทความสัมภาษณ์งาน `content/interview-fullstack-developer-rutnin.mdx` พร้อมจัดทำระบบ `<ZoomableImage>` รองรับ Lightbox ซูมเข้า-ออก แพนเลื่อนภาพ และเปิดรูปเต็มในแท็บใหม่. Build ผ่าน 100% (20/20 static routes).
-- **2026-09-16 (08:50)**: ปรับโครงสร้างบทความสัมภาษณ์งานเป็น `interview-fullstack-developer-rutnin.mdx` เน้นบทพูดจริง 2 นาที, ตารางงานดูแลระบบเดิม PHP, และ 5 ระบบใหม่ Full-Stack พร้อมลิงก์ GitHub.
+- **2026-09-16 (15:07)**: ทำการ Clean up ลบเอกสารและสไลด์เตรียมสัมภาษณ์งานทั้งหมดออกจากพอร์ตโฟลิโอหลังสัมภาษณ์เสร็จสิ้น (`content/interview-fullstack-developer-rutnin.mdx`, `/presentation`, ภาพหน้าจอ `p1.png`, `it1-it3.png`, และไฟล์สไลด์) สำรองข้อมูลไว้ใน Brain artifacts และคืนสถานะ Clean Production 100% (18/18 static routes).
 - **2026-09-13 (15:28)**: ทำการ Clean up และ Refine ระบบ SEO 5 รายการ: (1) ลบ manual RSS link ใน head ให้ metadata จัดการ, (2) ลบ manual icon links ใน head, (3) เพิ่ม `export const dynamicParams = false` ใน blog/[slug]/page.tsx, (4) Normalize `updatedAt` ใน MDX ทั้งหมดเป็น ISO 8601, (5) ลบ google verification file ที่ root (เก็บใน public/ เท่านั้น). Build ผ่าน 100% (18/18 static routes).
 - **2026-09-13 (15:25)**: แก้ไขชื่อ-นามสกุลภาษาไทยเป็น "ทวีป โปราหา" (สระโอ ป ปลา ร เรือ า ห หีบ า) และเพิ่มคำค้นหา/Alternate Names ทุกรูปแบบ (วิค, วิก, Wic, Wick, Vic, Vick, ทวีป โปราหา, Thaweep Poraha) ใน Metadata, Keywords, Schema.org JSON-LD, และ LLMs.txt. Build ผ่าน 100%.
 - **2026-09-13 (15:18)**: ตรวจสอบและยกระดับระบบ SEO เต็มระบบขั้นสุด (Canonical, OpenGraph, JSON-LD, Sitemap, Robots, RSS, LLMs.txt, 404 Noindex). Build สำเร็จ 100%.

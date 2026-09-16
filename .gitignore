@@ -38,11 +38,3 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .content-collections
-
-# scratch reference files in root
-/*.pdf
-/center.png
-/p1.png
-/*Program*.png
-/it*.png
-
