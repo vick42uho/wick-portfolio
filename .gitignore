@@ -38,3 +38,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .content-collections
+
+# scratch reference files
+/*.pdf
+/center.png
+/p1.png
+/*Program*.png

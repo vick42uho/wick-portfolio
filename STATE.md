@@ -27,6 +27,7 @@
 ---
 
 ## 📝 Recent Articles
+- `fullstack-developer-interview-playbook.mdx` — Interview Cheat Sheet & Presentation Playbook สำหรับ Full-Stack Developer
 - `loop-engineering-ai-agents.mdx` — สรุปแนวคิด Loop Engineering
 - `my-agent-skills-collection.mdx` — คอลเลกชัน Agent Skills
 - `skill-rust-axum-backend.mdx` — Rust + Axum Production Backend Skill
@@ -38,6 +39,7 @@
 ---
 
 ## 📜 Audit Log
+- **2026-09-16 (08:20)**: เพิ่มบทความใหม่ `fullstack-developer-interview-playbook.mdx` พร้อมภาพประกอบ `p1.png` และลิงก์ GitHub ทั้ง 5 โปรเจกต์. Build ผ่าน 100% (19/19 routes).
 - **2026-09-13 (15:28)**: ทำการ Clean up และ Refine ระบบ SEO 5 รายการ: (1) ลบ manual RSS link ใน head ให้ metadata จัดการ, (2) ลบ manual icon links ใน head, (3) เพิ่ม `export const dynamicParams = false` ใน blog/[slug]/page.tsx, (4) Normalize `updatedAt` ใน MDX ทั้งหมดเป็น ISO 8601, (5) ลบ google verification file ที่ root (เก็บใน public/ เท่านั้น). Build ผ่าน 100% (18/18 static routes).
 - **2026-09-13 (15:25)**: แก้ไขชื่อ-นามสกุลภาษาไทยเป็น "ทวีป โปราหา" (สระโอ ป ปลา ร เรือ า ห หีบ า) และเพิ่มคำค้นหา/Alternate Names ทุกรูปแบบ (วิค, วิก, Wic, Wick, Vic, Vick, ทวีป โปราหา, Thaweep Poraha) ใน Metadata, Keywords, Schema.org JSON-LD, และ LLMs.txt. Build ผ่าน 100%.
 - **2026-09-13 (15:18)**: ตรวจสอบและยกระดับระบบ SEO เต็มระบบขั้นสุด (Canonical, OpenGraph, JSON-LD, Sitemap, Robots, RSS, LLMs.txt, 404 Noindex). Build สำเร็จ 100%.
