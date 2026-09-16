@@ -75,7 +75,7 @@ image: "/p1.png"
   3. ฝั่ง IT มี Admin คอยคัดกรองเบื้องต้น แล้วจ่ายงานให้ทีมที่รับผิดชอบ
   4. แท็กชื่อผู้รับผิดชอบ กำหนดวันเสร็จ (Due Date)
   5. เมื่อช่างทำงานเสร็จ User จะเป็นคนตรวจรับและกดปิดงาน
-* **Tech Stack:** Frontend: `React + Vite + Tailwind CSS` | Backend: `FastAPI + PostgreSQL`
+* **Tech Stack:** Frontend: `React + Vite + Tailwind CSS` | Backend: `Rust (Axum) + PostgreSQL`
 * 🔗 **Source Code:** [https://github.com/vick42uho/RequestTicker.git](https://github.com/vick42uho/RequestTicker.git)
 
 ---
@@ -93,7 +93,7 @@ image: "/p1.png"
 ---
 
 ### 3️⃣ Yanhee IAM Portal — ระบบ Central Access Control & Single Sign-On
-* **สถานะ:** 🟢 **ระบบสถาปัตยกรรมความปลอดภัยระดับ Core Enterprise**
+* **สถานะ:** 🔵 **กำลังพัฒนา (In Progress)** — วางสถาปัตยกรรมแล้ว อยู่ระหว่างพัฒนา Core Module
 * **ที่มา (Requirement ตรงจากท่าน ผอ.):**  
   > *"ผอ. อยากได้ระบบศูนย์รวมที่รวมทุกโปรแกรมในโรงพยาบาลไว้ที่เดียว ทำ Single Sign-On ล็อกอินครั้งเดียว แล้วเห็นเฉพาะโปรแกรมที่ตัวเองมีสิทธิ์ และเวลารพ. มีการปรับเปลี่ยนโครงสร้าง โยกย้าย ฝ่าย ส่วน แผนก บ่อยๆ สิทธิ์จะต้องไม่หลุดหรือค้างเก่า"*
 * **สถาปัตยกรรม & กลไก:**
@@ -107,7 +107,7 @@ image: "/p1.png"
 ---
 
 ### 4️⃣ Dynamic Icon Gate (Medical iFrame) — ระบบแถบไอคอนสถานะผู้ป่วย
-* **สถานะ:** 🟢 **ระบบเชื่อมต่อกับ HIS (Medhis) โดยตรง**
+* **สถานะ:** 🔵 **กำลังพัฒนา (In Progress)** — ออกแบบ Rule Engine แล้ว อยู่ระหว่าง Integrate กับ Medhis
 * **ที่มา (Requirement ตรงจากท่าน รอง ผอ.):**  
   > *"รอง ผอ. อยากได้แถบไอคอนแสดงสถานะคนไข้เพิ่มเติมจากระบบ Medhis เดิมที่มีอยู่ โดยให้ทาง Medhis เจาะช่องเป็น iFrame แนวนอนเล็กๆ ไว้ให้"*
 * **สถาปัตยกรรม & กลไก:**
