@@ -93,15 +93,6 @@ export default function Page() {
             </div>
           </div>
         </div>
-
-        {/* Full-Viewport Horizontal Divider (จาก Section 4 ของ Skill - 200vw trick) */}
-        <div className="absolute bottom-[-40px] left-0 right-0 h-px pointer-events-none">
-          <div className="relative w-full h-full
-            before:absolute before:top-0 before:h-px before:w-[200vw] before:left-[-100vw]
-            before:bg-neutral-200 dark:before:bg-white/8"
-            aria-hidden
-          />
-        </div>
       </section>
 
       {/* ══ ABOUT ══════════════════════════════════════════════ */}
@@ -116,15 +107,6 @@ export default function Page() {
             </div>
           </BlurFade>
         </div>
-
-        {/* Full-Viewport Divider */}
-        <div className="absolute bottom-[-40px] left-0 right-0 h-px pointer-events-none">
-          <div className="relative w-full h-full
-            before:absolute before:top-0 before:h-px before:w-[200vw] before:left-[-100vw]
-            before:bg-neutral-200 dark:before:bg-white/8"
-            aria-hidden
-          />
-        </div>
       </section>
 
       {/* ══ WORK EXPERIENCE ════════════════════════════════════ */}
@@ -136,15 +118,6 @@ export default function Page() {
           <BlurFade delay={BLUR_FADE_DELAY * 8}>
             <WorkSection />
           </BlurFade>
-        </div>
-
-        {/* Full-Viewport Divider */}
-        <div className="absolute bottom-[-40px] left-0 right-0 h-px pointer-events-none">
-          <div className="relative w-full h-full
-            before:absolute before:top-0 before:h-px before:w-[200vw] before:left-[-100vw]
-            before:bg-neutral-200 dark:before:bg-white/8"
-            aria-hidden
-          />
         </div>
       </section>
 
@@ -199,15 +172,6 @@ export default function Page() {
             ))}
           </div>
         </div>
-
-        {/* Full-Viewport Divider */}
-        <div className="absolute bottom-[-40px] left-0 right-0 h-px pointer-events-none">
-          <div className="relative w-full h-full
-            before:absolute before:top-0 before:h-px before:w-[200vw] before:left-[-100vw]
-            before:bg-neutral-200 dark:before:bg-white/8"
-            aria-hidden
-          />
-        </div>
       </section>
 
       {/* ══ SKILLS ═════════════════════════════════════════════ */}
@@ -229,15 +193,6 @@ export default function Page() {
             ))}
           </div>
         </div>
-
-        {/* Full-Viewport Divider */}
-        <div className="absolute bottom-[-40px] left-0 right-0 h-px pointer-events-none">
-          <div className="relative w-full h-full
-            before:absolute before:top-0 before:h-px before:w-[200vw] before:left-[-100vw]
-            before:bg-neutral-200 dark:before:bg-white/8"
-            aria-hidden
-          />
-        </div>
       </section>
 
       {/* ══ PROJECTS ═══════════════════════════════════════════ */}
@@ -245,15 +200,6 @@ export default function Page() {
         <BlurFade delay={BLUR_FADE_DELAY * 13}>
           <ProjectsSection />
         </BlurFade>
-
-        {/* Full-Viewport Divider */}
-        <div className="absolute bottom-[-40px] left-0 right-0 h-px pointer-events-none">
-          <div className="relative w-full h-full
-            before:absolute before:top-0 before:h-px before:w-[200vw] before:left-[-100vw]
-            before:bg-neutral-200 dark:before:bg-white/8"
-            aria-hidden
-          />
-        </div>
       </section>
 
       {/* ══ CONTACT ════════════════════════════════════════════ */}

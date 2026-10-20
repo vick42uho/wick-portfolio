@@ -184,6 +184,63 @@ Driven by continuous learning and engineering excellence, I am committed to buil
       image: "",
       video:
         "/Vflow.mp4",
+      images: [
+        {
+          src: "/img-project/request/dashboard.webp",
+          title: "Dashboard Overview",
+          description: "แดชบอร์ดสรุปภาพรวม สถิติคำร้องขอแยกตามสถานะ และปริมาณงานของแต่ละฝ่ายแบบ Real-time",
+        },
+        {
+          src: "/img-project/request/create-request.webp",
+          title: "Create Request Form",
+          description: "ฟอร์มสร้างใบคำร้องขอบริการ แยกประเภทชัดเจน (บริการ / ปัญหา / พัฒนา) พร้อมระบบแนบไฟล์",
+        },
+        {
+          src: "/img-project/request/Task-list.webp",
+          title: "Request & Task List",
+          description: "ตารางรายการคำร้องและงานทั้งหมด พร้อมแท็บแยกสถานะ ฟิลเตอร์ค้นหา และระบบแบ่งหน้า",
+        },
+        {
+          src: "/img-project/request/Task.webp",
+          title: "Task Details & Assignment",
+          description: "หน้ารายละเอียดคำร้อง การมอบหมายงานให้ผู้รับผิดชอบ กำหนดวันแล้วเสร็จ และบันทึกประวัติการดำเนินงาน",
+        },
+        {
+          src: "/img-project/request/Approval.webp",
+          title: "Approval Workflow",
+          description: "ขั้นตอนการพิจารณาอนุมัติคำร้องขอตามสายบังคับบัญชา (ผู้จัดการฝ่าย / ผู้อำนวยการ)",
+        },
+        {
+          src: "/img-project/request/report.webp",
+          title: "Reports & Analytics",
+          description: "ระบบรายงานสถิติการให้บริการ วิเคราะห์ประเภทปัญหา และระยะเวลาเฉลี่ยในการปิดงาน",
+        },
+        {
+          src: "/img-project/request/manage-users.webp",
+          title: "User Management",
+          description: "ระบบจัดการผู้ใช้งาน กำหนดบทบาทสิทธิ์การเข้าถึง (Admin / Approver / User) และสถานะบัญชี",
+        },
+        {
+          src: "/img-project/request/manage-department.webp",
+          title: "Department Management",
+          description: "โครงสร้างฝ่ายและแผนกในองค์กร สำหรับจัดสรรเส้นทางการส่งต่อและอนุมัติใบคำร้อง",
+        },
+        {
+          src: "/img-project/request/manage-subjects.webp",
+          title: "Service Subjects & Topics",
+          description: "ระบบกำหนดหมวดหมู่และหัวข้อบริการที่แต่ละฝ่ายเปิดรับคำร้อง",
+        },
+        {
+          src: "/img-project/request/login.webp",
+          title: "Authentication Portal",
+          description: "หน้าระบบยืนยันตัวตนและความปลอดภัยด้วย JWT Session Management",
+        },
+        {
+          src: "/img-project/request/profile.webp",
+          title: "User Profile & Preferences",
+          description: "หน้าข้อมูลส่วนตัว ข้อมูลติดต่อ และการตั้งค่าบัญชีผู้ใช้งาน",
+        },
+      ],
     },
     {
       title: "TimeTrack OT",
@@ -208,13 +265,60 @@ Driven by continuous learning and engineering excellence, I am committed to buil
           href: "https://github.com/vick42uho/TimeTrackOT",
           icon: <Icons.github className="size-3" />,
         },
+        {
+          type: "Releases",
+          href: "https://github.com/vick42uho/TimeTrackOT-Releases/releases",
+          icon: <Icons.download className="size-3" />,
+        },
       ],
       image: "",
       video: "/TimeTrackOT.mp4",
+      images: [
+        {
+          src: "/img-project/timetrackOT/307718_0.webp",
+          title: "Dashboard & Work Statistics",
+          description: "หน้าหลักสรุปเวลาเลิกงานเฉลี่ยจริง, ชั่วโมงทำงานสะสม, สถิติ OT และสถานะการทำงานประจำวัน",
+        },
+        {
+          src: "/img-project/timetrackOT/307719_0.webp",
+          title: "Attendance & GPS Photo Proof",
+          description: "ระบบลงเวลาทำงานอัตโนมัติตามพิกัด GPS พร้อมถ่ายภาพหรือแนบหลักฐานสแกนนิ้ว/บัตรตอก",
+        },
+        {
+          src: "/img-project/timetrackOT/307720_0.webp",
+          title: "Leave & Work Calendar",
+          description: "ปฏิทินวันหยุด วันลาพักร้อน และ Work From Home (WFH) ปี พ.ศ. 2569 พร้อมระบบ Smart Alarm",
+        },
+        {
+          src: "/img-project/timetrackOT/307721_0.webp",
+          title: "Smart Workday Alarm",
+          description: "ระบบตั้งค่านาฬิกาปลุกอัจฉริยะ ปลุกเฉพาะวันทำงานหรือ WFH และงดปลุกอัตโนมัติในวันหยุด",
+        },
+        {
+          src: "/img-project/timetrackOT/307722_0.webp",
+          title: "Work Hours & OT Report",
+          description: "รายงานสรุปชั่วโมงทำงานและ OT สุทธิประจำเดือน พร้อมตัวกรองตามรอบงวดและฟังก์ชันแชร์สรุป",
+        },
+        {
+          src: "/img-project/timetrackOT/307723_0.webp",
+          title: "Income & Wage Estimation",
+          description: "ระบบจำลองคำนวณค่าแรง รายได้สุทธิ ค่ากะ และสลิปเงินเดือนจำลองแบบ Real-time",
+        },
+        {
+          src: "/img-project/timetrackOT/307724_0.webp",
+          title: "Wage Formula & Shift Settings",
+          description: "การตั้งค่าสูตรคำนวณฐานเงินเดือน เรทโอที ค่ากะ และเงื่อนไขการจ้างงานตามกฎหมายแรงงาน",
+        },
+        {
+          src: "/img-project/timetrackOT/307725_0.webp",
+          title: "Quick Notes & Task Tracking",
+          description: "ศูนย์รวมบันทึกช่วยจำ สิ่งที่ต้องทำ (Tasks & Notes) ปักหมุด และลิงก์อ้างอิงงานสำคัญ",
+        },
+      ],
     },
     {
       title: "Media",
-      href: "",
+      href: "https://github.com/vick42uho/media",
       dates: "2025",
       active: true,
       description:
@@ -229,14 +333,70 @@ Driven by continuous learning and engineering excellence, I am committed to buil
       ],
       links: [
         {
-          type: "Website",
-          href: "",
-          icon: <Icons.globe className="size-3" />,
+          type: "Source",
+          href: "https://github.com/vick42uho/media",
+          icon: <Icons.github className="size-3" />,
         },
-
       ],
       image: "",
       video: "/media.mp4",
+      images: [
+        {
+          src: "/img-project/media/dashboard.webp",
+          title: "Media & Patient Dashboard",
+          description: "แดชบอร์ดศูนย์รวมระบบจัดการสื่อ ค้นหา อัปโหลด จัดการใบยินยอม และบริหารสิทธิ์การใช้งาน",
+        },
+        {
+          src: "/img-project/media/upload-media.webp",
+          title: "Patient Media Upload & Tagging",
+          description: "ฟอร์มอัปโหลดรูปภาพผู้ป่วย เชื่อมโยงข้อมูล HN, แพทย์ผู้รักษา, คลินิก, หัตถการ และแท็ก Before/After",
+        },
+        {
+          src: "/img-project/media/manage-media.webp",
+          title: "Case by Case Media Management",
+          description: "ระบบบริหารจัดการภาพถ่ายทางการแพทย์แยกตามเคสผู้ป่วย คัดกรองภาพเพื่อการรักษาหรือการตลาด",
+        },
+        {
+          src: "/img-project/media/manage-media-details.webp",
+          title: "Media Details & Status",
+          description: "หน้ารายละเอียดรูปภาพ ตรวจสอบวันที่ทำหัตถการ แท็กอ้างอิง และสถานะการอนุญาตใช้งาน",
+        },
+        {
+          src: "/img-project/media/compare-photos.webp",
+          title: "Before & After Photo Comparison",
+          description: "เครื่องมือเปรียบเทียบรูปภาพก่อน-หลังการรักษา (Before & After) สำหรับแพทย์และผู้เชี่ยวชาญ",
+        },
+        {
+          src: "/img-project/media/patient-list.webp",
+          title: "Patient Directory & Search",
+          description: "ระบบสืบค้นรายชื่อผู้ป่วย ค้นหาด้วย HN หรือชื่อ-นามสกุล พร้อมแสดงจำนวนรูปภาพและเคสทั้งหมด",
+        },
+        {
+          src: "/img-project/media/consent-management.webp",
+          title: "PDPA Consent Management",
+          description: "ระบบจัดการใบยินยอมการใช้รูปภาพผู้ป่วยตามมาตรฐาน PDPA พร้อมตรวจเช็กสถานะการยินยอม",
+        },
+        {
+          src: "/img-project/media/consent-details.webp",
+          title: "Consent Agreement Details",
+          description: "ตรวจสอบเอกสารใบยินยอม ลายมือชื่อ และขอบเขตการนำภาพถ่ายไปใช้ในการรักษาหรือการตลาด",
+        },
+        {
+          src: "/img-project/media/download-media.webp",
+          title: "Media Export & Watermark",
+          description: "ระบบดาวน์โหลดรูปภาพทางการแพทย์ พร้อมระบบประทับลายน้ำ (Watermark) เพื่อความปลอดภัย",
+        },
+        {
+          src: "/img-project/media/download-batch.webp",
+          title: "Batch Download & Audit Log",
+          description: "การดาวน์โหลดรูปภาพแบบกลุ่ม และระบบบันทึกประวัติการเข้าถึงข้อมูลสื่อของผู้ป่วย (Audit Log)",
+        },
+        {
+          src: "/img-project/media/manage-permissions.webp",
+          title: "Role & Permission Management",
+          description: "ระบบกำหนดสิทธิ์การเข้าถึงและการจัดการข้อมูลตามบทบาทหน้าที่ของบุคลากรทางการแพทย์",
+        },
+      ],
     },
     {
       title: "Portal IAM",
@@ -270,10 +430,10 @@ Driven by continuous learning and engineering excellence, I am committed to buil
     },
     {
       title: "Dynamic Icon | iFrame Medhis",
-      href: "",
+      href: "https://github.com/vick42uho/iFrame",
       dates: "2026",
       active: true,
- description:
+      description:
         "A rule-based Dynamic Icon engine developed for the Medhis iframe. It processes individual patient contexts on the fly to render specific clinical indicators. Featuring a highly flexible configuration layer, the system empowers administrators to define and manage complex logic rules for icon visibility based on patient assessments.",
       technologies: [
         "Next.js",
@@ -287,14 +447,151 @@ Driven by continuous learning and engineering excellence, I am committed to buil
       ],
       links: [
         {
-          type: "Website",
-          href: "",
-          icon: <Icons.globe className="size-3" />,
+          type: "Source",
+          href: "https://github.com/vick42uho/iFrame",
+          icon: <Icons.github className="size-3" />,
         },
       ],
       image: "",
       video:
         "/iFrame-icon.mp4",
+      images: [
+        {
+          src: "/img-project/icon/rule-engine-simulator.webp",
+          title: "Rule Engine & Live Patient Simulator",
+          description: "ระบบออกแบบกฎตรรกะแบบไดนามิก (Condition Builder: AND / OR) พร้อม Sandbox จำลองผลลัพธ์กับข้อมูลคนไข้จริงจาก HIS",
+        },
+        {
+          src: "/img-project/icon/icon-studio-assets.webp",
+          title: "Icon Studio & Clinical Assets",
+          description: "คลังไอคอนและตัวบ่งชี้ทางคลินิก (Icon Catalog) จัดการรูปภาพสถานะผู้ป่วย และผูก Target URL เชื่อมโยงสู่ระบบปลายทาง",
+        },
+        {
+          src: "/img-project/icon/field-dictionary-schema.webp",
+          title: "Field Dictionary & HIS Patient Context",
+          description: "พจนานุกรมฟิลด์และตัวแปร Dot-Path Schema พร้อมระบบตรวจสอบโครงสร้าง JSON Context ของผู้ป่วยแบบเรียลไทม์",
+        },
+      ],
+    },
+    {
+      title: "Yanhee Document Management System (DMS)",
+      href: "https://github.com/vick42uho/e-scan",
+      dates: "2026",
+      active: true,
+      description:
+        "A secured medical chart scanning and document management system built for high-throughput paperless operations. Features direct network scanner hardware integration (Brother Scanner), automated AI/OCR and QR/Barcode patient detection, zero-disk PDF streaming via PyMuPDF, and a high-performance clinical chart viewer with dynamic watermarking, rotation, and multi-tier RBAC permission control.",
+      technologies: [
+        "FastAPI",
+        "Python",
+        "Next.js",
+        "TypeScript",
+        "PostgreSQL",
+        "PyMuPDF",
+        "Docker",
+        "TailwindCSS",
+        "Shadcn UI",
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/vick42uho/e-scan",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/img-project/dms/dms-viewer.webp",
+      video: "",
+      images: [
+        {
+          src: "/img-project/dms/dms-viewer.webp",
+          title: "Secured Medical Chart Viewer",
+          description: "โปรแกรมเปิดดูเวชระเบียนสแกนความเร็วสูง พร้อมลายน้ำความปลอดภัยและแถบ Thumbnail Strip",
+        },
+        {
+          src: "/img-project/dms/dms-scan.webp",
+          title: "Yanhee e-Scan Ingestion & OCR",
+          description: "ระบบนำเข้าและสแกนเวชระเบียน เชื่อมต่อเครื่องสแกนเนอร์ และตรวจจับ QR / Barcode / OCR อัตโนมัติ",
+        },
+        {
+          src: "/img-project/dms/dms-users.webp",
+          title: "Dynamic RBAC User Management",
+          description: "ระบบบริหารจัดการผู้ใช้งานในระบบและกำหนดระดับสิทธิ์บุคลากรทางการแพทย์",
+        },
+        {
+          src: "/img-project/dms/dms-permissions.webp",
+          title: "Granular Permission Matrix",
+          description: "ตารางกำหนดสิทธิ์การเข้าถึงแบบละเอียด (การสแกน, การเปิดดู, การพิมพ์, และการดาวน์โหลด)",
+        },
+      ],
+    },
+    {
+      title: "Yanhee Program Portal",
+      href: "https://github.com/vick42uho/Hospital-Program-Portal",
+      dates: "2026",
+      active: true,
+      description:
+        "A centralized web portal and application directory serving 57+ hospital software systems across both legacy PHP applications and modern microservices. Features an instant Spotlight Command Palette (Ctrl+K), real-time usage analytics, announcement ticker, department categorization, account favorites, and a secured administrative backend for managing system registries.",
+      technologies: [
+        "FastAPI",
+        "Python",
+        "Next.js",
+        "React 19",
+        "TypeScript",
+        "PostgreSQL",
+        "TailwindCSS",
+        "Docker",
+      ],
+      links: [
+        {
+          type: "Source",
+          href: "https://github.com/vick42uho/Hospital-Program-Portal",
+          icon: <Icons.github className="size-3" />,
+        },
+      ],
+      image: "/img-project/programportal/portal-home.webp",
+      video: "",
+      images: [
+        {
+          src: "/img-project/programportal/portal-home.webp",
+          title: "Hospital Application Directory",
+          description: "ศูนย์รวมโปรแกรมและระบบงานทั้งหมดของโรงพยาบาล 57 ระบบ พร้อมแท็กระบบใหม่และระบบเดิม",
+        },
+        {
+          src: "/img-project/programportal/portal-spotlight.webp",
+          title: "Spotlight Command Palette (Ctrl+K)",
+          description: "ระบบค้นหาอัจฉริยะ ค้นหาโปรแกรม หมวดหมู่ แผนก หรือผู้รับผิดชอบ พร้อมประวัติการเข้าชม",
+        },
+        {
+          src: "/img-project/programportal/portal-admin.webp",
+          title: "Admin Portal & Analytics",
+          description: "ระบบจัดการหลังบ้าน จัดการรายการโปรแกรม แถบประชาสัมพันธ์ และสถิติการใช้งานระบบ (Analytics)",
+        },
+      ],
+    },
+    {
+      title: "Self-Service Password Management (LDAP / AD)",
+      href: "",
+      dates: "2026",
+      active: true,
+      description:
+        "A hospital-grade self-service password management web application integrated directly with Active Directory domain controllers via LDAP/LDAPS. Empowers hospital staff to reset or update their domain accounts independently with real-time enterprise password policy validation (character complexity, length, and special symbols), reducing IT helpdesk workload by eliminating manual password reset requests.",
+      technologies: [
+        "Next.js",
+        "React 19",
+        "TypeScript",
+        "TailwindCSS",
+        "LDAP / AD",
+        "Docker",
+      ],
+      links: [],
+      image: "/img-project/changepassword/cpw.webp",
+      video: "",
+      images: [
+        {
+          src: "/img-project/changepassword/cpw.webp",
+          title: "Self-Service Password Portal",
+          description: "หน้าจอบริการเปลี่ยนรหัสผ่านด้วยตนเอง ตรวจสอบความปลอดภัยตามนโยบายองค์กร (LDAP / Active Directory)",
+        },
+      ],
     },
   ],
   hackathons: [

@@ -3,10 +3,11 @@
 
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Images } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import Markdown from "react-markdown";
+import { ProjectGalleryModal, type ProjectImageItem } from "@/components/project-gallery-modal";
 
 function ProjectImage({ src, alt }: { src: string; alt: string }) {
   const [imageError, setImageError] = useState(false);
@@ -18,12 +19,14 @@ function ProjectImage({ src, alt }: { src: string; alt: string }) {
     );
   }
   return (
-    <img
-      src={src}
-      alt={alt}
-      className="w-full h-44 object-cover"
-      onError={() => setImageError(true)}
-    />
+    <div className="w-full h-44 overflow-hidden relative bg-neutral-950/40">
+      <img
+        src={src}
+        alt={alt}
+        className="w-full h-auto min-h-44 object-cover object-top animate-slow-pan"
+        onError={() => setImageError(true)}
+      />
+    </div>
   );
 }
 
@@ -41,6 +44,7 @@ interface Props {
     type: string;
     href: string;
   }[];
+  images?: readonly ProjectImageItem[];
   className?: string;
 }
 
@@ -53,8 +57,11 @@ export function ProjectCard({
   image,
   video,
   links,
+  images,
   className,
 }: Props) {
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+
   return (
     <div
       className={cn(
@@ -79,40 +86,80 @@ export function ProjectCard({
 
       {/* Media */}
       <div className="relative shrink-0 overflow-hidden">
-        <Link href={href || "#"} target="_blank" rel="noopener noreferrer" className="block" aria-label={title}>
-          {video ? (
-            <video src={video} autoPlay loop muted playsInline className="w-full h-44 object-cover" />
-          ) : image ? (
-            <ProjectImage src={image} alt={title} />
-          ) : (
-            <div className="w-full h-44 bg-gradient-to-br from-blue-900/30 to-indigo-900/20" />
-          )}
-        </Link>
-
-        {/* Link badges — top right overlay */}
-        {links && links.length > 0 && (
-          <div className="absolute top-2 right-2 flex flex-wrap gap-1.5 z-20">
-            {links.map((link, idx) => (
-              <Link
-                href={link.href}
-                key={idx}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                aria-label={link.type}
-              >
-                <Badge
-                  className="flex items-center gap-1 text-[11px] font-medium
-                    bg-blue-600/90 hover:bg-blue-500 text-white border-blue-500/50
-                    backdrop-blur-sm shadow-[0_0_10px_oklch(0.55_0.22_255/0.4)]"
-                >
-                  {link.icon}
-                  {link.type}
-                </Badge>
-              </Link>
-            ))}
+        {href ? (
+          <Link href={href} target="_blank" rel="noopener noreferrer" className="block" aria-label={title}>
+            {video ? (
+              <video src={video} autoPlay loop muted playsInline className="w-full h-44 object-cover" />
+            ) : image ? (
+              <ProjectImage src={image} alt={title} />
+            ) : (
+              <div className="w-full h-44 bg-gradient-to-br from-blue-900/30 to-indigo-900/20" />
+            )}
+          </Link>
+        ) : (
+          <div
+            onClick={images && images.length > 0 ? () => setIsGalleryOpen(true) : undefined}
+            className={cn("block", images && images.length > 0 && "cursor-pointer")}
+            aria-label={title}
+          >
+            {video ? (
+              <video src={video} autoPlay loop muted playsInline className="w-full h-44 object-cover" />
+            ) : image ? (
+              <ProjectImage src={image} alt={title} />
+            ) : (
+              <div className="w-full h-44 bg-gradient-to-br from-blue-900/30 to-indigo-900/20" />
+            )}
           </div>
         )}
+
+        {/* Action badges — top right overlay */}
+        <div className="absolute top-2 right-2 flex flex-wrap items-center gap-1.5 z-20">
+          {images && images.length > 0 && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setIsGalleryOpen(true);
+              }}
+              className="cursor-pointer focus:outline-none"
+              aria-label={`View ${images.length} screenshots`}
+            >
+              <Badge
+                className="flex items-center gap-1 text-[11px] font-medium
+                  bg-neutral-950/80 hover:bg-blue-600 text-white border-white/20 hover:border-blue-500/50
+                  backdrop-blur-sm shadow-md transition-all hover:scale-105 active:scale-95"
+              >
+                <Images className="size-3 text-blue-300" />
+                <span>Photos ({images.length})</span>
+              </Badge>
+            </button>
+          )}
+
+          {links &&
+            links.length > 0 &&
+            links
+              .filter((link) => Boolean(link.href))
+              .map((link, idx) => (
+                <Link
+                  href={link.href}
+                  key={idx}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  aria-label={link.type}
+                >
+                  <Badge
+                    className="flex items-center gap-1 text-[11px] font-medium
+                      bg-blue-600/90 hover:bg-blue-500 text-white border-blue-500/50
+                      backdrop-blur-sm shadow-[0_0_10px_oklch(0.55_0.22_255/0.4)] transition-all hover:scale-105 active:scale-95"
+                  >
+                    {link.icon}
+                    {link.type}
+                  </Badge>
+                </Link>
+              ))}
+        </div>
       </div>
 
       {/* Content */}
@@ -124,16 +171,18 @@ export function ProjectCard({
             </h3>
             <time className="text-xs text-muted-foreground/70">{dates}</time>
           </div>
-          <Link
-            href={href || "#"}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-blue-500 dark:hover:text-blue-400 transition-colors
-              focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-sm flex-none"
-            aria-label={`Open ${title}`}
-          >
-            <ArrowUpRight className="size-4" aria-hidden />
-          </Link>
+          {href && (
+            <Link
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-blue-500 dark:hover:text-blue-400 transition-colors
+                focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-sm flex-none"
+              aria-label={`Open ${title}`}
+            >
+              <ArrowUpRight className="size-4" aria-hidden />
+            </Link>
+          )}
         </div>
 
         <div className="text-xs flex-1 prose max-w-full text-pretty font-sans leading-relaxed
@@ -157,6 +206,16 @@ export function ProjectCard({
           </div>
         )}
       </div>
+
+      {/* Gallery Lightbox Modal */}
+      {images && images.length > 0 && (
+        <ProjectGalleryModal
+          isOpen={isGalleryOpen}
+          onClose={() => setIsGalleryOpen(false)}
+          projectTitle={title}
+          images={images}
+        />
+      )}
     </div>
   );
 }
